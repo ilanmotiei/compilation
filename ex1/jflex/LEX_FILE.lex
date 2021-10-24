@@ -16,13 +16,9 @@ import java_cup.runtime.*;
 
 %{
 	private Symbol symbol(int type, Object content) 	{   return new Symbol(type, content, yyline, yycolumn);   }
-	 
-	private Symbol symbol(int type)						{   return new Symbol(type, yyline, yycolumn);   }
-	
-	public int getLine()								{	return yyline + 1;	 }
-	
-	public int getTokenStartPosition()					{	return yycolumn + 1;   }
-	
+	private Symbol symbol(int type)				{   return new Symbol(type, yyline, yycolumn);   }
+	public int getLine()					{	return yyline + 1;	 }
+	public int getTokenStartPosition()			{	return yycolumn + 1;   }
 %}
 
 
@@ -52,7 +48,7 @@ STRING = " {LETTER}* "
 	"while"				{  	 return symbol(TokenNames.WHILE);    }
 	"if"				{  	 return symbol(TokenNames.IF);    }
 
-	{IDENTIFIER}		{  	 return symbol(TokenNames.IDENTIFIER, yytext());    }
+	{IDENTIFIER}			{  	 return symbol(TokenNames.IDENTIFIER, yytext());    }
 	{INTEGER}			{  	 return symbol(TokenNames.INTEGER, yytext());    }
 	{STRING}			{  	 return symbol(TokenNames.STRING, yytext());    }
 	
@@ -70,7 +66,7 @@ STRING = " {LETTER}* "
 	"+"					{  	 return symbol(TokenNames.PLUS);    }
 	"-"					{  	 return symbol(TokenNames.MINUS);    }
 	"*"					{  	 return symbol(TokenNames.TIMES);    }
-	"/" 				{  	 return symbol(TokenNames.DIVIDE);    }
+	"/" 					{  	 return symbol(TokenNames.DIVIDE);    }
 	"="					{  	 return symbol(TokenNames.EQ);    }
 	"<"					{  	 return symbol(TokenNames.LT);    }
 	">"					{  	 return symbol(TokenNames.GT);    }
@@ -80,8 +76,8 @@ STRING = " {LETTER}* "
 	","					{  	 return symbol(TokenNames.COMMA);    }
 	"."					{  	 return symbol(TokenNames.DOT);    }
 	";"					{  	 return symbol(TokenNames.SEMICOLON);    }
-	":="				{  	 return symbol(TokenNames.ASSIGN);    }
+	":="					{  	 return symbol(TokenNames.ASSIGN);    }
 	
-	<<EOF>>             {    return symbol(TokenNames.EOF);    }	
+	<<EOF>>            			{    return symbol(TokenNames.EOF);    }	
 	
 }
