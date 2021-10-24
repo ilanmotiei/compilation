@@ -22,11 +22,11 @@ import java_cup.runtime.*;
 %}
 
 
-LETTER = [A-Z]|[a-z]
+LETTER = [A-Za-z]
 DIGIT = [0-9]
 IDENTIFIER = {LETTER} ({DIGIT}|{LETTER})*
 WHITE_SPACE = [\t\n ]+
-IN_COMMENT_CHAR = {LPAREN} | {RPAREN} | {LBRACK} | {RBRACK} | {LBRACE} | {RBRACE} | [?!+-*/.;]
+IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+-*/.;]
 COMMENT = ("//" {IN_COMMENT_CHAR}* \n) | ("/*" {IN_COMMENT_CHAR}* "*/")
 INTEGER = [1-9] {DIGIT}* | 0
 STRING = " {LETTER}* "
