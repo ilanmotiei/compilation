@@ -29,6 +29,7 @@ public interface TokenNames {
 	public static final int RETURN = 25;
 	public static final int WHILE = 26;
 	public static final int IF = 27;
-	public static final int NEW = 28;	
-	
+	public static final int NEW = 28;
+	public static final int TYPE_INT = 29;
+	public static final int TYPE_STRING = 30;	
 }

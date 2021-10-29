@@ -15,21 +15,29 @@ import java_cup.runtime.*;
 
 
 %{
-	private Symbol symbol(int type, Object content) 	{   return new Symbol(type, content, yyline, yycolumn);   }
-	private Symbol symbol(int type)				{   return new Symbol(type, yyline, yycolumn);   }
-	public int getLine()					{	return yyline + 1;	 }
-	public int getTokenStartPosition()			{	return yycolumn + 1;   }
+	private Symbol symbol(int type, Object content) 	{   return new Symbol(type, yyline, yycolumn, content);   	}
+	private Symbol symbol(int type)						{   return new Symbol(type, yyline, yycolumn);   			}
+	public int getLine()								{	return yyline + 1;	 									}
+	public int getTokenStartPosition()					{	return yycolumn + 1;   									}
 %}
 
 
-LETTER = [A-Za-z]
+/* Basic Types Definitions */
+LineTerminator = \r|\n|\r\n
+WHITE_SPACE = {LineTerminator} | [ \t\f]
+LETTER = [a-zA-Z]
 DIGIT = [0-9]
-IDENTIFIER = {LETTER} ({DIGIT}|{LETTER})*
-WHITE_SPACE = [\t\n ]+
-IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+-*/.;]
-COMMENT = ("//" {IN_COMMENT_CHAR}* \n) | ("/*" {IN_COMMENT_CHAR}* "*/")
-INTEGER = [1-9] {DIGIT}* | 0
-STRING = " {LETTER}* "
+
+// might be incorrect:
+IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-"
+
+/* Tokens Definitions */
+ID = {LETTER}({DIGIT}|{LETTER})*
+INTEGER = [1-9]{DIGIT}* | 0
+
+// might be incorrect:
+COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"{IN_COMMENT_CHAR}*"*/") /* might need to relate to the case of "//...EOF" */
+STRING = """{LETTER}*"""
 
 
 %%
@@ -39,18 +47,22 @@ STRING = " {LETTER}* "
 
 	/* Keywords (Highest Priority) */
 	
-	"class"				{  	 return symbol(TokenNames.CLASS);    }
-	"extends"			{  	 return symbol(TokenNames.EXTENDS);    }
-	"nil"				{  	 return symbol(TokenNames.NIL);    }
-	"return"			{  	 return symbol(TokenNames.RETURN);    }
-	"array"				{  	 return symbol(TokenNames.ARRAY);    }
-	"new"				{  	 return symbol(TokenNames.NEW);    }
-	"while"				{  	 return symbol(TokenNames.WHILE);    }
-	"if"				{  	 return symbol(TokenNames.IF);    }
+	"class"				{  	 return symbol(TokenNames.CLASS);    			}
+	"extends"			{  	 return symbol(TokenNames.EXTENDS);    			}
+	"nil"				{  	 return symbol(TokenNames.NIL);    				}
+	"return"			{  	 return symbol(TokenNames.RETURN);    			}
+	"array"				{  	 return symbol(TokenNames.ARRAY);    			}
+	"new"				{  	 return symbol(TokenNames.NEW);    				}
+	"while"				{  	 return symbol(TokenNames.WHILE);    			}
+	"if"				{  	 return symbol(TokenNames.IF);    				}
+	"int"				{    return symbol(TokenNames.TYPE_INT)			    }
+	"string" 			{	 return symbol(TokenNames.TYPE_STRING)		    }
 
-	{IDENTIFIER}			{  	 return symbol(TokenNames.IDENTIFIER, yytext());    }
-	{INTEGER}			{  	 return symbol(TokenNames.INTEGER, yytext());    }
-	{STRING}			{  	 return symbol(TokenNames.STRING, yytext());    }
+	/* Tokens holding a corresponding value */
+
+	{ID}				{  	 return symbol(TokenNames.ID, new String(yytext());    			}
+	{INTEGER}			{  	 return symbol(TokenNames.INTEGER, new Integer(yytext());    	}
+	{STRING}			{  	 return symbol(TokenNames.STRING, yytext();    					}
 	
 	/* Parenthesis, brackets and curly braces */
 	
@@ -63,21 +75,29 @@ STRING = " {LETTER}* "
 	
 	/* Operators */
 
-	"+"					{  	 return symbol(TokenNames.PLUS);    }
-	"-"					{  	 return symbol(TokenNames.MINUS);    }
-	"*"					{  	 return symbol(TokenNames.TIMES);    }
-	"/" 					{  	 return symbol(TokenNames.DIVIDE);    }
-	"="					{  	 return symbol(TokenNames.EQ);    }
-	"<"					{  	 return symbol(TokenNames.LT);    }
-	">"					{  	 return symbol(TokenNames.GT);    }
+	"+"					{  	 return symbol(TokenNames.PLUS);    	}
+	"-"					{  	 return symbol(TokenNames.MINUS);    	}
+	"*"					{  	 return symbol(TokenNames.TIMES);    	}
+	"/" 				{  	 return symbol(TokenNames.DIVIDE);  	}
+	"="					{  	 return symbol(TokenNames.EQ);    		}
+	"<"					{  	 return symbol(TokenNames.LT);    		}
+	">"					{  	 return symbol(TokenNames.GT);    		}
 	
 	/* Seperators */
 	
-	","					{  	 return symbol(TokenNames.COMMA);    }
-	"."					{  	 return symbol(TokenNames.DOT);    }
-	";"					{  	 return symbol(TokenNames.SEMICOLON);    }
-	":="					{  	 return symbol(TokenNames.ASSIGN);    }
+	","					{  	 return symbol(TokenNames.COMMA);    	}
+	"."					{  	 return symbol(TokenNames.DOT);    		}
+	";"					{  	 return symbol(TokenNames.SEMICOLON);   }
+	":="				{  	 return symbol(TokenNames.ASSIGN);    	}
 	
-	<<EOF>>            			{    return symbol(TokenNames.EOF);    }	
-	
+	/* EOF */
+	<<EOF>>            	{    return symbol(TokenNames.EOF);    		}	
+
+	/* Tokens we are igonoring */
+	// basic: 
+	{WHITE_SPACE} 		{ }
+	{IN_COMMENT_CHAR}	{ }
+	{LineTerminator}	{ }	
+	// comments:
+	{COMMENT}			{ }
 }
