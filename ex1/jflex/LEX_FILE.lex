@@ -29,14 +29,15 @@ LETTER = [a-zA-Z]
 DIGIT = [0-9]
 
 // might be incorrect:
-IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-"
+IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LETTER}|{DIGIT}|{WHITE_SPACE} 
+/* excluding  {LineTerminator} */
 
 /* Tokens Definitions */
 ID = {LETTER}({DIGIT}|{LETTER})*
 INTEGER = [1-9]{DIGIT}* | 0
 
 // might be incorrect:
-COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"{IN_COMMENT_CHAR}*"*/") /* might need to relate to the case of "//...EOF" */
+COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {LineTerminator})*"*/")
 STRING = """{LETTER}*"""
 
 
@@ -50,19 +51,22 @@ STRING = """{LETTER}*"""
 	"class"				{  	 return symbol(TokenNames.CLASS);    			}
 	"extends"			{  	 return symbol(TokenNames.EXTENDS);    			}
 	"nil"				{  	 return symbol(TokenNames.NIL);    				}
-	"return"			{  	 return symbol(TokenNames.RETURN);    			}
+	"return"		{  	 return symbol(TokenNames.RETURN);    			}
 	"array"				{  	 return symbol(TokenNames.ARRAY);    			}
 	"new"				{  	 return symbol(TokenNames.NEW);    				}
 	"while"				{  	 return symbol(TokenNames.WHILE);    			}
 	"if"				{  	 return symbol(TokenNames.IF);    				}
-	"int"				{    return symbol(TokenNames.TYPE_INT)			    }
-	"string" 			{	 return symbol(TokenNames.TYPE_STRING)		    }
+	"int"				{    return symbol(TokenNames.TYPE_INT);		    }
+	"string" 			{	 return symbol(TokenNames.TYPE_STRING);		    }
 
 	/* Tokens holding a corresponding value */
 
-	{ID}				{  	 return symbol(TokenNames.ID, new String(yytext());    			}
-	{INTEGER}			{  	 return symbol(TokenNames.INTEGER, new Integer(yytext());    	}
-	{STRING}			{  	 return symbol(TokenNames.STRING, yytext();    					}
+	{ID}				{  	 return symbol(TokenNames.ID, new String(yytext()));    			}
+	{INTEGER}			{  	 return symbol(TokenNames.INT, new Integer(yytext()));    	}
+	{STRING}			{  	 return symbol(TokenNames.STRING, yytext());    					}
+
+	/* Comment */
+	{COMMENT}			{ /* do nothing */}
 	
 	/* Parenthesis, brackets and curly braces */
 	
@@ -97,7 +101,5 @@ STRING = """{LETTER}*"""
 	// basic: 
 	{WHITE_SPACE} 		{ }
 	{IN_COMMENT_CHAR}	{ }
-	{LineTerminator}	{ }	
-	// comments:
-	{COMMENT}			{ }
+	{LineTerminator}	{ }		
 }

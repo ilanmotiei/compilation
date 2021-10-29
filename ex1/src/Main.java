@@ -1,18 +1,15 @@
 
 import java.io.*;
-import java.io.PrinterWriter;
+import java.io.PrintWriter;
 import java.lang.Math;
 import java.util.HashMap;
-
-import TokenNames;
-
 
 import java_cup.runtime.Symbol;
 
 public class Main{
 
     private static final int INT_UPPER_LIMIT = (int) Math.pow(2, 15);
-    private static final HashMap<Integer, String> TokenNames = new HashMap<Integer, String>();
+    private static final HashMap<Integer, String> TokenNameMap = new HashMap<Integer, String>();
 
     public static void main(String argv[]){
         Lexer l;
@@ -22,7 +19,7 @@ public class Main{
         String inputFilename = argv[0];
         String outputFilename = argv[1];
 
-        init_TokenNames(); // initializing the token names dictionary;
+        init_TokenNameMap(); // initializing the token names dictionary;
 
         try
         {
@@ -33,10 +30,10 @@ public class Main{
             l = new Lexer(file_reader); // creating the lexer for the input file;
 
             // running on the input file till its end;
-            for (curr = l.next_token(); curr != TokenNames.EOF; curr = l.next_token()){
+            for (curr = l.next_token(); curr.sym != TokenNames.EOF; curr = l.next_token()){
                 if (curr.sym == TokenNames.INT){
                     // checking that the number is legal;
-                    if (!((curr.value >= 0) || (curr.value < INT_UPPER_LIMIT))){
+                    if (!(((int) curr.value >= 0) || ((int) curr.value < INT_UPPER_LIMIT))){
                         // go to the catch block;
 
                         throw new Exception("INT out of range");
@@ -65,29 +62,29 @@ public class Main{
     static private void print_to_File(PrintWriter file_writer, Symbol s, int line, int column){
 
         int token = s.sym;
-        String tokenName = TokenNames.get(token)
+        String tokenName = TokenNameMap.get(token);
         
         if (s.value != null){
             switch(tokenName)
             {
                 case "STRING":
                 case "ID":
-                    file_writer.format("%s(%s)[%i,%i]", tokenName, (String) s.value, line, column);
+                    file_writer.format("%s(%s)[%d,%d]", tokenName, (String) s.value, line, column);
                     break;
                 
                 case "INT":
-                    file_writer.format("%s(%i)[%i,%i]", tokenName, (Integer) s.value, line, column);
+                    file_writer.format("%s(%d)[%d,%d]", tokenName, (int) s.value, line, column);
             }
         } else{ 
             //s.value == NULL;
 
-            file_writer.format("%s[%i,%i]", tokenName, line, column);
+            file_writer.format("%s[%d,%d]", tokenName, line, column);
         }
 
         file_writer.print("\n"); // moving to the next line in the file;
     }
 
-    static private void init_TokenNames(){
+    static private void init_TokenNameMap(){
         String Names[] = new String[]{
             "EOF", "INT", "STRING", "ID", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "NIL", "PLUS", "MINUS", 
             "TIMES", "DIVIDE", "COMMA", "DOT", "SEMICOLON", "ASSIGN", "EQ", "LT", "GT", "ARRAY", "CLASS", "EXTENDS", "RETURN",
@@ -95,7 +92,7 @@ public class Main{
         };
 
         for (int i=0; i < Names.length; i++){
-            TokenNames.put(i, Names[i]);
+            TokenNameMap.put(i, Names[i]);
         }
     }
 }
