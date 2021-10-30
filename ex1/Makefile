@@ -7,8 +7,11 @@ SRC_DIR           = ${BASEDIR}/src
 BIN_DIR           = ${BASEDIR}/bin
 INPUT_DIR         = ${BASEDIR}/input
 OUTPUT_DIR        = ${BASEDIR}/output
+EXPECTED_DIR      = ${BASEDIR}/expected_output
 EXTERNAL_JARS_DIR = ${BASEDIR}/external_jars
 MANIFEST_DIR      = ${BASEDIR}/manifest
+TEST_SRC_DIR      = ${BASEDIR}/Tester/FileTester/src/P1
+TEST_BIN_DIR      = ${BASEDIR}/Tester/FileTester/bin
 
 #########
 # FILES #
@@ -18,6 +21,8 @@ SRC_FILES            = ${SRC_DIR}/*.java
 CLASS_FILES          = ${BIN_DIR}/*.class
 EXTERNAL_JAR_FILES   = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
 MANIFEST_FILE        = ${MANIFEST_DIR}/MANIFEST.MF
+TEST_SRC_FILE        = ${TEST_SRC_DIR}/Main.java
+TEST_BIN_FILE        = ${TEST_BIN_DIR}/P1/Main
 
 ########################
 # DEFINITIONS :: JFlex #
@@ -32,6 +37,7 @@ JFlex_FILE     = ${JFlex_DIR}/LEX_FILE.lex
 ########################
 INPUT    = ${INPUT_DIR}/TEST_01_Print_Primes.txt
 OUTPUT   = ${OUTPUT_DIR}/OutputTokens.txt
+EXPECTED = ${EXPECTED_DIR}/TEST_01_Print_Primes_Expected_Output.txt
 
 all:
 	clear
@@ -88,4 +94,14 @@ all:
 	@echo "*                           *"
 	@echo "*****************************"
 	java -jar LEXER ${INPUT} ${OUTPUT}
+	@echo "\n"
+	@echo "************************************************************************"
+	@echo "*                                                                      *"
+	@echo "*                                                                      *"
+	@echo "* [6] Running Test on the output file                                  *"
+	@echo "*                                                                      *"
+	@echo "*                                                                      *"
+	@echo "************************************************************************"
+	javac ${TEST_SRC_FILE} -d ${TEST_BIN_DIR}
+	java ${TEST_BIN_FILE} ${OUTPUT} ${EXPECTED}
 

@@ -56,6 +56,8 @@ public class Main{
             // TODO
 
             e.printStackTrace();
+
+            return;
         }
     }
 

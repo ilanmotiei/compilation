@@ -29,15 +29,15 @@ LETTER = [a-zA-Z]
 DIGIT = [0-9]
 
 // might be incorrect:
-IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LETTER}|{DIGIT}|{WHITE_SPACE} 
-/* excluding  {LineTerminator} */
+IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LETTER}|{DIGIT}|[ \t\f] 
+/* excluding  {WHITE_SPACE} */
 
 /* Tokens Definitions */
 ID = {LETTER}({DIGIT}|{LETTER})*
 INTEGER = [1-9]{DIGIT}* | 0
 
 // might be incorrect:
-COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {LineTerminator})*"*/")
+COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {WHITE_SPACE})*"*/")
 STRING = """{LETTER}*"""
 
 
