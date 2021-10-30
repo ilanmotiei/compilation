@@ -35,9 +35,9 @@ JFlex_FILE     = ${JFlex_DIR}/LEX_FILE.lex
 ########################
 # DEFINITIONS :: LEXER #
 ########################
-INPUT    = ${INPUT_DIR}/TEST_02_Merge_Lists.txt
+INPUT    = ${INPUT_DIR}/TEST_01_Print_Primes.txt
 OUTPUT   = ${OUTPUT_DIR}/OutputTokens.txt
-EXPECTED = ${EXPECTED_DIR}/TEST_02_Merge_Lists_Expected_Output.txt
+EXPECTED = ${EXPECTED_DIR}/TEST_02_Print_Primes_Expected_Output.txt
 
 all:
 	clear
@@ -94,14 +94,3 @@ all:
 	@echo "*                           *"
 	@echo "*****************************"
 	java -jar LEXER ${INPUT} ${OUTPUT}
-	@echo "\n"
-	@echo "************************************************************************"
-	@echo "*                                                                      *"
-	@echo "*                                                                      *"
-	@echo "* [6] Running Test on the output file                                  *"
-	@echo "*                                                                      *"
-	@echo "*                                                                      *"
-	@echo "************************************************************************"
-	javac ${TEST_SRC_FILE} -d ${TEST_BIN_DIR}
-	java ${TEST_BIN_FILE} ${OUTPUT} ${EXPECTED}
-
