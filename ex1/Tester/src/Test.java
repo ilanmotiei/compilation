@@ -1,10 +1,9 @@
-package P1;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class Main {
-public static void main(String[] args) {
+public class Test {
+static public void main(String[] args) {
 		
 		String outputFilename, expectedOutputFilename;
 		FileReader outputFile_reader, expectedOutputFile_reader;
