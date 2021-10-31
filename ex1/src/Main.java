@@ -28,7 +28,6 @@ public class Main{
             l = new Lexer(file_reader); // creating the lexer for the input file;
         }
         catch (Exception e){
-            e.printStackTrace();
 
             return;
         }
@@ -63,15 +62,12 @@ public class Main{
 
             try{
                 file_writer = new PrintWriter(outputFilename);
-                file_writer.print("ERROR" + "\n");
+                file_writer.print("ERROR");
                 file_writer.close();
                 l.yyclose();
             }
             catch (Exception e1){
-                e1.printStackTrace();
             }
-
-            e.printStackTrace();
 
             return;
         }

@@ -35,7 +35,7 @@ JFlex_FILE     = ${JFlex_DIR}/LEX_FILE.lex
 ########################
 # DEFINITIONS :: LEXER #
 ########################
-INPUT    = ${INPUT_DIR}/TEST_01_Print_Primes.txt
+INPUT    = ${INPUT_DIR}/Input.txt
 OUTPUT   = ${OUTPUT_DIR}/OutputTokens.txt
 EXPECTED = ${EXPECTED_DIR}/TEST_02_Print_Primes_Expected_Output.txt
 
@@ -85,3 +85,12 @@ all:
 	@echo "*                                                                      *"
 	@echo "************************************************************************"
 	jar cfm LEXER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	@echo "\n"
+	@echo "*****************************"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "* [5] Run resulting program *"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "*****************************"
+	java -jar LEXER ${INPUT} ${OUTPUT}
