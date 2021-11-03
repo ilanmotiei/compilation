@@ -95,21 +95,8 @@ all:
 	# @echo "*                           *"
 	# @echo "*****************************"
 	# @echo "\n"
-	# @echo "*****************************"
-	# @echo "*                           *"
-	# @echo "*                           *"
-	# @echo "*[6] Running a Test Program *"
-	# @echo "*                           *"
-	# @echo "*                           *"
-	# @echo "*****************************"
 
 	java -jar LEXER ${INPUT} ${OUTPUT}
-
-	javac ${TEST_SRC_FILE} -d ${TEST_BIN_DIR}
-
-	cd ${TEST_BIN_DIR} && java ${TESTER_NAME} ${OUTPUT} ${EXPECTED}
-
-	# -----------------------------------
 
 
 
