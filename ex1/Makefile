@@ -85,3 +85,12 @@ all:
 	@echo "*                                                                      *"
 	@echo "************************************************************************"
 	jar cfm LEXER ${MANIFEST_FILE} -C ${BIN_DIR} .
+	@echo "\n"
+	@echo "*****************************"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "* [5] Run resulting program *"
+	@echo "*                           *"
+	@echo "*                           *"
+	@echo "*****************************"
+	java -jar LEXER ${INPUT} ${OUTPUT}

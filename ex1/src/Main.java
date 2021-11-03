@@ -73,7 +73,7 @@ public class Main{
 
     static private boolean isVaildNumber(Symbol curr)
     {
-        return ((int) curr.value >= 0) || ((int) curr.value < INT_UPPER_LIMIT);
+        return ((int) curr.value >= 0) && ((int) curr.value < INT_UPPER_LIMIT);
     }
 
     static private void print_to_File(PrintWriter file_writer, Symbol s, int line, int column){
