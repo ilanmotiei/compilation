@@ -36,6 +36,7 @@ public class Main{
         {
             // running on the input file till its end;
             for (curr = l.next_token(); curr.sym != TokenNames.EOF; curr = l.next_token()){
+
                 // check if it is a token of integer
                 if (curr.sym == TokenNames.INT){
                     // checking that the number is legal;
@@ -73,7 +74,21 @@ public class Main{
 
     static private boolean isVaildNumber(Symbol curr)
     {
-        return ((int) curr.value >= 0) && ((int) curr.value < INT_UPPER_LIMIT);
+
+        try{
+            if (((String) curr.value).contentEquals("ERROR")){
+                return false;
+            }
+        }
+        catch (Exception e){
+            // curr.value class is Integer
+            
+            return ((int) curr.value >= 0) && ((int) curr.value < INT_UPPER_LIMIT);
+        }
+
+        // Dead code: just for compilation;
+
+        return false;
     }
 
     static private void print_to_File(PrintWriter file_writer, Symbol s, int line, int column){

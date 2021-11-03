@@ -34,7 +34,7 @@ IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LET
 
 /* Tokens Definitions */
 ID = {LETTER}({DIGIT}|{LETTER})*
-INTEGER = [1-9]{DIGIT}* | 0
+INTEGER = {DIGIT}+
 
 // might be incorrect:
 COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {WHITE_SPACE})*"*/")
@@ -61,8 +61,20 @@ STRING = \"{LETTER}*\"
 
 	/* Tokens holding a corresponding value */
 
-	{ID}				{  	 return symbol(TokenNames.ID, new String(yytext()));    			}
-	{INTEGER}			{  	 return symbol(TokenNames.INT, new Integer(yytext()));    	}
+	{ID}				{  	return symbol(TokenNames.ID, new String(yytext()));    			}
+	
+	{INTEGER}			{  	
+
+							String got = new String(yytext());
+							if ((got.length() != 1) && (got.charAt(0) == '0')){
+								return symbol(TokenNames.INT, new String("ERROR"));
+							}
+
+							// else:
+
+							return symbol(TokenNames.INT, new Integer(yytext()));
+						}
+
 	{STRING}			{  	 return symbol(TokenNames.STRING, yytext());    					}
 
 	/* Comment */

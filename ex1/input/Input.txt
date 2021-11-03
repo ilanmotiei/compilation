@@ -1,5 +1,6 @@
 // some comment
 p := ""
 
-p := 07
+p := 70
 
+p := 9
