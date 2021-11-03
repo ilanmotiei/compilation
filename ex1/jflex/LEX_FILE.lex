@@ -38,7 +38,7 @@ INTEGER = [1-9]{DIGIT}* | 0
 
 // might be incorrect:
 COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {WHITE_SPACE})*"*/")
-STRING = """{LETTER}*"""
+STRING = \"{LETTER}*\"
 
 
 %%

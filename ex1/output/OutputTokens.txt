@@ -1,1 +1,7 @@
-ERROR
+ID(p)[2,1]
+ASSIGN[2,3]
+STRING("")[2,6]
+ID(p)[4,1]
+ASSIGN[4,3]
+INT(0)[4,6]
+INT(7)[4,7]
