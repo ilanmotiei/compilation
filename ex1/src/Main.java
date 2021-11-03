@@ -39,7 +39,7 @@ public class Main{
                 // check if it is a token of integer
                 if (curr.sym == TokenNames.INT){
                     // checking that the number is legal;
-                    if (!isVaildNumber(curr)){
+                    if (!isValidNumber(curr)){
                         // skip to the catch block;
                         throw new Error("INT out of range");
                     }
@@ -71,7 +71,7 @@ public class Main{
         }
     }
 
-    static private boolean isVaildNumber(Symbol curr)
+    static private boolean isValidNumber(Symbol curr)
     {
         return ((int) curr.value >= 0) && ((int) curr.value < INT_UPPER_LIMIT);
     }
