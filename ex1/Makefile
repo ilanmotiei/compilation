@@ -90,13 +90,13 @@ all:
 	# @echo "*****************************"
 	# @echo "*                           *"
 	# @echo "*                           *"
-	# @echo "* [5] Run resulting program *"
+	# *  [5] DONT RUN resulting program  *"
 	# @echo "*                           *"
 	# @echo "*                           *"
 	# @echo "*****************************"
 	# @echo "\n"
 
-	java -jar LEXER ${INPUT} ${OUTPUT}
+	###### java -jar LEXER ${INPUT} ${OUTPUT}
 
 
 
