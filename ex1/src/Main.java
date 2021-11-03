@@ -36,11 +36,11 @@ public class Main{
         {
             // running on the input file till its end;
             for (curr = l.next_token(); curr.sym != TokenNames.EOF; curr = l.next_token()){
+                // check if it is a token of integer
                 if (curr.sym == TokenNames.INT){
                     // checking that the number is legal;
-                    if (!(((int) curr.value >= 0) || ((int) curr.value < INT_UPPER_LIMIT))){
-                        // go to the catch block;
-
+                    if (!isVaildNumber(curr)){
+                        // skip to the catch block;
                         throw new Error("INT out of range");
                     }
                 }
@@ -68,9 +68,12 @@ public class Main{
             }
             catch (Exception e1){
             }
-
-            return;
         }
+    }
+
+    static private boolean isVaildNumber(Symbol curr)
+    {
+        return ((int) curr.value >= 0) || ((int) curr.value < INT_UPPER_LIMIT);
     }
 
     static private void print_to_File(PrintWriter file_writer, Symbol s, int line, int column){
