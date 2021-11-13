@@ -9,19 +9,13 @@ public class AST_Node_Serial_Number
 	/*******************************************/
 	public int SerialNumber;
 	
-	/**************************************/
-	/* USUAL SINGLETON IMPLEMENTATION ... */
-	/**************************************/
+	// USUAL SINGLETON IMPLEMENTATION
 	private static AST_Node_Serial_Number instance = null;
 
-	/*****************************/
-	/* PREVENT INSTANTIATION ... */
-	/*****************************/
+	// PREVENT INSTANTIATION
 	protected AST_Node_Serial_Number() {}
 
-	/******************************/
-	/* GET SINGLETON INSTANCE ... */
-	/******************************/
+	// GET SINGLETON INSTANCE 
 	private static AST_Node_Serial_Number getInstance()
 	{
 		if (instance == null)
@@ -33,17 +27,13 @@ public class AST_Node_Serial_Number
 		return instance;
 	}
 
-	/**********************************/
-	/* GET A UNIQUE SERIAL NUMBER ... */
-	/**********************************/
+	// GET A UNIQUE SERIAL NUMBER
 	public int get()
 	{
 		return SerialNumber++;
 	}
 
-	/**********************************/
-	/* GET A UNIQUE SERIAL NUMBER ... */
-	/**********************************/
+	// GET A UNIQUE SERIAL NUMBER
 	public static int getFresh()
 	{
 		return AST_Node_Serial_Number.getInstance().get();

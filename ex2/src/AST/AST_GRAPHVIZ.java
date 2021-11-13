@@ -5,33 +5,24 @@ import java.io.PrintWriter;
 
 public class AST_GRAPHVIZ
 {
-	/***********************/
-	/* The file writer ... */
-	/***********************/
+
+	// The file writer
 	private PrintWriter fileWriter;
 	
-	/**************************************/
-	/* USUAL SINGLETON IMPLEMENTATION ... */
-	/**************************************/
+	// USUAL SINGLETON IMPLEMENTATION
 	private static AST_GRAPHVIZ instance = null;
 
-	/*****************************/
-	/* PREVENT INSTANTIATION ... */
-	/*****************************/
+	// PREVENT INSTANTIATION 
 	private AST_GRAPHVIZ() {}
 
-	/******************************/
-	/* GET SINGLETON INSTANCE ... */
-	/******************************/
+	// GET SINGLETON INSTANCE
 	public static AST_GRAPHVIZ getInstance()
 	{
 		if (instance == null)
 		{
 			instance = new AST_GRAPHVIZ();
 			
-			/****************************/
-			/* Initialize a file writer */
-			/****************************/
+			// Initialize a file writer
 			try
 			{
 				String dirname="./output/";
@@ -43,9 +34,7 @@ public class AST_GRAPHVIZ
 				e.printStackTrace();
 			}
 
-			/******************************************************/
-			/* Print Directed Graph header in Graphviz dot format */
-			/******************************************************/
+			// Print Directed Graph header in Graphviz dot format
 			instance.fileWriter.print("digraph\n");
 			instance.fileWriter.print("{\n");
 			instance.fileWriter.print("graph [ordering = \"out\"]\n");
@@ -53,9 +42,8 @@ public class AST_GRAPHVIZ
 		return instance;
 	}
 
-	/***********************************/
-	/* Log node in graphviz dot format */
-	/***********************************/
+
+	// Log node in graphviz dot format
 	public void logNode(int nodeSerialNumber,String nodeName)
 	{
 		fileWriter.format(
@@ -64,9 +52,8 @@ public class AST_GRAPHVIZ
 			nodeName);
 	}
 
-	/***********************************/
-	/* Log edge in graphviz dot format */
-	/***********************************/
+	
+	// Log edge in graphviz dot format
 	public void logEdge(
 		int fatherNodeSerialNumber,
 		int sonNodeSerialNumber)
@@ -77,9 +64,8 @@ public class AST_GRAPHVIZ
 			sonNodeSerialNumber);
 	}
 	
-	/******************************/
-	/* Finalize graphviz dot file */
-	/******************************/
+
+	// Finalize graphviz dot file
 	public void finalizeFile()
 	{
 		fileWriter.print("}\n");
