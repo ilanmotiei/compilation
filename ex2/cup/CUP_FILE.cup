@@ -108,6 +108,7 @@ non terminal classDec;
 non terminal AST_EXP exp;
 non terminal AST_VAR var;
 non terminal AST_STMT stmt;
+non terminal AST_STMT_LIST stmtList;
 non terminal newExp;
 non terminal cField;
 non terminal BINOP;
@@ -160,11 +161,8 @@ type        ::= 	TYPE_INT
 					;
 
 
-/* -------------- check !!!! -------------------*/
-
 arrayTypedef::=		ARRAY ID = type LBRACK RBRACK;
 
-/* -------------------------------------------- */
 
 varDec      ::= 	type ID [ ASSIGN exp ] SEMICOLON
 					| type ID ASSIGN newExp SEMICOLON
@@ -195,6 +193,10 @@ stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v
 					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); :}
 					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
 					| [var COMMA] ID LPAREN [ exp [ COMMA exp ]* ] RPAREN SEMICOLON;
+					;
+
+stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
+					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
 					;
 
 newExp		::= 	NEW ID 
