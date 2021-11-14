@@ -137,9 +137,9 @@ precedence left DOT;
 
 
 /************************/
-/* START WITH: stmtList */
+/* START WITH: Program */
 /************************/
-start with stmtList;
+start with Program;
 
 /********************/
 /* DERIVATION RULES */
@@ -162,7 +162,7 @@ type        ::= 	TYPE_INT
 
 /* -------------- check !!!! -------------------*/
 
-arrayTypedef::=		ARRAY ID = type'['']';
+arrayTypedef::=		ARRAY ID = type LBRACK RBRACK;
 
 /* -------------------------------------------- */
 
