@@ -49,17 +49,25 @@ scan with
 	return s; 
 :};
 
-/*************/
-/* TERMINALS */
-/*************/
-terminal IF;
+/*******************************/
+/* 			TERMINALS          */
+/*******************************/
+/* --------- Operators --------*/
 terminal EQ;
 terminal DOT;
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
-terminal WHILE;
 terminal DIVIDE;
+terminal LT;
+terminal GT;
+terminal ASSIGN;
+
+/* ---------- */
+
+terminal IF;
+terminal WHILE;
+
 terminal LPAREN;
 terminal RPAREN;
 terminal LBRACK;
@@ -67,7 +75,18 @@ terminal RBRACK;
 terminal LBRACE;
 terminal RBRACE;
 terminal SEMICOLON;
-terminal ASSIGN;
+
+terminal TYPE_INT;
+terminal TYPE_STRING;
+terminal TYPE_VOID;
+terminal ID;
+terminal ARRAY;
+terminal EXTENDS;
+terminal NEW;
+terminal COMMA;
+terminal RETURN;
+terminal NIL;
+
 
 /*************/
 /* TERMINALS */
@@ -78,18 +97,44 @@ terminal String ID;
 /*****************/
 /* NON TERMINALS */
 /*****************/
+non terminal Program;
+non terminal dec;
+non terminal type;
+non terminal arrayTypedef;
+non terminal varDec;
+non terminal funcDec;
+non terminal classDec;
+
 non terminal AST_EXP exp;
 non terminal AST_VAR var;
 non terminal AST_STMT stmt;
-non terminal AST_STMT_LIST stmtList;
+non terminal newExp;
+non terminal cField;
+non terminal BINOP;
 
-/***********************/
+
+/***************************/
+/* PRECEDENCE DECLARATIONS */
+/***************************/
+
+precedence ASSIGN;
+precedence EQ;
+precedence left LT;
+precedence left GT;
+
 /* OPERATOR PRECEDENCE */
-/***********************/
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
 precedence left DIVIDE;
+
+/*       ---         */
+
+precedence LBRACK;
+precedence LPAREN;
+precedence left DOT;
+
+
 
 /************************/
 /* START WITH: stmtList */
@@ -100,9 +145,44 @@ start with stmtList;
 /* DERIVATION RULES */
 /********************/
 
-stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
-					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+Program     ::=     dec+;
+
+dec         ::=     varDec
+					| funcDec
+					| classDec
+					| arrayTypedef
 					;
+
+type        ::= 	TYPE_INT
+					| TYPE_STRING
+					| TYPE_VOID
+					| ID
+					;
+
+
+/* -------------- check !!!! -------------------*/
+
+arrayTypedef::=		ARRAY ID = type'['']';
+
+/* -------------------------------------------- */
+
+varDec      ::= 	type ID [ ASSIGN exp ] SEMICOLON
+					| type ID ASSIGN newExp SEMICOLON
+					;
+
+funcDec 	::= 	type ID LPAREN [ type ID [ COMMA type ID]* ] RPAREN LBRACE stmt [stmt]* RBRACE;
+
+classDec    ::=     CLASS ID [ EXTENDS ID ] LBRACE cField [cField]* RBRACE;
+
+exp			::=		var
+					| LPAREN exp RPAREN
+					|  exp BINOP exp
+					| [ var DOT ] ID LPAREN [ exp [ COMMA exp]* ] RPAREN
+					| [ MINUS ] INT
+					| NIL
+					| STRING
+					;
+
 
 var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
 					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
@@ -110,12 +190,28 @@ var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
 					;
 					
 stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+					| var ASSIGN newExp SEMICOLON
+					| RETURN [exp] SEMICOLON
 					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); :}
 					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
+					| [var COMMA] ID LPAREN [ exp [ COMMA exp ]* ] RPAREN SEMICOLON;
 					;
 
-exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i);          :}
-					| var:v								{: RESULT = new AST_EXP_VAR(v);          :}
-					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0);:}
-					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1);:}
+newExp		::= 	NEW ID 
+					| NEW ID LBRACK exp RBRACK
 					;
+
+
+cField		::=		varDec
+					| funcDec
+					;
+
+BINOP       ::=     PLUS
+					| MINUS
+					| TIMES
+					| DIVIDE
+					| LT
+					| GT
+					| EQ
+					;
+

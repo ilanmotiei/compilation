@@ -6,9 +6,22 @@ public class AST_EXP_BINOP extends AST_EXP
 	public AST_EXP left;
 	public AST_EXP right;
 
+	
+	/* Operators */
+
+	enum Operator{
+		PLUS,
+		MINUS,
+		TIMES, 
+		DIVIDE,
+		LT,
+		GT,
+		EQ
+	}
+
 
 	/* Class Constructor */
-	public AST_EXP_BINOP(AST_EXP left,AST_EXP right,int OP)
+	public AST_EXP_BINOP(AST_EXP left, AST_EXP right, int OP)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh(); // SET A UNIQUE SERIAL NUMBER
 
