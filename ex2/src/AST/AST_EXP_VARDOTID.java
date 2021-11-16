@@ -40,7 +40,7 @@ public class AST_EXP_VARDOTID extends AST_EXP {
 			String.format("EXP\n[var.]ID(%s) (exps)", name));
 
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
     

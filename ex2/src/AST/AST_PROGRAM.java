@@ -29,7 +29,7 @@ public class AST_PROGRAM extends AST_Node{
 			"PROGRAM\nDECLIST\n");
 
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,decList.SerialNumber);
+		if (decList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,decList.SerialNumber);
 			
 	}
 }

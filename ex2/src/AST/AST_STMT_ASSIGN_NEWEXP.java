@@ -40,8 +40,8 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 			"ASSIGN NEWEXP\nleft := new right\n");
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,newExp.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (newExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,newExp.SerialNumber);
 	}
     
 }
