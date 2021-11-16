@@ -19,10 +19,7 @@ import java_cup.runtime.*;
 	private Symbol symbol(int type)						{   return new Symbol(type, yyline, yycolumn);   			}
 	public int getLine()								{	return yyline + 1;	 									}
 	public int getTokenStartPosition()					{	return yycolumn + 1;   									}
-<<<<<<< HEAD
 	public int getCharPos() 							{ 	return yycolumn;   										}  
-=======
->>>>>>> origin
 %}
 
 
@@ -55,21 +52,14 @@ STRING = \"{LETTER}*\"
 	"class"				{  	 return symbol(TokenNames.CLASS);    			}
 	"extends"			{  	 return symbol(TokenNames.EXTENDS);    			}
 	"nil"				{  	 return symbol(TokenNames.NIL);    				}
-<<<<<<< HEAD
 	"return"		{  	 return symbol(TokenNames.RETURN);    			}
-=======
-	"return"			{  	 return symbol(TokenNames.RETURN);    			}
->>>>>>> origin
 	"array"				{  	 return symbol(TokenNames.ARRAY);    			}
 	"new"				{  	 return symbol(TokenNames.NEW);    				}
 	"while"				{  	 return symbol(TokenNames.WHILE);    			}
 	"if"				{  	 return symbol(TokenNames.IF);    				}
 	"int"				{    return symbol(TokenNames.TYPE_INT);		    }
 	"string" 			{	 return symbol(TokenNames.TYPE_STRING);		    }
-<<<<<<< HEAD
-	"void" 			{	 return symbol(TokenNames.TYPE_VOID);		    }
-=======
->>>>>>> origin
+	"void" 				{	 return symbol(TokenNames.TYPE_VOID);		    }
 
 	/* Tokens holding a corresponding value */
 
