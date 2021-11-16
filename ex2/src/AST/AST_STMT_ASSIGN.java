@@ -41,7 +41,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 			"ASSIGN\nleft := right\n");
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 }

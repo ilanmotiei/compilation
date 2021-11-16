@@ -33,6 +33,6 @@ public class AST_STMT_VARDEC extends AST_STMT {
 			"VARDEC\n var declaration\n");
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
+		if (varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 }

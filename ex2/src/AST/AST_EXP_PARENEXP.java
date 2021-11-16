@@ -35,7 +35,7 @@ public class AST_EXP_PARENEXP extends AST_EXP {
 			"EXP\n(EXP)");
 
 		// PRINT Edges to AST GRAPHVIZ DOT file
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 			
 	}
     
