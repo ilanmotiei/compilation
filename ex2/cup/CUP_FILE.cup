@@ -49,17 +49,25 @@ scan with
 	return s; 
 :};
 
-/*************/
-/* TERMINALS */
-/*************/
-terminal IF;
+/*******************************/
+/* 			TERMINALS          */
+/*******************************/
+/* --------- Operators --------*/
 terminal EQ;
 terminal DOT;
 terminal PLUS;
 terminal MINUS;
 terminal TIMES;
-terminal WHILE;
 terminal DIVIDE;
+terminal LT;
+terminal GT;
+terminal ASSIGN;
+
+/* ---------- */
+
+terminal IF;
+terminal WHILE;
+
 terminal LPAREN;
 terminal RPAREN;
 terminal LBRACK;
@@ -67,6 +75,7 @@ terminal RBRACK;
 terminal LBRACE;
 terminal RBRACE;
 terminal SEMICOLON;
+<<<<<<< HEAD
 terminal ASSIGN;
 terminal NIL;
 terminal COMMA;
@@ -80,6 +89,19 @@ terminal EXTENDS;
 terminal RETURN;
 terminal NEW;
 terminal TYPE_STRING;
+=======
+
+terminal TYPE_INT;
+terminal TYPE_STRING;
+terminal TYPE_VOID;
+terminal ID;
+terminal ARRAY;
+terminal EXTENDS;
+terminal NEW;
+terminal COMMA;
+terminal RETURN;
+terminal NIL;
+>>>>>>> origin
 
 
 /*************/
@@ -93,11 +115,33 @@ terminal String STRING;
 /*****************/
 /* NON TERMINALS */
 /*****************/
+non terminal Program;
+non terminal dec;
+non terminal type;
+non terminal arrayTypedef;
+non terminal varDec;
+non terminal funcDec;
+non terminal classDec;
+
 non terminal AST_EXP exp;
 non terminal AST_VAR var;
 non terminal AST_STMT stmt;
 non terminal AST_STMT_LIST stmtList;
+non terminal newExp;
+non terminal cField;
+non terminal BINOP;
 
+
+/***************************/
+/* PRECEDENCE DECLARATIONS */
+/***************************/
+
+precedence ASSIGN;
+precedence EQ;
+precedence left LT;
+precedence left GT;
+
+<<<<<<< HEAD
 non terminal AST_PROGRAM Program;
 non terminal AST_DEC_LIST decList; 
 non terminal AST_DEC dec;
@@ -121,6 +165,9 @@ precedence left ASSIGN;
 precedence left EQ;
 precedence left LT;
 precedence left GT;
+=======
+/* OPERATOR PRECEDENCE */
+>>>>>>> origin
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
@@ -129,8 +176,16 @@ precedence left LBRACK;
 precedence left LPAREN;
 precedence left DOT;
 
+/*       ---         */
+
+precedence LBRACK;
+precedence LPAREN;
+precedence left DOT;
+
+
+
 /************************/
-/* START WITH: stmtList */
+/* START WITH: Program */
 /************************/
 start with Program;
 
@@ -138,6 +193,7 @@ start with Program;
 /* DERIVATION RULES */
 /********************/
 
+<<<<<<< HEAD
 Program		::=		decList:l				{: RESULT = new AST_PROGRAM(l);    :}
 					;
 
@@ -195,13 +251,50 @@ typeList	::=		type:t ID:name COMMA typeList:tl		{: RESULT = new AST_TYPE_LIST(t,
 
 stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
 					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+=======
+Program     ::=     dec+;
+
+dec         ::=     varDec
+					| funcDec
+					| classDec
+					| arrayTypedef
 					;
+
+type        ::= 	TYPE_INT
+					| TYPE_STRING
+					| TYPE_VOID
+					| ID
+					;
+
+
+arrayTypedef::=		ARRAY ID = type LBRACK RBRACK;
+
+
+varDec      ::= 	type ID [ ASSIGN exp ] SEMICOLON
+					| type ID ASSIGN newExp SEMICOLON
+					;
+
+funcDec 	::= 	type ID LPAREN [ type ID [ COMMA type ID]* ] RPAREN LBRACE stmt [stmt]* RBRACE;
+
+classDec    ::=     CLASS ID [ EXTENDS ID ] LBRACE cField [cField]* RBRACE;
+
+exp			::=		var
+					| LPAREN exp RPAREN
+					|  exp BINOP exp
+					| [ var DOT ] ID LPAREN [ exp [ COMMA exp]* ] RPAREN
+					| [ MINUS ] INT
+					| NIL
+					| STRING
+>>>>>>> origin
+					;
+
 
 var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
 					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
 					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
 					;
 					
+<<<<<<< HEAD
 stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e);	 :}
 					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); 	:}
 					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); 	:}
@@ -233,3 +326,35 @@ exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0);          :}
 					| ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_VARDOTID(null, name, el);		:}
 					| var:v DOT ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_VARDOTID(v, name, el);		:}
 					;
+=======
+stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+					| var ASSIGN newExp SEMICOLON
+					| RETURN [exp] SEMICOLON
+					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); :}
+					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
+					| [var COMMA] ID LPAREN [ exp [ COMMA exp ]* ] RPAREN SEMICOLON;
+					;
+
+stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
+					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+					;
+
+newExp		::= 	NEW ID 
+					| NEW ID LBRACK exp RBRACK
+					;
+
+
+cField		::=		varDec
+					| funcDec
+					;
+
+BINOP       ::=     PLUS
+					| MINUS
+					| TIMES
+					| DIVIDE
+					| LT
+					| GT
+					| EQ
+					;
+
+>>>>>>> origin
