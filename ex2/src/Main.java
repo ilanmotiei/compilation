@@ -11,7 +11,7 @@ public class Main
 		Lexer l;
 		Parser p;
 		Symbol s;
-		AST_STMT_LIST AST;
+		AST_PROGRAM AST;
 		FileReader file_reader;
 		PrintWriter file_writer;
 		String inputFilename = argv[0];
@@ -26,13 +26,13 @@ public class Main
 			file_writer = new PrintWriter(outputFilename);
 			
 			// Initialize a new lexer
-			lexer = new Lexer(file_reader);
+			l = new Lexer(file_reader);
 			
 			// Initialize a new parser
-			parser = new Parser(lexer);
+			p = new Parser(l);
 
 			// 3 ... 2 ... 1 ... Parse !!!
-			AST = (AST_STMT_LIST) p.parse().value;
+			AST = (AST_PROGRAM) p.parse().value;
 			
 			/* --------------------------------------------------------- */
 			/*               PRINT "OK" TO THE OUTPUT FILE!!!            */
