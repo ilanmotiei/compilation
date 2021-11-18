@@ -161,7 +161,7 @@ type		::=		TYPE_INT		{: RESULT = new AST_TYPE(0, null);    :}
 					| ID:name		{: RESULT = new AST_TYPE(3, name);    :}
 					;
 
-arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK		{: RESULT = new AST_ARRAYTYPEDEF(name,t);    :}
+arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON		{: RESULT = new AST_ARRAYTYPEDEF(name,t);    :}
 					;
 
 varDec		::=		type:t ID:name SEMICOLON					{: RESULT = new AST_VARDEC_EXP(t, name, null);    :}
@@ -177,8 +177,8 @@ classDec	::=		CLASS ID:name LBRACE cFieldList:cl RBRACE						{: RESULT = new AST
 					| CLASS ID:name1 EXTENDS ID:name2 LBRACE cFieldList:cl RBRACE	{: RESULT = new AST_CLASSDEC(name1, name2, cl);    :}
 					;
 
-newExp  	::=		NEW ID:name 								{: RESULT = new AST_NEWEXP(name, null);    :}
-					| NEW ID:name LBRACK exp:e RBRACK			{: RESULT = new AST_NEWEXP(name, e);    :}
+newExp  	::=		NEW type:t 								{: RESULT = new AST_NEWEXP(t, null);    :}
+					| NEW type:t LBRACK exp:e RBRACK			{: RESULT = new AST_NEWEXP(t, e);    :}
 					;
 
 cField  	::=		varDec:vd 								{: RESULT = new AST_CFIELD_VARDEC(vd);    :}

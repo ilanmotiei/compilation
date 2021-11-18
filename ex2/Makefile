@@ -48,7 +48,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_06_Print_Primes_Error.txt
+INPUT    = ${INPUT_DIR}/TEST_07_Bubble_Sort_Error.txt
 OUTPUT   = ${OUTPUT_DIR}/ParseStatus.txt
 
 ##########

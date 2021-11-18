@@ -1,4 +1,4 @@
-array IntArray = int[]
+array IntArray = int[];
 
 void BubbleSort(IntArray arr, int size)
 {
