@@ -1,4 +1,4 @@
-array IntArray = int[]
+array IntArray = int[];
 
 class Person
 {

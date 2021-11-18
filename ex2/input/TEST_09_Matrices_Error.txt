@@ -1,5 +1,5 @@
-array IntArray = int[]
-array Mat      = IntArray[]
+array IntArray = int[];
+array Mat      = IntArray[];
 
 int trace3x3(Mat A)
 {

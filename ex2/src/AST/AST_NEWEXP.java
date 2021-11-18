@@ -1,21 +1,21 @@
 package AST;
 
 public class AST_NEWEXP extends AST_Node {
-	public String name;
+	public AST_TYPE type;
     public AST_EXP exp;
 
-    public AST_NEWEXP(String name, AST_EXP exp) {
+    public AST_NEWEXP(AST_TYPE type, AST_EXP exp) {
         // SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		// PRINT CORRESPONDING DERIVATION RULE
 		if(exp == null)
-			System.out.format("====================== newExp -> NEW ID(%s)\n", name);
+			System.out.print("====================== newExp -> NEW type\n");
 		else
-			System.out.format("====================== newExp -> NEW ID(%s) LBRACK exp RBRACK\n", name);
+			System.out.print("====================== newExp -> NEW type LBRACK exp RBRACK\n");
 
 		// COPY INPUT DATA NENBERS
-		this.name = name;
+		this.type = type;
 		this.exp = exp;
     }
 
@@ -26,22 +26,24 @@ public class AST_NEWEXP extends AST_Node {
         
 		
 		// RECURSIVELY PRINT VAR + EXP
+		if (type != null) type.PrintMe();
 		if (exp != null) exp.PrintMe();
 
 		// PRINT Node to AST GRAPHVIZ DOT file
 		if(exp == null){
 			AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("newExp\n NEW ID(%s) \n", name));
+			"newExp\n NEW type \n");
 		}
 		else{
 			AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("newExp\n NEW ID(%s)[exp] \n", name));
+			"newExp\n NEW type[exp] \n");
 		}
 		
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
+		if(type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
     
