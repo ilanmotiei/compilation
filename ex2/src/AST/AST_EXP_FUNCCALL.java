@@ -1,12 +1,12 @@
 package AST;
 
-public class AST_EXP_VARDOTID extends AST_EXP {
+public class AST_EXP_FUNCCALL extends AST_EXP {
     public AST_VAR var;
 	String name;
     public AST_EXP_LIST expList;
 
 	// Class Constructor
-	public AST_EXP_VARDOTID(AST_VAR var, String name, AST_EXP_LIST expList)
+	public AST_EXP_FUNCCALL(AST_VAR var, String name, AST_EXP_LIST expList)
 	{
 		
 		// SET A UNIQUE SERIAL NUMBER

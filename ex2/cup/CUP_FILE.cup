@@ -30,23 +30,30 @@ parser code
 /************************/
 scan with
 {:
-	Symbol s;
-	s = lexer.next_token();
-	//System.out.print(s.sym);
-	System.out.print("[");
-	System.out.print(lexer.getLine());
-	System.out.print(":");
-	System.out.print(lexer.getCharPos());
-	System.out.print("] ");
-	System.out.print(TokenNames.terminalNames[s.sym]);
-	if (s.value != null)
-	{
-		System.out.print("( ");
-		System.out.print(s.value);
-		System.out.print(" )");
+	try{
+		Symbol s;
+		s = lexer.next_token();
+		//System.out.print(s.sym);
+		System.out.print("[");
+		System.out.print(lexer.getLine());
+		System.out.print(":");
+		System.out.print(lexer.getCharPos());
+		System.out.print("] ");
+		System.out.print(TokenNames.terminalNames[s.sym]);
+		if (s.value != null)
+		{
+			System.out.print("( ");
+			System.out.print(s.value);
+			System.out.print(" )");
+		}
+		System.out.print("\n");
+		return s; 
+	}catch(Throwable e){
+		System.out.print("*******" + e.getClass().getCanonicalName());
 	}
-	System.out.print("\n");
-	return s; 
+	
+	//shouldnt get here
+	return null;
 :};
 
 /*******************************/
@@ -120,7 +127,7 @@ non terminal AST_VAR var;
 /***********************/
 /* OPERATOR PRECEDENCE */
 /***********************/
-precedence left ASSIGN;
+precedence nonassoc ASSIGN;
 precedence left EQ;
 precedence left LT;
 precedence left GT;
@@ -128,8 +135,8 @@ precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
 precedence left DIVIDE;
-precedence left LBRACK;
-precedence left LPAREN;
+precedence nonassoc LBRACK;
+precedence nonassoc LPAREN;
 precedence left DOT;
 
 
@@ -214,10 +221,10 @@ stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v
 					| var:v ASSIGN newExp:ne SEMICOLON							{: RESULT = new AST_STMT_ASSIGN_NEWEXP(v,ne); 	:}
 					| RETURN SEMICOLON											{: RESULT = new AST_STMT_RETURN(null); 		:}
 					| RETURN exp:e SEMICOLON									{: RESULT = new AST_STMT_RETURN(e); 	:}
-					| ID:name LPAREN RPAREN SEMICOLON								{: RESULT = new AST_STMT_ID(null, name, null); 	:}
-					| var:v DOT ID:name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_ID(v, name, null); 	:}
-					| ID:name LPAREN expList:el RPAREN SEMICOLON					{: RESULT = new AST_STMT_ID(null, name, el); 	:}
-					| var:v DOT ID:name LPAREN expList:el RPAREN SEMICOLON			{: RESULT = new AST_STMT_ID(v, name, el); 	:}
+					| ID:name LPAREN RPAREN SEMICOLON								{: RESULT = new AST_STMT_FUNCCALL(null, name, null); 	:}
+					| var:v DOT ID:name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_FUNCCALL(v, name, null); 	:}
+					| ID:name LPAREN expList:el RPAREN SEMICOLON					{: RESULT = new AST_STMT_FUNCCALL(null, name, el); 	:}
+					| var:v DOT ID:name LPAREN expList:el RPAREN SEMICOLON			{: RESULT = new AST_STMT_FUNCCALL(v, name, el); 	:}
 					;
 
 exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0);          :}
@@ -233,8 +240,8 @@ exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0);          :}
 					| exp:e1 GT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 5);		:}
 					| exp:e1 EQ exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 6);		:}
 					| LPAREN exp:e RPAREN				{: RESULT = new AST_EXP_PARENEXP(e);		:}
-					| ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_VARDOTID(null, name, null);		:}
-					| var:v DOT ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_VARDOTID(v, name, null);		:}
-					| ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_VARDOTID(null, name, el);		:}
-					| var:v DOT ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_VARDOTID(v, name, el);		:}
+					| ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, name, null);		:}
+					| var:v DOT ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, name, null);		:}
+					| ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, name, el);		:}
+					| var:v DOT ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, name, el);		:}
 					;
