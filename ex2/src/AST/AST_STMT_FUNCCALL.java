@@ -1,12 +1,12 @@
 package AST;
 
-public class AST_STMT_ID extends AST_STMT{
+public class AST_STMT_FUNCCALL extends AST_STMT{
     public AST_VAR var;
     public String name;
     public AST_EXP_LIST expList;
 
 	//  Class Constructor
-	public AST_STMT_ID(AST_VAR var, String name, AST_EXP_LIST expList)
+	public AST_STMT_FUNCCALL(AST_VAR var, String name, AST_EXP_LIST expList)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
