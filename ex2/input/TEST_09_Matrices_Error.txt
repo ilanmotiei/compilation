@@ -1,8 +1,6 @@
 array IntArray = int[];
 array Mat      = IntArray[];
 
-int a := 056
-
 int trace3x3(Mat A)
 {
 	return return return;
