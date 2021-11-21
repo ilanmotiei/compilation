@@ -48,7 +48,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_06_Print_Primes_Error.txt
+INPUT    = ${INPUT_DIR}/TEST_10_Classes_Error.txt
 OUTPUT   = ${OUTPUT_DIR}/ParseStatus.txt
 
 ##########
@@ -129,7 +129,7 @@ all:
 	@echo "*                                     *"
 	@echo "*                                     *"
 	@echo "***************************************"
-	dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
+	dot -Tjpeg -o ${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
 	@echo "\n"
 	@echo "************************************************"
 	@echo "*                                              *"

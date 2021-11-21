@@ -29,19 +29,22 @@ public class Main
 			l = new Lexer(file_reader);
 			
 			// Initialize a new parser
-			p = new Parser(l);
+			p = new Parser(l, file_writer);
 
 			// 3 ... 2 ... 1 ... Parse !!!
 			AST = (AST_PROGRAM) p.parse().value;
 			
-			/* --------------------------------------------------------- */
-			/*               PRINT "OK" TO THE OUTPUT FILE!!!            */
-			/* --------------------------------------------------------- */
+			// ---------- getting here means no error occured ----------
 
-			// TODO
+			/* --------------------------------------------------------- */
+			/*               PRINT "OK" TO THE OUTPUT FILE               */
+			/* --------------------------------------------------------- */
+			
+			file_writer.print("OK");
 			
 			// Close output file
 			file_writer.close();
+			l.yyclose();
 
 			/* --------------------------------------------------------- */
 			/*    PRINT THE AST VISUALIZATION TO THE DESTNIATION FILE    */
@@ -64,12 +67,8 @@ public class Main
 		{
 
 			/* --------------------------------------------------------- */
-			/*          PRINT "ERROR(${LOC}) TO THE OUTPUT FILE!!!       */
+			/*            PRINT "ERROR(${LOC}) TO THE OUTPUT FILE        */
 			/* --------------------------------------------------------- */
-		
-			//TODO
-
-
 
 			e.printStackTrace();
 		}

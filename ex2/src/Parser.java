@@ -5,6 +5,7 @@
 
 import java_cup.runtime.*;
 import AST.*;
+import java.io.PrintWriter;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -338,46 +339,69 @@ public class Parser extends java_cup.runtime.lr_parser {
 	try{
 		Symbol s;
 		s = lexer.next_token();
-		//System.out.print(s.sym);
-		System.out.print("[");
-		System.out.print(lexer.getLine());
-		System.out.print(":");
-		System.out.print(lexer.getCharPos());
-		System.out.print("] ");
-		System.out.print(TokenNames.terminalNames[s.sym]);
-		if (s.value != null)
-		{
-			System.out.print("( ");
-			System.out.print(s.value);
-			System.out.print(" )");
-		}
-		System.out.print("\n");
-		return s; 
-	}catch(Throwable e){
-		System.out.print("*******" + e.getClass().getCanonicalName());
+
+		System.out.println(TokenNames.terminalNames[s.sym]);
+
+		return s;
+	}	
+	catch(Throwable e)
+	{	
+		report_error("ERROR", LEXICAL_ERROR);
 	}
-	
-	//shouldnt get here
-	return null;
+
+	// Won't get here
+	return null;	
 
     }
 
 
 	public Lexer lexer;
+	private PrintWriter file_writer;
+
+	static public final int PARSING_ERROR = 0;
+	static public final int LEXICAL_ERROR = 1;
 
 	public Parser(Lexer lexer)
 	{
 		super(lexer);
 		this.lexer = lexer;
 	}
+
+	public Parser(Lexer lexer, PrintWriter file_writer)
+	{
+		this(lexer); // calls the above constructor.
+		this.file_writer = file_writer;
+	}
+
+	public void syntax_error(Symbol curr_token)
+	{	
+		/* We get here when there was a syntax error */
+
+		int err_line  = lexer.getLine();
+
+		report_error("ERROR" + "(" + err_line + ")", PARSING_ERROR);
+	}
+
 	public void report_error(String message, Object info)
 	{
-		System.out.print("ERROR >> ");		
-		System.out.print("[");
-		System.out.print(lexer.getLine());
-		System.out.print(":");
-		System.out.print(lexer.getCharPos());
-		System.out.print("] ");		
+		if ((int) info == PARSING_ERROR){
+
+			/* error is syntactic (we were called from the 'syntax_error' method */
+
+			System.out.print("Parsing ");
+			
+		}
+		else{
+			/* error is lexical */
+
+			System.out.print("Lexical ");
+		}
+
+		System.out.println("Error at " + "[" + lexer.getLine() + ":" + lexer.getTokenStartPosition() + "]");
+
+		file_writer.print(message);
+		file_writer.close();
+
 		System.exit(0);
 	}
 

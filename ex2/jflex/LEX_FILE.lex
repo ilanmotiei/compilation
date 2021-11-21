@@ -1,5 +1,6 @@
 
 import java_cup.runtime.*;
+import java.lang.Math;
 
 %%
 
@@ -20,6 +21,8 @@ import java_cup.runtime.*;
 	public int getLine()								{	return yyline + 1;	 									}
 	public int getTokenStartPosition()					{	return yycolumn + 1;   									}
 	public int getCharPos() 							{ 	return yycolumn;   										}  
+	
+	private static final int INT_UPPER_LIMIT = (int) Math.pow(2, 15);
 %}
 
 
@@ -69,12 +72,18 @@ STRING = \"{LETTER}*\"
 
 							String got = new String(yytext());
 							if ((got.length() != 1) && (got.charAt(0) == '0')){
-								return symbol(TokenNames.INT, new String("ERROR"));
+								throw new Error("INT must be positive and without leading zeros.");
+							}
+
+							int value = new Integer(yytext());
+
+							if ((value < 0) || (value >= INT_UPPER_LIMIT)){
+								throw new Error("INT out of range.");
 							}
 
 							// else:
 
-							return symbol(TokenNames.INT, new Integer(yytext()));
+							return symbol(TokenNames.INT, value);
 						}
 
 	{STRING}			{  	 return symbol(TokenNames.STRING, yytext());    					}
