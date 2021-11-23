@@ -22,7 +22,6 @@ public class AST_PROGRAM extends AST_Node{
 		// RECURSIVELY PRINT var
 		if (decList != null) decList.PrintMe();
 		
-		
 		// Print to AST GRAPHIZ DOT file
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,

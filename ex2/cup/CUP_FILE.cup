@@ -198,7 +198,7 @@ arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON		{: RESULT = ne
 
 varDec		::=		type:t ID:name SEMICOLON					{: RESULT = new AST_VARDEC_EXP(t, name, null);    :}
 					| type:t ID:name ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VARDEC_EXP(t, name, e);    :}
-					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_EXP(t, name, e);    :}
+					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_NEWEXP(t, name, e);    :}
 					;
 
 funcDec		::=		type:t ID:func_name LPAREN RPAREN LBRACE stmtList:body RBRACE				{: RESULT = new AST_FUNCDEC(t, func_name, null, body);    :}
