@@ -177,7 +177,7 @@ start with Program;
 Program		::=		decList:l				{: RESULT = new AST_PROGRAM(l);    :}
 					;
 
-decList		::=		dec:d   decList:l				{: RESULT = new AST_DEC_LIST(d, l);    :}
+decList		::=		dec:d   decList:dl				{: RESULT = new AST_DEC_LIST(d, dl);    :}
 					| dec:d   						{: RESULT = new AST_DEC_LIST(d, null);    :}
 					;
 
@@ -198,15 +198,15 @@ arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON		{: RESULT = ne
 
 varDec		::=		type:t ID:name SEMICOLON					{: RESULT = new AST_VARDEC_EXP(t, name, null);    :}
 					| type:t ID:name ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VARDEC_EXP(t, name, e);    :}
-					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_NEWEXP(t, name, e);    :}
+					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_EXP(t, name, e);    :}
 					;
 
-funcDec		::=		type:t ID:name LPAREN RPAREN LBRACE stmtList:sl RBRACE				{: RESULT = new AST_FUNCDEC(t, name, null, sl);    :}
-					|type:t ID:name LPAREN typeList:tl RPAREN LBRACE stmtList:sl RBRACE	{: RESULT = new AST_FUNCDEC(t, name, tl, sl);    :}
+funcDec		::=		type:t ID:func_name LPAREN RPAREN LBRACE stmtList:body RBRACE				{: RESULT = new AST_FUNCDEC(t, func_name, null, body);    :}
+					|type:t ID:func_name LPAREN typeList:params_types RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_FUNCDEC(t, func_name, params_types, body);    :}
 					;
 
-classDec	::=		CLASS ID:name LBRACE cFieldList:cl RBRACE						{: RESULT = new AST_CLASSDEC(name, null, cl);    :}
-					| CLASS ID:name1 EXTENDS ID:name2 LBRACE cFieldList:cl RBRACE	{: RESULT = new AST_CLASSDEC(name1, name2, cl);    :}
+classDec	::=		CLASS ID:class_name LBRACE cFieldList:fields RBRACE						{: RESULT = new AST_CLASSDEC(class_name, null, fields);    :}
+					| CLASS ID:class_name EXTENDS ID:super_class LBRACE cFieldList:fields RBRACE	{: RESULT = new AST_CLASSDEC(class_name, super_class, fields);    :}
 					;
 
 newExp  	::=		NEW type:t 								{: RESULT = new AST_NEWEXP(t, null);    :}
@@ -221,7 +221,7 @@ cFieldList	::=		cField:c	cFieldList:l		{: RESULT = new AST_CFIELD_LIST(c,l);    
 					| cField:c						{: RESULT = new AST_CFIELD_LIST(c,null); :}
 					;
 
-expList		::=		exp:e COMMA	expList:l		{: RESULT = new AST_EXP_LIST(e,l);    :}
+expList		::=		exp:e COMMA	expList:li		{: RESULT = new AST_EXP_LIST(e,li);    :}
 					| exp:e						{: RESULT = new AST_EXP_LIST(e,null); :}
 					;
 
@@ -247,9 +247,9 @@ stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v
 					| RETURN SEMICOLON											{: RESULT = new AST_STMT_RETURN(null); 		:}
 					| RETURN exp:e SEMICOLON									{: RESULT = new AST_STMT_RETURN(e); 	:}
 					| ID:name LPAREN RPAREN SEMICOLON								{: RESULT = new AST_STMT_FUNCCALL(null, name, null); 	:}
-					| var:v DOT ID:name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_FUNCCALL(v, name, null); 	:}
-					| ID:name LPAREN expList:el RPAREN SEMICOLON					{: RESULT = new AST_STMT_FUNCCALL(null, name, el); 	:}
-					| var:v DOT ID:name LPAREN expList:el RPAREN SEMICOLON			{: RESULT = new AST_STMT_FUNCCALL(v, name, el); 	:}
+					| var:v DOT ID:func_name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_FUNCCALL(v, func_name, null); 	:}
+					| ID:func_name LPAREN expList:args RPAREN SEMICOLON					{: RESULT = new AST_STMT_FUNCCALL(null, func_name, args); 	:}
+					| var:v DOT ID:func_name LPAREN expList:args RPAREN SEMICOLON			{: RESULT = new AST_STMT_FUNCCALL(v, func_name, args); 	:}
 					;
 
 exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0);          :}
@@ -265,8 +265,8 @@ exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0);          :}
 					| exp:e1 GT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 5);		:}
 					| exp:e1 EQ exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 6);		:}
 					| LPAREN exp:e RPAREN				{: RESULT = new AST_EXP_PARENEXP(e);		:}
-					| ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, name, null);		:}
-					| var:v DOT ID:name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, name, null);		:}
-					| ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, name, el);		:}
-					| var:v DOT ID:name LPAREN expList:el RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, name, el);		:}
+					| ID:func_name LPAREN RPAREN				{: RESULT = new AST_EXP_FUNCCALL(null, func_name, null);		:}
+					| var:v DOT ID:func_name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, null);		:}
+					| ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, func_name, args);		:}
+					| var:v DOT ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, args);		:}
 					;
