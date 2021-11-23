@@ -47,20 +47,19 @@ public class Main
 			l.yyclose();
 
 			/* --------------------------------------------------------- */
-			/*    PRINT THE AST VISUALIZATION TO THE DESTNIATION FILE    */
-			/* --------------------------------------------------------- */
-			
-			// Finalize AST GRAPHIZ DOT file
-			AST_GRAPHVIZ.getInstance().finalizeFile();
-
-			/* --------------------------------------------------------- */
+	/*    PRINT THE AST VISUALIZATION TO THE TERMINAL AND TO THE DESTNIATION FILE    */
+			/*                                                           */
 			/*                  REMOVE BEFORE SUBMIT!!!!                 */
 			/* --------------------------------------------------------- */
 
-			// TODO
+			// Print the first line of the Graphwiz conf. file
+			AST_GRAPHVIZ.getInstance();
 
 			// Print the AST
 			AST.PrintMe();
+			
+			// Finalize AST GRAPHIZ DOT file
+			AST_GRAPHVIZ.getInstance().finalizeFile();
     	}
 			     
 		catch (Exception e)

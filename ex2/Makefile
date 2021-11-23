@@ -48,7 +48,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_10_Classes_Error.txt
+INPUT    = ${INPUT_DIR}/TEST_01_Print_Primes.txt
 OUTPUT   = ${OUTPUT_DIR}/ParseStatus.txt
 
 ##########
@@ -56,6 +56,7 @@ OUTPUT   = ${OUTPUT_DIR}/ParseStatus.txt
 ##########
 all:
 	clear
+	@echo ${INPUT}
 	@echo "*****************************"
 	@echo "*                           *"
 	@echo "*                           *"
