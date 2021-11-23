@@ -46,11 +46,13 @@ public class Main
 			file_writer.close();
 			l.yyclose();
 
-			/* --------------------------------------------------------- */
-	/*    PRINT THE AST VISUALIZATION TO THE TERMINAL AND TO THE DESTNIATION FILE    */
-			/*                                                           */
-			/*                  REMOVE BEFORE SUBMIT!!!!                 */
-			/* --------------------------------------------------------- */
+			// -----------------------------------------------------------------------
+			// PRINT THE AST VISUALIZATION TO THE TERMINAL AND TO THE DESTNIATION FILE 
+			//                                                           
+			//                  	REMOVE BEFORE SUBMIT!!!!                
+			// -----------------------------------------------------------------------
+
+			/*
 
 			// Print the first line of the Graphwiz conf. file
 			AST_GRAPHVIZ.getInstance();
@@ -60,6 +62,8 @@ public class Main
 			
 			// Finalize AST GRAPHIZ DOT file
 			AST_GRAPHVIZ.getInstance().finalizeFile();
+
+			*/
     	}
 			     
 		catch (Exception e)
