@@ -19,7 +19,7 @@ public class AST_CFIELD_LIST extends AST_Node {
 		this.head = head;
 		this.tail = tail;
 	}
-
+	
 
 	// The printing message for a statement list AST node
 	public void PrintMe()
