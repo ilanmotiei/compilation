@@ -38,5 +38,9 @@ public class AST_EXP_PARENEXP extends AST_EXP {
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 			
 	}
+
+	public TYPE SemantMe(){
+		return this.exp.SemantMe();
+	}
     
 }

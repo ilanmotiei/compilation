@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.TYPE_INT;
+
 //this class was given in the skeleton of ex2, and we add few functionalities
 public class AST_STMT_IF extends AST_STMT
 {
@@ -35,5 +37,13 @@ public class AST_STMT_IF extends AST_STMT
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (cond != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cond.SerialNumber);
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		TYPE cond_type = this.cond.SemantMe();
+
+		if (cond_type != TYPE_INT.getInstance()){
+			throw Exception("Type of condition is not integral.");
+		}
 	}
 }

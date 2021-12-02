@@ -32,7 +32,6 @@ WHITE_SPACE = {LineTerminator} | [ \t\f]
 LETTER = [a-zA-Z]
 DIGIT = [0-9]
 
-// might be incorrect:
 IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LETTER}|{DIGIT}|[ \t\f] 
 /* excluding  {WHITE_SPACE} */
 
@@ -40,7 +39,6 @@ IN_COMMENT_CHAR = "(" | ")" | "[" | "]" | "{" | "}" | [?!+*/;] | "." | "-" |{LET
 ID = {LETTER}({DIGIT}|{LETTER})*
 INTEGER = {DIGIT}+
 
-// might be incorrect:
 COMMENT = ("//"{IN_COMMENT_CHAR}*{LineTerminator}) | ("/*"({IN_COMMENT_CHAR} | {WHITE_SPACE})*"*/")
 STRING = \"{LETTER}*\"
 

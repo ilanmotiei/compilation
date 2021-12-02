@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.TYPE_STRING;
+
 public class AST_EXP_STRING extends AST_EXP {
     public String s;
 
@@ -29,5 +31,9 @@ public class AST_EXP_STRING extends AST_EXP {
 			SerialNumber,
 			String.format("STRING(%s)", " ' '" + s.substring(1, s.length()-1)) + " ' ");
 			// can't use double quotes in a label of Graphviz 
+	}
+
+	public TYPE SemantMe(){
+		return TYPE_STRING.getInstance();
 	}
 }

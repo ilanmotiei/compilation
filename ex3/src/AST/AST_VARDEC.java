@@ -5,4 +5,7 @@ public abstract class AST_VARDEC extends AST_Node {
 	{
 		System.out.print("UNKNOWN AST VARDEC NODE");
 	}
+
+	
+	
 }

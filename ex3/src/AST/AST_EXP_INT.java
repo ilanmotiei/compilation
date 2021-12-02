@@ -1,9 +1,11 @@
 package AST;
 
+import TYPES.TYPE_INT;
+
 public class AST_EXP_INT extends AST_EXP
 {
 	public int value;
-	public int hasMinus; // 0 if doesn't hava "-" before int, 1 if does.
+	public int hasMinus; // 0 if doesn't have a "-" before the value, 1 if does.
 
 	/* Class Constructor */
 	public AST_EXP_INT(int value, int hasMinus)
@@ -37,5 +39,9 @@ public class AST_EXP_INT extends AST_EXP
 			SerialNumber,
 			String.format("-INT(%d)",value));
 		}
+	}
+
+	public TYPE SemantMe(){
+		return TYPE_INT().getInstance();
 	}
 }

@@ -50,8 +50,11 @@ public class AST_DEC extends AST_Node {
 			"arrayTypedef\n");
 		}
 
-		
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,son.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		return son.SemantMe();
 	}
 }

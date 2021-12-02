@@ -1,9 +1,9 @@
 package AST;
 
 public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
-    /***************/
-	/*  var := new exp */
-	/***************/
+    /********************/
+	/*  var := new exp  */
+	/********************/
 	public AST_VAR var;
 	public AST_NEWEXP newExp;
 
