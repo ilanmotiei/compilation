@@ -13,9 +13,7 @@ import java.io.PrintWriter;
 /*******************/
 import TYPES.*;
 
-/****************/
-/* SYMBOL TABLE */
-/****************/
+
 public class SYMBOL_TABLE
 {
 	private int hashArraySize = 13;
@@ -46,37 +44,27 @@ public class SYMBOL_TABLE
 	/****************************************************************************/
 	/* Enter a variable, function, class type or array type to the symbol table */
 	/****************************************************************************/
-	public void enter(String name,TYPE t)
+	public void enter(String name, TYPE t)
 	{
-		/*************************************************/
 		/* [1] Compute the hash value for this new entry */
-		/*************************************************/
+
 		int hashValue = hash(name);
 
-		/******************************************************************************/
-		/* [2] Extract what will eventually be the next entry in the hashed position  */
-		/*     NOTE: this entry can very well be null, but the behaviour is identical */
-		/******************************************************************************/
+		/* [2] Extract what will eventually be the next entry in the hashed position */
+		/* NOTE: this entry can very well be null, but the behaviour is identical */
+
 		SYMBOL_TABLE_ENTRY next = table[hashValue];
 	
-		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
-		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name, t, hashValue, next, top, top_index++);
 
-		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
-		/**********************************************/
 		top = e;
 		
-		/****************************************/
 		/* [5] Enter the new entry to the table */
-		/****************************************/
 		table[hashValue] = e;
 		
-		/**************************/
 		/* [6] Print Symbol Table */
-		/**************************/
 		PrintMe();
 	}
 
@@ -105,7 +93,7 @@ public class SYMBOL_TABLE
 	{
 		/************************************************************************/
 		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
-		/* they are not really types. In order to be ablt to debug print them,  */
+		/* they are not really types. In order to be able to debug print them,  */
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/

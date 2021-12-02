@@ -13,19 +13,8 @@ import TYPES.*;
 /**********************/
 public class SYMBOL_TABLE_ENTRY
 {
-	/*********/
-	/* index */
-	/*********/
 	int index;
-	
-	/********/
-	/* name */
-	/********/
 	public String name;
-
-	/******************/
-	/* TYPE value ... */
-	/******************/
 	public TYPE type;
 
 	/*********************************************/
