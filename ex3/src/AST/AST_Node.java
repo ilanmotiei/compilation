@@ -9,9 +9,8 @@ public abstract class AST_Node
 	/*******************************************/
 	public int SerialNumber;
 	
-	/***********************************************/
-	/* The default message for an unknown AST node */
-	/***********************************************/
+	
+	// The default message for an unknown AST node
 	public void PrintMe()
 	{
 		System.out.print("AST NODE UNKNOWN\n");

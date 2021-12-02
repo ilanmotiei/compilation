@@ -1,21 +1,24 @@
 package AST;
 
-public class AST_EXP_VAR extends AST_EXP
-{
-	public AST_VAR var;
+public class AST_EXP_FUNCCALL extends AST_EXP {
+    public AST_VAR var;
+	String name;
+    public AST_EXP_LIST expList;
 
 	// Class Constructor
-	public AST_EXP_VAR(AST_VAR var)
+	public AST_EXP_FUNCCALL(AST_VAR var, String name, AST_EXP_LIST expList)
 	{
 		
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		// PRINT CORRESPONDING DERIVATION RULE 
-		System.out.print("====================== exp -> var\n");
+		System.out.format("====================== exp -> [var DOT] ID(%s) LPAREN expList RPAREN\n", name);
 
 		// COPY INPUT DATA NENBERS
 		this.var = var;
+		this.name = name;
+		this.expList = expList;
 	}
 	
 	
@@ -24,19 +27,21 @@ public class AST_EXP_VAR extends AST_EXP
 	{
 		
 		// AST NODE TYPE = EXP VAR AST NODE
-		System.out.print("AST NODE EXP VAR\n");
+		System.out.print("AST NODE EXP VARDOTID\n");
 
 		// RECURSIVELY PRINT var
 		if (var != null) var.PrintMe();
+		if (expList != null) expList.PrintMe();
 		
 		
 		// Print to AST GRAPHIZ DOT file
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"EXP\nVAR");
+			String.format("EXP\n[var.]ID(%s) (exps)", name));
 
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
-			
+		if (expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
+    
 }
