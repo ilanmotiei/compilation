@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.TYPE_VOID;
+
 public class AST_NEWEXP extends AST_Node {
 	public AST_TYPE type;
     public AST_EXP exp;
@@ -47,6 +49,13 @@ public class AST_NEWEXP extends AST_Node {
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	
+	public TYPE SemantMe(){
+		if (this.type.SemantMe() != this.exp.SemantMe()){
+			// TYPES ARE INEQUAL - THROW AN EXCEPTION
+			// TODO
+		}
+
+		return TYPE_VOID.getInstance();
+	}
     
 }

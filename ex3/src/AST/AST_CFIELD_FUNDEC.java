@@ -35,4 +35,8 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if(funcDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,funcDec.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		return this.funcDec.SemantMe();
+	}
 }

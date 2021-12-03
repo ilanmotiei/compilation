@@ -1,5 +1,10 @@
 package AST;
 
+import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode.Type;
+
+import TYPES.TYPE_ARRAY;
+import TYPES.TYPE_INT;
+
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
 	public AST_VAR var;
@@ -38,5 +43,22 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (var       != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (subscript != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,subscript.SerialNumber);
+	}
+
+	public void SemantMe()
+	{
+		Type var_type = this.var.SemantMe();
+
+		if (var_type.getClass() != TYPE_ARRAY.class)
+		{
+			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION : TODO
+		}
+
+		Type subscript_type = this.subscript.SemantMe();
+
+		if (subscript_type != TYPE_INT.getInstance())
+		{
+			// SUBSCRIPT IS NOT INTEGER : THROW EXCEPTION : TODO
+		}
 	}
 }

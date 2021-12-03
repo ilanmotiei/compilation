@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE_INT;
+
 public class AST_STMT_WHILE extends AST_STMT
 {
 	public AST_EXP cond;
@@ -35,4 +38,18 @@ public class AST_STMT_WHILE extends AST_STMT
 		if (cond != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cond.SerialNumber);
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		
+		if (cond.SemantMe() != TYPE_INT.getInstance()){
+			// throw error
+			// TODO
+		}
+		else{
+			SYMBOL_TABLE.getInstance().beginScope();
+			this.body.SemantMe();
+			SYMBOL_TABLE.getInstance().endScope();
+		}
+	}
 }
+

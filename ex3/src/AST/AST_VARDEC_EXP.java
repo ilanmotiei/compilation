@@ -47,5 +47,25 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
+
+	public void SemantMe()
+	{
+
+		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
+		{
+			// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED : THROW ERROR : TODO
+		}
+
+		// ELSE : 
+
+		TYPE var_type = this.type.SemantMe();
+
+		if (var_type.semantically_equals(this.exp.SemantMe()) == false)
+		{
+			// the newExp cannot be assigned to the variable
+		}
+
+		SYMBOL_TABLE.getInstance().enter(this.name, var_type);
+	}
     
 }

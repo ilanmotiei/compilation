@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.TYPE_INT;
+import TYPES.TYPE_STRING;
+
 public class AST_EXP_BINOP extends AST_EXP
 {
 	int OP;
@@ -68,5 +71,34 @@ public class AST_EXP_BINOP extends AST_EXP
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (left  != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,left.SerialNumber);
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		TYPE left_type = this.left.SemantMe();
+		TYPE right_type = this.right.SemantMe();
+
+		if (left_type != right_type){
+			// THROW AN EXCEPTION
+			// TODO
+		}
+
+		if (OP != 0)
+		{
+			// isn't the op "+"
+			if (left_type != TYPE_INT.getInstance() || left_type != TYPE_STRING.getInstance()){
+				// THROW AN EXCEPTION
+				// TODO
+			}
+		}
+		else
+		{
+			if (left_type != TYPE_INT.getInstance()){
+				// THROW AN EXCEPTION
+				// TODO
+			}
+		}
+
+		// Valid
+		return left_type;
 	}
 }

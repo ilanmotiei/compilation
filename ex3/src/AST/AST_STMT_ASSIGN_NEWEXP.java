@@ -43,5 +43,17 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (newExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,newExp.SerialNumber);
 	}
+
+	public void SemantMe(){
+
+		if (!(this.var.SemantMe().is_ancestor(this.newExp.SemantMe()))){
+			// TYPES OF LHS AND RHS ARE INEQUAL 
+			// THROW AN EXCEPTION
+
+			// TODO
+		}
+
+		// else - the assignment statement is valid.
+	}
     
 }

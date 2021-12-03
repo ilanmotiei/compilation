@@ -32,7 +32,7 @@ public class AST_PROGRAM extends AST_Node{
 			
 	}
 
-	public TYPE SemantMe(){
-		return decList.SemantMe();
+	public void SemantMe(){
+		decList.SemantMe();
 	}
 }

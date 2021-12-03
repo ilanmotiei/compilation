@@ -43,5 +43,11 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
+
+	public TYPE_VOID SemantMe(){
+
+		TYPE var_type = 
+
+	}
     
 }

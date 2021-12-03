@@ -1,5 +1,11 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE;
+import TYPES.TYPE_INT;
+import TYPES.TYPE_STRING;
+import TYPES.TYPE_VOID;
+
 public class AST_TYPE extends AST_Node {
     int num; //decide which derivation we used
 	String name;
@@ -35,7 +41,6 @@ public class AST_TYPE extends AST_Node {
 		// AST NODE TYPE = AST BINOP EXP
 		System.out.print("AST NODE TYPE\n");
 
-		
 		// PRINT Node to AST GRAPHVIZ DOT file
 		if(num == 3){
 			AST_GRAPHVIZ.getInstance().logNode(
@@ -47,8 +52,23 @@ public class AST_TYPE extends AST_Node {
 			SerialNumber,
 			String.format("%s",type));
 		}
-		
-		
+	}
+
+	public TYPE SemantMe(){
+		if (num == 0){
+			return TYPE_INT.getInstance();
+		}
+		if (num == 1){
+			return TYPE_STRING.getInstance();
+		}
+		if (num == 2){
+			return TYPE_VOID.getInstance();
+		}
+		if (num == 3){
+			return SYMBOL_TABLE.getInstance().find(this.name);
+		}
+
+		return null; // for code's compilation
 	}
     
 }

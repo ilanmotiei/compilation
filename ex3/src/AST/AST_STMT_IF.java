@@ -1,5 +1,6 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.TYPE_INT;
 
 //this class was given in the skeleton of ex2, and we add few functionalities
@@ -43,7 +44,14 @@ public class AST_STMT_IF extends AST_STMT
 		TYPE cond_type = this.cond.SemantMe();
 
 		if (cond_type != TYPE_INT.getInstance()){
+			// TODO
+			// THROW ALSO IF'S LINE NUMBER AND COLUMN NUMBER
 			throw Exception("Type of condition is not integral.");
+		}
+		else{
+			SYMBOL_TABLE.getInstance().beginScope();
+			this.body.SemantMe();
+			SYMBOL_TABLE.getInstance().endScope();
 		}
 	}
 }

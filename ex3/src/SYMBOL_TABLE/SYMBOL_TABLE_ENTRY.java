@@ -35,8 +35,8 @@ public class SYMBOL_TABLE_ENTRY
 		String name,
 		TYPE type,
 		int index,
-		SYMBOL_TABLE_ENTRY next,
-		SYMBOL_TABLE_ENTRY prevtop,
+		SYMBOL_TABLE_ENTRY next, // meta-data for the symbol table
+		SYMBOL_TABLE_ENTRY prevtop, // the entry defined before this entry at the symbol table
 		int prevtop_index)
 	{
 		this.index = index;

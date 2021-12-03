@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.TYPE_VOID;
+
 public class AST_STMT_ASSIGN extends AST_STMT
 {
 	/***************/
@@ -43,5 +45,17 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+	}
+
+	public void SemantMe(){
+
+		if (!(this.var.SemantMe().is_ancestor(this.exp.SemantMe()))){
+			// TYPES OF LHS AND RHS ARE INEQUAL 
+			// THROW AN EXCEPTION
+
+			// TODO
+		}
+
+		// else - the assignment statement is valid.
 	}
 }

@@ -42,4 +42,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		return this.exp.SemantMe();
+	}
 }

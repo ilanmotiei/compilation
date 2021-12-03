@@ -35,4 +35,8 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if(varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		return this.varDec.SemantMe();
+	}
 }

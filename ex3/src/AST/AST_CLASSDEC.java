@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE_CLASS;
+
 public class AST_CLASSDEC extends AST_Node {
     public String name1;
 	public String name2;
@@ -49,6 +52,25 @@ public class AST_CLASSDEC extends AST_Node {
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (cFieldList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cFieldList.SerialNumber);
+	}
+
+	public TYPE SemantMe()
+	{
+
+		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() != null)
+		{
+			// CLASS ISN'T DEFINED AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+		}
+
+		SYMBOL_TABLE.getInstance().beginScope();
+		TYPE_LIST fields_types = this.cFieldList.SemantMe();
+		SYMBOL_TABLE.getInstance().endScope();
+
+		TYPE cls_type = new TYPE_CLASS(this.name2, this.name1, fields);
+
+		SYMBOL_TABLE.getInstance().enter(this.name1, cls_type);
+
+		return cls_type;
 	}
     
 }

@@ -44,7 +44,7 @@ public class AST_DEC_LIST extends AST_Node{
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public void SemantMe(){
 		AST_DEC_LIST dec_list = this.tail;
 
 		for (AST_DEC dec=this.head ; dec != null ; dec=dec_list.head, dec_list=dec_list.tail){
@@ -52,8 +52,5 @@ public class AST_DEC_LIST extends AST_Node{
 
 			// TODO
 		}
-
-		// TODO
-		SYMBOL_TABLE_GRAPHVIZ.getInstance();
 	}
 }

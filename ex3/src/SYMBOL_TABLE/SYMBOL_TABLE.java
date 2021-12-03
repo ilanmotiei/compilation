@@ -22,7 +22,7 @@ public class SYMBOL_TABLE
 	/* The actual symbol table data structure ... */
 	/**********************************************/
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
-	private SYMBOL_TABLE_ENTRY top;
+	private SYMBOL_TABLE_ENTRY top = null; // The last entry which was inserted to the symbol table
 	private int top_index = 0;
 	
 	/**************************************************************/
@@ -82,7 +82,29 @@ public class SYMBOL_TABLE
 				return e.type;
 			}
 		}
+
+		// didn't found that name
 		
+		return null;
+	}
+
+	/*************************************************/
+	/* Finds all of the elements with the given name */
+	/*************************************************/
+	public TYPE_LIST find_all(String name){
+		return find_all_rec(name, this.table[hash(name)]);
+	}
+
+	public TYPE_LIST find_all_rec(String name, SYMBOL_TABLE_ENTRY curr)
+	{
+		for (SYMBOL_TABLE_ENTRY e = curr; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				return new TYPE_LIST(e.type, find_all_rec(name, e.next));
+			}
+		}
+
 		return null;
 	}
 
@@ -133,6 +155,30 @@ public class SYMBOL_TABLE
 		/* Print the symbol table after every change */		
 		/*********************************************/
 		PrintMe();
+	}
+
+
+	/*
+	Finds the inner-most class we are at, and if we are not in any class - returns null;
+	*/
+	public TYPE_CLASS find_curr_scope_class(){
+		
+		SYMBOL_TABLE_ENTRY top_entry = top;
+		int curr_top_entry_index = top_index;
+
+		while (top_entry.type.getClass() != TYPE_CLASS){
+			top_entry = top_entry.prevtop;
+		}
+
+		// if top_entry == null that means no we are at no class' scope
+
+		if (top_entry != null){
+			return top_entry.type;
+		}
+
+		// else
+
+		return null;
 	}
 	
 	public static int n=0;
