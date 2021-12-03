@@ -50,6 +50,11 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 	public void SemantMe()
 	{
+		SemantMe(false);	
+	}
+
+	public void SemantMe(boolean const_exp)
+	{
 
 		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
 		{
@@ -62,10 +67,13 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 		if (var_type.semantically_equals(this.exp.SemantMe()) == false)
 		{
-			// the newExp cannot be assigned to the variable
+			// the exp cannot be assigned to the variable : THROW EXCEPTION : TODO
+		}
+
+		if (const_exp == true){
+			// CHECK ALSO THAT THE EXPRESSION'S VALUE IS CONSTANT : TODO
 		}
 
 		SYMBOL_TABLE.getInstance().enter(this.name, var_type);
 	}
-    
 }

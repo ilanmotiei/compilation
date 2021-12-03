@@ -78,7 +78,30 @@ public class TYPE_CLASS extends TYPE
 		return null;
 	}
 
-	
+
+	/*****************************************************************/
+	/* 	    	Finds a field of the class with the given name       */
+	/*****************************************************************/
+
+	public TYPE find_field(String field_name)
+	{
+		for (TYPE dec : this.data_members)
+		{
+			if (dec.getClass() != TYPE_FUNCTION.class)
+			{
+				if (dec.name == field_name)
+				{
+					return dec;
+				}
+			}
+		}
+
+		// didn't found a method with the given name
+
+		return null;
+	}
+
+
 	/*************/
 	/* isClass() */
 	/*************/

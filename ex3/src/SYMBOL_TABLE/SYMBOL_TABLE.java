@@ -158,13 +158,12 @@ public class SYMBOL_TABLE
 	}
 
 
-	/*
-	Finds the inner-most class we are at, and if we are not in any class - returns null;
-	*/
+	/****************************************************************************************/
+	/* Finds the inner-most class we are at, and if we are not in any class - returns null; */
+	/****************************************************************************************/
 	public TYPE_CLASS find_curr_scope_class(){
 		
 		SYMBOL_TABLE_ENTRY top_entry = top;
-		int curr_top_entry_index = top_index;
 
 		while (top_entry.type.getClass() != TYPE_CLASS){
 			top_entry = top_entry.prevtop;
@@ -179,6 +178,130 @@ public class SYMBOL_TABLE
 		// else
 
 		return null;
+	}
+
+	/*******************************************************************************************/
+	/* Finds the inner-most function we are at, and if we are not in any class - returns null; */
+	/*******************************************************************************************/
+	public TYPE_CLASS find_curr_scope_function(){
+		
+		SYMBOL_TABLE_ENTRY top_entry = top;
+
+		while (top_entry.type.getClass() != TYPE_FUNCTION){
+			top_entry = top_entry.prevtop;
+		}
+
+		// if top_entry == null that means no we are at no FUNCTION's scope
+
+		if (top_entry != null){
+			return top_entry.type;
+		}
+
+		// else
+
+		return null;
+	}
+
+	/*****************************************************************************************************/
+	/* Finds the given name at the global scope and returns it if found. If did not found - returns null */
+	/*****************************************************************************************************/
+
+	public TYPE find_at_global_scope(String name)
+	{
+		SYMBOL_TABLE_ENTRY curr_scope_top = this.top;
+
+		SYMBOL_TABLE_ENTRY curr_top = this.top;
+
+		while (curr_top != null)
+		{
+			if (curr_top.name == "SCOPE-BOUNDARY")
+			{
+				curr_scope_top = curr_top;
+			}
+
+			curr_top = curr_top.prevtop;
+		}
+
+		SYMBOL_TABLE_ENTRY global_scope_top = curr_scope_top;
+
+		while (global_scope_top != null)
+		{
+			if (global_scope_top.name == name)
+			{
+				return global_scope_top.type;
+			}
+		}
+
+		return null;
+	}
+
+
+	/*******************************************************************************/
+	/* SEARCHES THE NAME BEGGINING IN THE GIVEN CLASS, MOVING TO ITS SUPER CLASS   */
+	/* IF DIDN'T FOUND THERE, AND MOVES TO THE GLOBAL SCOPE WHEN DIDN'T FOUND IN   */
+	/* ANY SUPER CLASS OF THE GIVEN CLASS.										   */
+	/*******************************************************************************/
+
+	public TYPE find_by_hierarchy(TYPE_CLASS cls, String name)
+	{
+		if (cls == null) { return null; }
+
+		for (TYPE founded = find_at_class(cls, name);
+			(founded == null) && (cls != null); 
+			cls=cls.father, founded=find_at_class(cls, name));
+
+		if (founded == null)
+		{
+			// DIDN'T FOUND IN ANY SUPER CLASS OF THE GIVEN CLASS; SEARCHING IT AT THE GLOBAL CLASS;
+
+			return find_at_global_scope(name);
+		}
+		else
+		{
+			return founded;
+		}
+	}
+
+	
+	/*****************************************************************************************************/
+	/* Finds the given name at the given class and returns it if found. If did not found - returns null  */
+	/*****************************************************************************************************/
+
+	public TYPE find_at_class(TYPE_CLASS cls, String name)
+	{
+
+		for (TYPE dec : cls.data_members)
+		{
+			if (dec.name == name)
+			{
+				return dec;
+			}
+		}
+
+		return null;
+	}
+
+	/*****************************************************************************************************/
+	/* 						 Tells us if wer'e currently at the global scope or not 					*/
+	/*****************************************************************************************************/
+
+	public TYPE at_global_scope()
+	{
+		SYMBOL_TABLE_ENTRY curr_top = this.top;
+
+		while (curr_top != null)
+		{
+			if (curr_top.name == "SCOPE_BOUNDARY")
+			{
+				// WER'E NOT AT THE GLOBAL SCOPE
+				return false;
+			}
+			curr_top = curr_top.prevtop;
+		}
+
+		// WE'RE AT THE GLOBAL SCOPE
+
+		return true;
 	}
 	
 	public static int n=0;

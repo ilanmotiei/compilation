@@ -1,5 +1,6 @@
 package AST;
 
+import TYPES.TYPE;
 import TYPES.TYPE_INT;
 import TYPES.TYPE_STRING;
 
@@ -77,28 +78,45 @@ public class AST_EXP_BINOP extends AST_EXP
 		TYPE left_type = this.left.SemantMe();
 		TYPE right_type = this.right.SemantMe();
 
-		if (left_type != right_type){
-			// THROW AN EXCEPTION
-			// TODO
+		if (OP == 0)
+		{
+			// OP == "+"
+			if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
+			{
+				if (left_type != TYPE_STRING.getInstance() || right_type != TYPE_STRING.getInstance())
+				{
+					// THE BINARY OPERATION "+" CANNOT BE PERFORMED ON THE TWO SIDES : THROW EXCEPTION : TODO
+				}
+			}
+
+			// ELSE :
+
+			return left_type;
 		}
 
-		if (OP != 0)
+		// ELSE :
+
+		if (OP == 6)
 		{
-			// isn't the op "+"
-			if (left_type != TYPE_INT.getInstance() || left_type != TYPE_STRING.getInstance()){
-				// THROW AN EXCEPTION
-				// TODO
+			// OP == "="
+
+			if (! (left_type.semantically_equals(right_type) || right_type.semantically_equals(left_type)))
+			{
+				// TYPES CANNOT BE TESTED FOR AN EQUALITY : THROW EXCEPTION : TODO
 			}
-		}
-		else
-		{
-			if (left_type != TYPE_INT.getInstance()){
-				// THROW AN EXCEPTION
-				// TODO
-			}
+
+			return TYPE_INT.getInstance();
 		}
 
-		// Valid
-		return left_type;
+		// ELSE : 1 <= OP <= 5 (i.e. OP is one of ["-", "*", "/", "<", ">"])
+
+		if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
+		{
+			// ONE OF THE BINARY OPERATION SIDES TYPE IS NOT AN INTEGER : THROW EXCEPTION : TODO
+		}
+
+		// ELSE : EXPERSSION IS VALID AND ITS TYPE IS "TYPE_INT"
+
+		return TYPE_INT.getInstance();
 	}
 }

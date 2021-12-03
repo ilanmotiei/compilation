@@ -57,16 +57,21 @@ public class AST_CLASSDEC extends AST_Node {
 	public TYPE SemantMe()
 	{
 
-		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() != null)
+		if (SYMBOL_TABLE.getInstance().at_global_scope() == false)
 		{
-			// CLASS ISN'T DEFINED AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+		}
+
+		if (SYMBOL_TABLE.getInstance().find(this.name1) != null)
+		{
+			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :TODO
 		}
 
 		SYMBOL_TABLE.getInstance().beginScope();
 		TYPE_LIST fields_types = this.cFieldList.SemantMe();
 		SYMBOL_TABLE.getInstance().endScope();
 
-		TYPE cls_type = new TYPE_CLASS(this.name2, this.name1, fields);
+		TYPE cls_type = new TYPE_CLASS(this.name2, this.name1, fields_types);
 
 		SYMBOL_TABLE.getInstance().enter(this.name1, cls_type);
 

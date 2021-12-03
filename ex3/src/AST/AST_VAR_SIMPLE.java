@@ -1,5 +1,7 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+
 public class AST_VAR_SIMPLE extends AST_VAR
 {
 	// simple variable name
@@ -31,5 +33,21 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			String.format("SIMPLE\nVAR\n(%s)",name));
+	}
+
+	public TYPE SemantMe()
+	{
+		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
+		Type var_type = SYMBOL_TABLE.get_instance().find_by_hierarchy(curr_scope_class, this.name);
+
+		if (var_type == null)
+		{
+			// VAR WASN'T FOUND : THROW EXCEPTION : TODO
+		}
+
+		// ELSE
+
+		return var_type;
 	}
 }

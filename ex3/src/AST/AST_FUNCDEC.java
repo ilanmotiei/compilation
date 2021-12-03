@@ -56,6 +56,13 @@ public class AST_FUNCDEC extends AST_Node {
 	public TYPE SemantMe()
 	{
 
+		/*-------- CHECKING IF THE FUNCTION IS NESTED ---------*/
+
+		if (SYMBOL_TABLE.getInstance().find_curr_scope_function() != null)
+		{
+			// IT IS NESTED (WE PROHIBIT THIS) : THROW EXCEPTION : TODO
+		}
+
 		/*-------- EXTRACTING FUNCTION'S META DATA --------*/
 
 		SYMBOL_TABLE.getInstance().beginScope();
@@ -108,14 +115,14 @@ public class AST_FUNCDEC extends AST_Node {
 				// OUR METHOD IS NOT IN ANY CLASS THEREFORE SHADOWS AN ANOTHER FUNCTION NAME : THROW EXCEPTION : TODO 
 			}
 
-			if (curr_scope_class.is_ancestor(thisfunc_dec.cls) == false)
+			if (thisfunc_dec.cls.is_ancestor(func_dec.cls) == false)
 			{
 				// WE AREN'T OVERRIDING AN INHERITED METHOD, BUT SHADOWING A METHOD : THROW EXCEPTION : TODO
 			}
 
 			// ELSE : WE ARE TRYING TO OVERRIDE AN INHERITED METHOD
 
-			if (func_dec.params.equals(thisfunc_dec.params) == false)
+			if (func_dec.params.semantically_equals(thisfunc_dec.params) == false)
 			{
 				// WE ARE SHADOWING A FUNCTION WITH THE SAME NAME AND RETURN_TYPE IN SOME PARENT METHOD : THROW EXCEPTION : TODO
 			}

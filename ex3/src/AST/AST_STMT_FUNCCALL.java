@@ -84,16 +84,14 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		if (this.var == null)
 		{
 			// THE CALL IS A GENERIC FUNCTION CALL
-			TYPE func_dec = SYMBOL_TABLE.getInstance().find(this.func_name);
 
-			if (func_dec.getClass() != TYPE_FUNCTION.class)
-			{
-				// THROW EXCEPTION : TODO
-			}
+			TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+			TYPE func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.func_name);
 		}
 		else
 		{
 			// WE'RE CALLING FOR A CLASS METHOD ON AN INSTANCE OF IT
+
 			TYPE var_type = this.var.SemantMe();
 
 			if (var_type.getClass() == TYPE_CLASS_VAR_DEC.class)
@@ -103,7 +101,12 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 
 			TYPE_CLASS var_class = (TYPE_CLASS_VAR_DEC (var_type)).cls;
 
-			TYPE_FUNCTION func_dec = var_class.find_Method(func_name);
+			TYPE func_dec = var_class.find_by_hierarchy(var_class, this.func_name);
+		}
+
+		if (func_dec.getClass() != TYPE_FUNCTION.class)
+		{
+			// WE CALLED A VERIABLE/CLASS AS A METHOD : THROW EXCEPTION : TODO
 		}
 
 		if (func_dec == null)

@@ -1,5 +1,7 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+
 public class AST_CFIELD_FUNDEC extends AST_CFIELD {
     public AST_FUNCDEC funcDec;
 
@@ -37,6 +39,12 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 	}
 
 	public TYPE SemantMe(){
+
+		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() == null)
+		{
+			// CAN'T DEFINE A CLASS FIELD OUTSIDE ANY CLASS : THROW ERROR : TODO
+		}
+
 		return this.funcDec.SemantMe();
 	}
 }

@@ -44,14 +44,13 @@ public class AST_STMT_IF extends AST_STMT
 		TYPE cond_type = this.cond.SemantMe();
 
 		if (cond_type != TYPE_INT.getInstance()){
-			// TODO
-			// THROW ALSO IF'S LINE NUMBER AND COLUMN NUMBER
-			throw Exception("Type of condition is not integral.");
+			// CONDITION TYPE ISN'T INT : THROW ERROR : TODO
 		}
-		else{
-			SYMBOL_TABLE.getInstance().beginScope();
-			this.body.SemantMe();
-			SYMBOL_TABLE.getInstance().endScope();
-		}
+		
+		// ELSE
+		
+		SYMBOL_TABLE.getInstance().beginScope();
+		this.body.SemantMe();
+		SYMBOL_TABLE.getInstance().endScope();
 	}
 }

@@ -42,14 +42,15 @@ public class AST_STMT_WHILE extends AST_STMT
 	public TYPE SemantMe(){
 		
 		if (cond.SemantMe() != TYPE_INT.getInstance()){
-			// throw error
-			// TODO
+			// CONDITION TYPE ISN'T INT : THROW ERROR : TODO
 		}
-		else{
-			SYMBOL_TABLE.getInstance().beginScope();
-			this.body.SemantMe();
-			SYMBOL_TABLE.getInstance().endScope();
-		}
+		
+		// ELSE
+
+		SYMBOL_TABLE.getInstance().beginScope();
+		this.body.SemantMe();
+		SYMBOL_TABLE.getInstance().endScope();
+		
 	}
 }
 

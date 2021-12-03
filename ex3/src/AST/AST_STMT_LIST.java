@@ -44,12 +44,12 @@ public class AST_STMT_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TYPE_LIST SemantMe(){
-		return this.createTypelist();
+	public void SemantMe(){
+		this.createTypelist();
 	}
 
-	public TYPE_LIST createTypelist(){
-		return TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
+	public void createTypelist(){
+		TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
 	}
 	
 }

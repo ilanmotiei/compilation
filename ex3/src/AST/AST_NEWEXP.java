@@ -1,5 +1,6 @@
 package AST;
 
+import TYPES.TYPE_INT;
 import TYPES.TYPE_VOID;
 
 public class AST_NEWEXP extends AST_Node {
@@ -50,12 +51,27 @@ public class AST_NEWEXP extends AST_Node {
 	}
 
 	public TYPE SemantMe(){
-		if (this.type.SemantMe() != this.exp.SemantMe()){
-			// TYPES ARE INEQUAL - THROW AN EXCEPTION
-			// TODO
-		}
+		if (exp == null)
+		{
+			// THE FORM IS : NEW ${type}
 
-		return TYPE_VOID.getInstance();
+			return this.type.SemantMe();
+		}
+		else
+		{
+			// THE FORM IS : NEW ${type} [${exp}]
+
+			TYPE t = this.type.SemantMe();
+
+			if (this.exp.SemantMe() != TYPE_INT.getInstance()) 
+			{
+				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION : TODO
+			}
+
+			// ELSE :
+
+			return this.type.SemantMe();
+		}
 	}
     
 }

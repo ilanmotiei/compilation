@@ -1,5 +1,9 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE_FUNCTION;
+import TYPES.TYPE_VOID;
+
 public class AST_STMT_RETURN extends AST_STMT {
     public AST_EXP exp;
 
@@ -43,7 +47,34 @@ public class AST_STMT_RETURN extends AST_STMT {
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
-		return this.exp.SemantMe();
+	public void SemantMe(){
+
+		TYPE_FUNCTION func = SYMBOL_TABLE.getInstance().find_curr_scope_function();
+
+		if (func_type == null)
+		{
+			// THE 'RETURN' STMT SHOWS OUTSIDE A FUNCTION : THROW EXCEPTION : TODO
+		}
+
+		// ELSE
+
+		if (exp != null)
+		{
+			if (func.returnType.semantically_equals(this.exp.SemantMe()) == false)
+			{
+				// THIS RETURN'S VALUE TYPE IS INVALID : THROW EXCEPTION : TODO
+			}
+		}
+		else
+		{
+			// exp == null, and this return is empty;
+
+			if (func.returnType != TYPE_VOID.getInstance())
+			{
+				// THIS RETURN SHOULD HAVE RETURNED A VALUE, BUT IS EMPTY : THROW EXCEPTION : TODO
+			}
+		}
+
+		// VALID;
 	}
 }

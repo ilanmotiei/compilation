@@ -46,7 +46,12 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 
 		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() != null)
 		{
-			// CLASS ISN'T DEFINED AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+		}
+
+		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
+		{
+			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :TODO
 		}
 
 		TYPE array_elems_type = this.type.SemantMe();

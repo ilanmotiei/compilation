@@ -37,6 +37,6 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 	}
 
 	public TYPE SemantMe(){
-		return this.varDec.SemantMe();
+		return this.varDec.SemantMe(true);
 	}
 }

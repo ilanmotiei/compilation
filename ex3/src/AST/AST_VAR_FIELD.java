@@ -1,5 +1,10 @@
 package AST;
 
+import javax.sound.sampled.EnumControl.Type;
+
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.TYPE_CLASS;
+
 public class AST_VAR_FIELD extends AST_VAR
 {
 	public AST_VAR var;
@@ -37,5 +42,37 @@ public class AST_VAR_FIELD extends AST_VAR
 		
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+	}
+
+	
+	public TYPE SemantMe()
+	{
+
+		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
+		if (var == null)
+		{
+			Type field_type = SYMBOL_TABLE.get_instance().find_by_hierarchy(curr_scope_class, this.fieldName);
+		}
+		else
+		{
+			Type var_type = this.var.SemantMe();
+
+			if (var_type.getClass() != TYPE_CLASS.class)
+			{
+				// VAR IS A PRIMITIVE TYPE AND HAS NO FIELDS : THROW EXCEPTION : TODO
+			}
+
+			Type field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy((TYPE_CLASS) var_type, this.fieldName);
+		}
+
+		if (field_type == null) 
+		{ 
+			// FIELD_NAME DOES NOT EXIST IN VAR'S CLASS : THROW EXCEPTION : TODO
+		}
+
+		// ELSE
+
+		return field_type;
 	}
 }
