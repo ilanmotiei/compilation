@@ -1,6 +1,7 @@
 package AST;
 
-import TYPES.TYPE_VOID;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_STMT_ASSIGN extends AST_STMT
 {
@@ -47,13 +48,13 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public void SemantMe(){
+	public void SemantMe() throws Exception{
 
-		if (!(this.var.SemantMe().is_ancestor(this.exp.SemantMe()))){
-			// TYPES OF LHS AND RHS ARE INEQUAL 
-			// THROW AN EXCEPTION
+		if (!(this.var.SemantMe().semantically_equals(this.exp.SemantMe())))
+		{
+			// TYPES OF LHS AND RHS ARE INEQUAL : THROW AN EXCEPTION
 
-			// TODO
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// else - the assignment statement is valid.

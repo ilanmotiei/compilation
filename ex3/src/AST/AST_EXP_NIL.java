@@ -1,7 +1,7 @@
 package AST;
 
-import TYPES.TYPE_INT;
-import TYPES.TYPE_NIL;
+import TYPES.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
 
 public class AST_EXP_NIL extends AST_EXP {
     

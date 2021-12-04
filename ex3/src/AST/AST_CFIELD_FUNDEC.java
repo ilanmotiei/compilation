@@ -1,6 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_CFIELD_FUNDEC extends AST_CFIELD {
     public AST_FUNCDEC funcDec;
@@ -38,13 +39,15 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 		if(funcDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,funcDec.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public void SemantMe() throws Exception{
 
 		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() == null)
 		{
-			// CAN'T DEFINE A CLASS FIELD OUTSIDE ANY CLASS : THROW ERROR : TODO
+			// CAN'T DEFINE A CLASS FIELD OUTSIDE ANY CLASS : THROW ERROR :
+
+			throw new Exception("SEMANTIC ERROR");
 		}
 
-		return this.funcDec.SemantMe();
+		this.funcDec.SemantMe();
 	}
 }

@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_EXP_VAR extends AST_EXP
 {
 	public AST_VAR var;
@@ -39,7 +42,7 @@ public class AST_EXP_VAR extends AST_EXP
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		return this.var.SemantMe();
 	}
 }

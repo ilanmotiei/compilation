@@ -172,7 +172,7 @@ public class SYMBOL_TABLE
 		// if top_entry == null that means no we are at no class' scope
 
 		if (top_entry != null){
-			return top_entry.type;
+			return ((TYPE_CLASS) top_entry.type);
 		}
 
 		// else
@@ -183,7 +183,7 @@ public class SYMBOL_TABLE
 	/*******************************************************************************************/
 	/* Finds the inner-most function we are at, and if we are not in any class - returns null; */
 	/*******************************************************************************************/
-	public TYPE_CLASS find_curr_scope_function(){
+	public TYPE_FUNCTION find_curr_scope_function(){
 		
 		SYMBOL_TABLE_ENTRY top_entry = top;
 
@@ -194,7 +194,7 @@ public class SYMBOL_TABLE
 		// if top_entry == null that means no we are at no FUNCTION's scope
 
 		if (top_entry != null){
-			return top_entry.type;
+			return ((TYPE_FUNCTION) top_entry.type);
 		}
 
 		// else
@@ -246,9 +246,9 @@ public class SYMBOL_TABLE
 	{
 		if (cls == null) { return null; }
 
-		for (TYPE founded = find_at_class(cls, name);
-			(founded == null) && (cls != null); 
-			cls=cls.father, founded=find_at_class(cls, name));
+		TYPE founded = find_at_class(cls, name);
+
+		for (; (founded == null) && (cls != null); cls=cls.father, founded=find_at_class(cls, name));
 
 		if (founded == null)
 		{
@@ -262,7 +262,7 @@ public class SYMBOL_TABLE
 		}
 	}
 
-	
+
 	/*****************************************************************************************************/
 	/* Finds the given name at the given class and returns it if found. If did not found - returns null  */
 	/*****************************************************************************************************/
@@ -285,7 +285,7 @@ public class SYMBOL_TABLE
 	/* 						 Tells us if wer'e currently at the global scope or not 					*/
 	/*****************************************************************************************************/
 
-	public TYPE at_global_scope()
+	public boolean at_global_scope()
 	{
 		SYMBOL_TABLE_ENTRY curr_top = this.top;
 

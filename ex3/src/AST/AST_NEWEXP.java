@@ -1,7 +1,7 @@
 package AST;
 
-import TYPES.TYPE_INT;
-import TYPES.TYPE_VOID;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_NEWEXP extends AST_Node {
 	public AST_TYPE type;
@@ -50,7 +50,7 @@ public class AST_NEWEXP extends AST_Node {
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		if (exp == null)
 		{
 			// THE FORM IS : NEW ${type}
@@ -61,11 +61,10 @@ public class AST_NEWEXP extends AST_Node {
 		{
 			// THE FORM IS : NEW ${type} [${exp}]
 
-			TYPE t = this.type.SemantMe();
-
 			if (this.exp.SemantMe() != TYPE_INT.getInstance()) 
 			{
-				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION : TODO
+				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			// ELSE :

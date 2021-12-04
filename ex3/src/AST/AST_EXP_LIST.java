@@ -1,6 +1,7 @@
 package AST;
 
-import TYPES.TYPE_LIST;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_EXP_LIST extends AST_Node {
     // DATA MEMBERS
@@ -43,11 +44,19 @@ public class AST_EXP_LIST extends AST_Node {
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TYPE_LIST SemantMe(){
+	public TYPE_LIST SemantMe() throws Exception{
 		return this.createTypelist();
 	}
 
 	public TYPE_LIST createTypelist(){
-		return TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
+		if (this.tail != null)
+		{
+			return new TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
+		}
+		else
+		{
+			return new TYPE_LIST(this.head.SemantMe, null);
+		}
+		
 	}
 }

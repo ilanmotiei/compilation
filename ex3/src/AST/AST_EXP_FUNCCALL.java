@@ -1,25 +1,26 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_EXP_FUNCCALL extends AST_EXP {
     public AST_VAR var;
-	String name;
+	String func_name;
     public AST_EXP_LIST expList;
 
 	// Class Constructor
-	public AST_EXP_FUNCCALL(AST_VAR var, String name, AST_EXP_LIST expList)
+	public AST_EXP_FUNCCALL(AST_VAR var, String func_name, AST_EXP_LIST expList)
 	{
 		
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		// PRINT CORRESPONDING DERIVATION RULE 
-		System.out.format("====================== exp -> [var DOT] ID(%s) LPAREN expList RPAREN\n", name);
+		System.out.format("====================== exp -> [var DOT] ID(%s) LPAREN expList RPAREN\n", func_name);
 
 		// COPY INPUT DATA NENBERS
 		this.var = var;
-		this.name = name;
+		this.func_name = func_name;
 		this.expList = expList;
 	}
 	
@@ -39,25 +40,26 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 		// Print to AST GRAPHIZ DOT file
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("EXP\n[var.]ID(%s) (exps)", name));
+			String.format("EXP\n[var.]ID(%s) (exps)", func_name));
 
 		// PRINT Edges to AST GRAPHVIZ DOT file
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 
 		/* ------------- CHEKING THE VALIDITY OF THE EXP LIST -------------- */
 
 		TYPE_LIST args_types = this.expList.SemantMe();
+		TYPE func_dec;
 		
 		if (this.var == null)
 		{
 			// THE CALL IS A GENERIC FUNCTION CALL
 
 			TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-			TYPE func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.func_name);
+			func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.func_name);
 		}
 		else
 		{
@@ -65,33 +67,36 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 
 			TYPE var_type = this.var.SemantMe();
 
-			if (var_type.getClass() == TYPE_CLASS_VAR_DEC.class)
+			if (! (var_type instanceof TYPE_CLASS_VAR_DEC))
 			{
-				// VARIABLE IS NOT A CLASS OBJECT : THROW EXCEPTION : TODO
+				// VARIABLE IS NOT A CLASS OBJECT : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			TYPE_CLASS var_class = (TYPE_CLASS_VAR_DEC (var_type)).cls;
 
-			TYPE func_dec = var_class.find_by_hierarchy(var_class, this.func_name);
-		}
-
-		if (func_dec.getClass() != TYPE_FUNCTION.class)
-		{
-			// WE CALLED A VERIABLE/CLASS AS A METHOD : THROW EXCEPTION : TODO
+			func_dec = var_class.find_by_hierarchy(var_class, this.func_name);
 		}
 
 		if (func_dec == null)
 		{
 			// THE FUNCTION WAS NOT DEFINED YET, OR NOT DEFINED FOR THE CLASS OF THE INSTANCE WHICH CALLED IT : THROW EXCEPTION
 
-			// TODO
+			throw new Exception("SEMANTIC ERROR");
+		}
+
+		if (! (func_dec.getClass() instanceof TYPE_FUNCTION))
+		{
+			// WE CALLED A VERIABLE/CLASS AS A METHOD : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE : 
 
 		if (((TYPE_FUNCTION) func_dec).params.semantically_equals(args_types) == false)
 		{
-			// GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION : TODO
+			// GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// VALID;

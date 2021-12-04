@@ -1,6 +1,6 @@
 package AST;
 
-import TYPES.TYPE_VOID;
+import TYPES.*;
 
 public class AST_STMT_LIST extends AST_Node
 {
@@ -44,12 +44,13 @@ public class AST_STMT_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public void SemantMe(){
-		this.createTypelist();
+	public void SemantMe() throws Exception{
+		this.head.SemantMe();
+
+		if (this.tail != null)
+		{
+			this.tail.SemantMe();
+		}
 	}
 
-	public void createTypelist(){
-		TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
-	}
-	
 }

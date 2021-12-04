@@ -1,9 +1,6 @@
 package AST;
 
-import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode.Type;
-
-import TYPES.TYPE_ARRAY;
-import TYPES.TYPE_INT;
+import TYPES.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -45,20 +42,24 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		if (subscript != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,subscript.SerialNumber);
 	}
 
-	public void SemantMe()
+	public TYPE SemantMe() throws Exception
 	{
-		Type var_type = this.var.SemantMe();
+		TYPE var_type = this.var.SemantMe();
 
 		if (var_type.getClass() != TYPE_ARRAY.class)
 		{
-			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION : TODO
+			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
-		Type subscript_type = this.subscript.SemantMe();
+		TYPE subscript_type = this.subscript.SemantMe();
 
 		if (subscript_type != TYPE_INT.getInstance())
 		{
-			// SUBSCRIPT IS NOT INTEGER : THROW EXCEPTION : TODO
+			// SUBSCRIPT IS NOT INTEGER : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
+
+		return ((TYPE_ARRAY) var_type).elems_type;
 	}
 }

@@ -1,10 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_CLASS;
-import TYPES.TYPE_FUNCTION;
-import TYPES.TYPE_LIST;
-import jdk.nashorn.internal.codegen.types.Type;
+import TYPES.*;
 
 public class AST_FUNCDEC extends AST_Node {
     
@@ -53,14 +50,15 @@ public class AST_FUNCDEC extends AST_Node {
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws Exception
 	{
 
 		/*-------- CHECKING IF THE FUNCTION IS NESTED ---------*/
 
 		if (SYMBOL_TABLE.getInstance().find_curr_scope_function() != null)
 		{
-			// IT IS NESTED (WE PROHIBIT THIS) : THROW EXCEPTION : TODO
+			// IT IS NESTED (WE PROHIBIT THIS) : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		/*-------- EXTRACTING FUNCTION'S META DATA --------*/
@@ -78,7 +76,7 @@ public class AST_FUNCDEC extends AST_Node {
 
 		/*-------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY --------*/
 
-		this.check_shadows(func_dec);
+		this.check_shadows(func_type);
 
 		/*-------- GETTING HERE MEANS THE FUNCTION DIDN'T SHADOW AN ANOTHER METHOD; CHECK THE FUNCTION'S BODY --------*/
 		
@@ -96,35 +94,40 @@ public class AST_FUNCDEC extends AST_Node {
 	{
 		TYPE_LIST all_decs = SYMBOL_TABLE.getInstance().find_all(this.name);
 
-		for (Type dec : all_decs)
+		for (TYPE dec : all_decs)
 		{
 			if (dec.getClass() != TYPE_FUNCTION.class)
 			{
-				// SHADOWS A VARIABLE OR A CLASS NAME : THROW EXCEPTION : TODO
+				// SHADOWS A VARIABLE OR A CLASS NAME : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			TYPE_FUNCTION func_dec = (TYPE_FUNCTION) dec; 
 
 			if (func_dec.returnType != thisfunc_dec.returnType)
 			{
-				// ABSOLUTELY SHADOWS : THROW EXCEPTION : TODO
+				// ABSOLUTELY SHADOWS : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			if (thisfunc_dec.cls == null)
 			{
-				// OUR METHOD IS NOT IN ANY CLASS THEREFORE SHADOWS AN ANOTHER FUNCTION NAME : THROW EXCEPTION : TODO 
+				// OUR METHOD IS NOT IN ANY CLASS THEREFORE SHADOWS AN ANOTHER FUNCTION NAME : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			if (thisfunc_dec.cls.is_ancestor(func_dec.cls) == false)
 			{
-				// WE AREN'T OVERRIDING AN INHERITED METHOD, BUT SHADOWING A METHOD : THROW EXCEPTION : TODO
+				// WE AREN'T OVERRIDING AN INHERITED METHOD, BUT SHADOWING A METHOD : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			// ELSE : WE ARE TRYING TO OVERRIDE AN INHERITED METHOD
 
 			if (func_dec.params.semantically_equals(thisfunc_dec.params) == false)
 			{
-				// WE ARE SHADOWING A FUNCTION WITH THE SAME NAME AND RETURN_TYPE IN SOME PARENT METHOD : THROW EXCEPTION : TODO
+				// WE ARE SHADOWING A FUNCTION WITH THE SAME NAME AND RETURN_TYPE IN SOME PARENT METHOD : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			// ELSE : WE ARE LEGALLY OVERRIDING AN INHERITED METHOD : CONTINUE TO CHECK THE NEXT DECLERATION

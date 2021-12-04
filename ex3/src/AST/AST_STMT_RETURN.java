@@ -1,8 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_FUNCTION;
-import TYPES.TYPE_VOID;
+import TYPES.*;
 
 public class AST_STMT_RETURN extends AST_STMT {
     public AST_EXP exp;
@@ -47,13 +46,14 @@ public class AST_STMT_RETURN extends AST_STMT {
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public void SemantMe(){
+	public void SemantMe() throws Exception{
 
 		TYPE_FUNCTION func = SYMBOL_TABLE.getInstance().find_curr_scope_function();
 
 		if (func_type == null)
 		{
-			// THE 'RETURN' STMT SHOWS OUTSIDE A FUNCTION : THROW EXCEPTION : TODO
+			// THE 'RETURN' STMT SHOWS OUTSIDE A FUNCTION : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE
@@ -62,7 +62,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 		{
 			if (func.returnType.semantically_equals(this.exp.SemantMe()) == false)
 			{
-				// THIS RETURN'S VALUE TYPE IS INVALID : THROW EXCEPTION : TODO
+				// THIS RETURN'S VALUE TYPE IS INVALID : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 		}
 		else
@@ -71,7 +72,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 			if (func.returnType != TYPE_VOID.getInstance())
 			{
-				// THIS RETURN SHOULD HAVE RETURNED A VALUE, BUT IS EMPTY : THROW EXCEPTION : TODO
+				// THIS RETURN SHOULD HAVE RETURNED A VALUE, BUT IS EMPTY : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 		}
 

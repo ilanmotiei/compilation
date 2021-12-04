@@ -1,7 +1,6 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import SYMBOL_TABLE.SYMBOL_TABLE_GRAPHVIZ;
 
 public class AST_DEC_LIST extends AST_Node{ 
     // DATA MEMBERS
@@ -44,6 +43,7 @@ public class AST_DEC_LIST extends AST_Node{
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
+	/*
 	public void SemantMe(){
 		AST_DEC_LIST dec_list = this.tail;
 
@@ -52,5 +52,16 @@ public class AST_DEC_LIST extends AST_Node{
 
 			// TODO
 		}
+	}
+	*/
+
+	public void SemantMe() throws Exception{
+		this.head.SemantMe();
+		
+		if (this.tail != null)
+		{
+			this.tail.SemantMe();
+		}
+		
 	}
 }

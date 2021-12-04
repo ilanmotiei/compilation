@@ -1,10 +1,14 @@
 package AST;
 
+import TYPES.*;
+
 public abstract class AST_CFIELD extends AST_Node {
-    public void PrintMe()
+	
+	public void PrintMe()
 	{
 		System.out.print("UNKNOWN AST STATEMENT NODE");
 	}
 
-	public abstract TYPE SemantMe();
+	public abstract void SemantMe() throws Exception;
+	
 }

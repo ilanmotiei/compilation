@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_STMT_VARDEC extends AST_STMT {
     public AST_VARDEC varDec;
 
@@ -36,7 +38,7 @@ public class AST_STMT_VARDEC extends AST_STMT {
 		if (varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
-		return this.varDec.SemantMe();
+	public void SemantMe() throws Exception{
+		this.varDec.SemantMe();
 	}
 }

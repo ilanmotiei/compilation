@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_DEC extends AST_Node {
     public AST_Node son;
 	public int i; // Indicates which from  varDec | funcDec | classDec | arrayTypedef
@@ -54,7 +57,7 @@ public class AST_DEC extends AST_Node {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,son.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
-		return son.SemantMe();
+	public void SemantMe() throws Exception{
+		son.SemantMe();
 	}
 }

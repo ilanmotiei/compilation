@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_EXP_PARENEXP extends AST_EXP {
     public AST_EXP exp;
 
@@ -39,7 +41,7 @@ public class AST_EXP_PARENEXP extends AST_EXP {
 			
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		return this.exp.SemantMe();
 	}
     

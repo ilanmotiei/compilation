@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_CFIELD_VARDEC extends AST_CFIELD {
     public AST_VARDEC varDec;
 
@@ -36,7 +39,7 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		if(varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
-		return this.varDec.SemantMe(true);
+	public void SemantMe() throws Exception{
+		this.varDec.SemantMe(true);
 	}
 }

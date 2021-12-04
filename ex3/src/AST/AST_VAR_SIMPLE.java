@@ -1,6 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {
@@ -35,15 +36,16 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			String.format("SIMPLE\nVAR\n(%s)",name));
 	}
 
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws Exception
 	{
 		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
 
-		Type var_type = SYMBOL_TABLE.get_instance().find_by_hierarchy(curr_scope_class, this.name);
+		TYPE var_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.name);
 
 		if (var_type == null)
 		{
-			// VAR WASN'T FOUND : THROW EXCEPTION : TODO
+			// VAR WASN'T FOUND : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE

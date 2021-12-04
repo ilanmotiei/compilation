@@ -1,7 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_CLASS;
+import TYPES.*;
 
 public class AST_CLASSDEC extends AST_Node {
     public String name1;
@@ -54,28 +54,48 @@ public class AST_CLASSDEC extends AST_Node {
 		if (cFieldList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,cFieldList.SerialNumber);
 	}
 
-	public TYPE SemantMe()
+	public void SemantMe() throws Exception
 	{
 
 		if (SYMBOL_TABLE.getInstance().at_global_scope() == false)
 		{
-			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		if (SYMBOL_TABLE.getInstance().find(this.name1) != null)
 		{
-			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :TODO
+			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
+		}
+
+		TYPE parent_cls = null;
+
+		if (this.name2 != null)
+		{
+			parent_cls = SYMBOL_TABLE.getInstance().find(this.name2);
+
+			if (parent_cls == null)
+			{
+				// MENTIONED "PARENT" CLASS DOES NOT EXIST : THROW EXCEPTION
+				throw new Exception("SEMANTIC ERROR");
+			}
+
+			if  (parent_cls.getClass() != TYPE_CLASS.class)
+			{
+				// MENTIONED "PARENT" IS NOT A CLASS : THROW EXCEPTION
+				throw new Exception("SEMANTIC ERROR");
+			}
 		}
 
 		SYMBOL_TABLE.getInstance().beginScope();
 		TYPE_LIST fields_types = this.cFieldList.SemantMe();
 		SYMBOL_TABLE.getInstance().endScope();
 
-		TYPE cls_type = new TYPE_CLASS(this.name2, this.name1, fields_types);
+		TYPE_CLASS curr_class = new TYPE_CLASS((TYPE_CLASS) parent_cls, this.name1, fields_types);
 
-		SYMBOL_TABLE.getInstance().enter(this.name1, cls_type);
+		SYMBOL_TABLE.getInstance().enter(this.name1, curr_class);
 
-		return cls_type;
 	}
     
 }

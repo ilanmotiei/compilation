@@ -1,6 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_TYPE_LIST extends AST_Node {
     public AST_TYPE type;
@@ -57,11 +58,11 @@ public class AST_TYPE_LIST extends AST_Node {
 		if(typeList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,typeList.SerialNumber);
 	}
 
-	public TYPE_LIST SemantMe(){
+	public TYPE_LIST SemantMe() throws Exception{
 		return this.createTypelist();
 	}
 
-	public TYPE_LIST createTypelist(){
+	public TYPE_LIST createTypelist() throws Exception{
 
 		/*---------- Inserting the new variable to the current scope ------------*/
 
@@ -69,7 +70,16 @@ public class AST_TYPE_LIST extends AST_Node {
 
 		/*---------- Creating a list contains all of the types of elements in the list ------------*/
 
-		return TYPE_LIST(this.type.SemantMe(), this.tail.createTypelist());
+		if (this.typeList != null)
+		{
+			return new TYPE_LIST(this.type.SemantMe(), this.typeList.createTypelist());
+		}
+		else 
+		{
+			return new TYPE_LIST(this.type.SemantMe(), null);
+		}
+
+		
 	}
     
 }

@@ -1,10 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE;
-import TYPES.TYPE_INT;
-import TYPES.TYPE_STRING;
-import TYPES.TYPE_VOID;
+import TYPES.*;
 
 public class AST_TYPE extends AST_Node {
     int num; //decide which derivation we used
@@ -54,7 +51,7 @@ public class AST_TYPE extends AST_Node {
 		}
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		if (num == 0){
 			return TYPE_INT.getInstance();
 		}
@@ -68,7 +65,10 @@ public class AST_TYPE extends AST_Node {
 			return SYMBOL_TABLE.getInstance().find(this.name);
 		}
 
-		return null; // for code's compilation
+		// SHouldn't get here
+		throw new Exception("SEMANTIC TYPE ERROR");
+
+		// return null; // for code's compilation
 	}
     
 }

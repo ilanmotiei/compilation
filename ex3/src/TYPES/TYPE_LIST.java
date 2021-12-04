@@ -1,5 +1,7 @@
 package TYPES;
 
+import java.util.Iterator;
+
 public class TYPE_LIST implements Iterable<TYPE>
 {
 	/****************/
@@ -30,7 +32,7 @@ public class TYPE_LIST implements Iterable<TYPE>
 			return (!end);
 		}
 
-		public Node next(){
+		public TYPE next(){
 			TYPE curr_ptr = curr;
 
 			if (curr_list_tail == null){
@@ -44,7 +46,6 @@ public class TYPE_LIST implements Iterable<TYPE>
 		}
 	}
 
-	@Override
 	/* -------------- CHECKS IF THE TWO GIVEN LISTS ARE SYNTACTICALLY (EXACTLY) EQUAL --------------*/
 	public boolean equals(TYPE_LIST other){
 		if (this.head != other.head)

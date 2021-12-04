@@ -1,10 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_FUNCTION;
-import TYPES.TYPE_INT;
-import TYPES.TYPE_LIST;
-import TYPES.TYPE_VOID;
+import TYPES.*;
 
 public class AST_PROGRAM extends AST_Node{
     public AST_DEC_LIST decList;
@@ -38,7 +35,7 @@ public class AST_PROGRAM extends AST_Node{
 			
 	}
 
-	public void SemantMe(){
+	public void SemantMe() throws Exception{
 
 		SYMBOL_TABLE.getInstance().enter("PrintInt", 
 										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt", new TYPE_LIST(TYPE_INT.getInstance(), null), 
@@ -48,7 +45,7 @@ public class AST_PROGRAM extends AST_Node{
 										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null), null));
 
 		SYMBOL_TABLE.getInstance().enter("PrintTrace", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null, null, null));
+										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null, null));
 
 		decList.SemantMe();
 	}

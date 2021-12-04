@@ -1,8 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_ARRAY;
-import TYPES.TYPE_VOID;
+import TYPES.*;
 
 public class AST_ARRAYTYPEDEF extends AST_Node {
     public String name;
@@ -42,16 +41,20 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 		if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 	}
 
-	public void SemantMe(){
+	public void SemantMe() throws Exception{
 
 		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() != null)
 		{
-			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION : TODO
+			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION :
+
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
 		{
-			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :TODO
+			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :
+
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		TYPE array_elems_type = this.type.SemantMe();

@@ -1,7 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_INT;
+import TYPES.*;
 
 //this class was given in the skeleton of ex2, and we add few functionalities
 public class AST_STMT_IF extends AST_STMT
@@ -40,15 +40,16 @@ public class AST_STMT_IF extends AST_STMT
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public void SemantMe() throws Exception{
 		TYPE cond_type = this.cond.SemantMe();
 
 		if (cond_type != TYPE_INT.getInstance()){
-			// CONDITION TYPE ISN'T INT : THROW ERROR : TODO
+			// CONDITION TYPE ISN'T INT : THROW ERROR :
+			throw new Exception("SEMANTIC ERROR");
 		}
 		
 		// ELSE
-		
+
 		SYMBOL_TABLE.getInstance().beginScope();
 		this.body.SemantMe();
 		SYMBOL_TABLE.getInstance().endScope();

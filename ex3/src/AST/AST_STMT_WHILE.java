@@ -1,7 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_INT;
+import TYPES.*;
 
 public class AST_STMT_WHILE extends AST_STMT
 {
@@ -39,10 +39,11 @@ public class AST_STMT_WHILE extends AST_STMT
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public void SemantMe() throws Exception{
 		
 		if (cond.SemantMe() != TYPE_INT.getInstance()){
-			// CONDITION TYPE ISN'T INT : THROW ERROR : TODO
+			// CONDITION TYPE ISN'T INT : THROW ERROR :
+			throw new Exception("SEMANTIC ERROR");
 		}
 		
 		// ELSE

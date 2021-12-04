@@ -20,6 +20,13 @@ public class TYPE_FUNCTION extends TYPE
 	/****************/
 	/* CTROR(S) ... */
 	/****************/
+	public TYPE_FUNCTION(TYPE returnType, String name, TYPE_LIST params)
+	{
+		this.name = name;
+		this.returnType = returnType;
+		this.params = params;
+	}
+
 	public TYPE_FUNCTION(TYPE returnType, String name, TYPE_LIST params, TYPE_CLASS cls)
 	{
 		this.name = name;

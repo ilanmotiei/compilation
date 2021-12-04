@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
     /********************/
 	/*  var := new exp  */
@@ -44,13 +47,12 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 		if (newExp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,newExp.SerialNumber);
 	}
 
-	public void SemantMe(){
+	public void SemantMe() throws Exception{
 
-		if (!(this.var.SemantMe().is_ancestor(this.newExp.SemantMe()))){
-			// TYPES OF LHS AND RHS ARE INEQUAL 
-			// THROW AN EXCEPTION
-
-			// TODO
+		if (!(this.var.SemantMe().semantically_equals(this.newExp.SemantMe())))
+		{
+			// TYPES OF RHS TO ON OBJECT OF THE TYPE OF THE LHS : THROW EXCEPTION
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// else - the assignment statement is valid.

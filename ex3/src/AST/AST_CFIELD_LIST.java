@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_CFIELD_LIST extends AST_Node {
     // DATA MEMBERS
 	public AST_CFIELD head;
@@ -41,11 +44,14 @@ public class AST_CFIELD_LIST extends AST_Node {
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 	
-	public TYPE_LIST SemantMe(){
-		return this.createTypelist();
+	public void SemantMe() throws Exception{
+		
+		this.head.SemantMe();
+
+		if (this.tail != null)
+		{
+			this.tail.SemantMe();
+		}
 	}
 
-	public TYPE_LIST createTypelist(){
-		return TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
-	}
 }

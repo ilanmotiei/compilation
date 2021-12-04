@@ -1,6 +1,6 @@
 package AST;
 
-import TYPES.TYPE_STRING;
+import TYPES.*;
 
 public class AST_EXP_STRING extends AST_EXP {
     public String s;
@@ -33,7 +33,7 @@ public class AST_EXP_STRING extends AST_EXP {
 			// can't use double quotes in a label of Graphviz 
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		return TYPE_STRING.getInstance();
 	}
 }

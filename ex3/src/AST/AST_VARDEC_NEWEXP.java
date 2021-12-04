@@ -1,8 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE;
-import sun.net.www.content.text.plain;
+import TYPES.*;
 
 public class AST_VARDEC_NEWEXP extends AST_VARDEC {
     // DATA MEMBERS
@@ -47,17 +46,18 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 	}
 
 
-	public void SemantMe()
+	public void SemantMe() throws Exception
 	{
 		SemantMe(false);	
 	}
 
-	public void SemantMe(boolean const_exp)
+	public void SemantMe(boolean const_exp) throws Exception
 	{
 
 		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
 		{
-			// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED : THROW ERROR : TODO
+			// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED : THROW ERROR :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE : 
@@ -66,11 +66,13 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 		if (var_type.semantically_equals(this.newExp.SemantMe()) == false)
 		{
-			// the newExp cannot be assigned to the variable : THROW EXCEPTION : TODO
+			// the newExp cannot be assigned to the variable : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		if (const_exp == true){
-			// CHECK ALSO THAT THE EXPRESSION'S VALUE IS CONSTANT : TODO
+			// CHECK ALSO THAT THE EXPRESSION'S VALUE IS CONSTANT :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		SYMBOL_TABLE.getInstance().enter(this.name, var_type);

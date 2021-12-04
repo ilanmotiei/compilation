@@ -1,8 +1,7 @@
 package AST;
 
-import TYPES.TYPE;
-import TYPES.TYPE_INT;
-import TYPES.TYPE_STRING;
+import TYPES.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
@@ -74,7 +73,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws Exception{
 		TYPE left_type = this.left.SemantMe();
 		TYPE right_type = this.right.SemantMe();
 
@@ -85,7 +84,8 @@ public class AST_EXP_BINOP extends AST_EXP
 			{
 				if (left_type != TYPE_STRING.getInstance() || right_type != TYPE_STRING.getInstance())
 				{
-					// THE BINARY OPERATION "+" CANNOT BE PERFORMED ON THE TWO SIDES : THROW EXCEPTION : TODO
+					// THE BINARY OPERATION "+" CANNOT BE PERFORMED ON THE TWO SIDES : THROW EXCEPTION :
+					throw new Exception("SEMANTIC ERROR");
 				}
 			}
 
@@ -102,7 +102,8 @@ public class AST_EXP_BINOP extends AST_EXP
 
 			if (! (left_type.semantically_equals(right_type) || right_type.semantically_equals(left_type)))
 			{
-				// TYPES CANNOT BE TESTED FOR AN EQUALITY : THROW EXCEPTION : TODO
+				// TYPES CANNOT BE TESTED FOR AN EQUALITY : THROW EXCEPTION :
+				throw new Exception("SEMANTIC ERROR");
 			}
 
 			return TYPE_INT.getInstance();
@@ -112,7 +113,8 @@ public class AST_EXP_BINOP extends AST_EXP
 
 		if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
 		{
-			// ONE OF THE BINARY OPERATION SIDES TYPE IS NOT AN INTEGER : THROW EXCEPTION : TODO
+			// ONE OF THE BINARY OPERATION SIDES TYPE IS NOT AN INTEGER : THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE : EXPERSSION IS VALID AND ITS TYPE IS "TYPE_INT"
