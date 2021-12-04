@@ -48,7 +48,7 @@ public class AST_PROGRAM extends AST_Node{
 										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null), null));
 
 		SYMBOL_TABLE.getInstance().enter("PrintTrace", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", null, null, null));
+										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null, null, null));
 
 		decList.SemantMe();
 	}

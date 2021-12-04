@@ -5,4 +5,6 @@ public abstract class AST_CFIELD extends AST_Node {
 	{
 		System.out.print("UNKNOWN AST STATEMENT NODE");
 	}
+
+	public abstract TYPE SemantMe();
 }
