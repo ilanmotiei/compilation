@@ -58,6 +58,19 @@ public class AST_DEC extends AST_Node {
 	}
 
 	public void SemantMe() throws Exception{
-		son.SemantMe();
+
+		switch(i){
+			case 0:
+				((AST_VARDEC) son).SemantMe();
+				break;
+			case 1:
+				((AST_FUNCDEC) son).SemantMe();
+				break;
+			case 2:
+				((AST_CLASSDEC) son).SemantMe();
+				break;
+			case 3:
+				((AST_ARRAYTYPEDEF) son).SemantMe();
+		}		
 	}
 }

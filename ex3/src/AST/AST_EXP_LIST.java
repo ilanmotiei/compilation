@@ -44,11 +44,13 @@ public class AST_EXP_LIST extends AST_Node {
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TYPE_LIST SemantMe() throws Exception{
+	public TYPE_LIST SemantMe() throws Exception
+	{
 		return this.createTypelist();
 	}
 
-	public TYPE_LIST createTypelist(){
+	public TYPE_LIST createTypelist() throws Exception
+	{
 		if (this.tail != null)
 		{
 			return new TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());

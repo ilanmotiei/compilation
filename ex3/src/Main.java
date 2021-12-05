@@ -39,16 +39,22 @@ public class Main
 			/***********************************/
 
 			/* Semant the AST ... */
-			AST.SemantMe();
-			
-			/***********************************/
+			try
+			{
+				AST.SemantMe();
+				
+				/* 
+				Getting here means no semantic errors occure.
+				In particular no lexical and syntactic errors have been occured
+				*/
+				file_writer.print("OK");
+			}
+			catch (Exception e)
+			{
+				// A semantic error have been occured.
 
-			/* 
-			Getting here means no semantic errors occure.
-			In particular no lexical and syntactic errors have been occured
-			*/
-
-			file_writer.print("OK");
+				file_writer.print("SEMANTIC ERROR");
+			}
 
 			/***********************************/
 
