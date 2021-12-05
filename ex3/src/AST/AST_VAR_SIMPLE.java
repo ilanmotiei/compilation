@@ -38,9 +38,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 	public TYPE SemantMe() throws Exception
 	{
-		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-
-		TYPE var_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.name);
+		TYPE var_type = SYMBOL_TABLE.getInstance().find(this.name);
 
 		if (var_type == null)
 		{
@@ -51,5 +49,12 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		// ELSE
 
 		return var_type;
+	}
+
+	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	{
+		// We won't apply this method. It is only for compilation reasons.
+
+		return this.SemantMe();
 	}
 }

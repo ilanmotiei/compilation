@@ -43,7 +43,7 @@ public class AST_STMT_IF extends AST_STMT
 	public void SemantMe() throws Exception{
 		TYPE cond_type = this.cond.SemantMe();
 
-		if (cond_type != TYPE_INT.getInstance()){
+		if ( ! cond_type.is_int()){
 			// CONDITION TYPE ISN'T INT : THROW ERROR :
 			throw new Exception("SEMANTIC ERROR");
 		}

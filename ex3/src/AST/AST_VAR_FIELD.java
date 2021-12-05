@@ -22,7 +22,6 @@ public class AST_VAR_FIELD extends AST_VAR
 		this.fieldName = fieldName;
 	}
 
-
 	// The printing message for a field var AST node
 	public void PrintMe()
 	{
@@ -51,29 +50,36 @@ public class AST_VAR_FIELD extends AST_VAR
 
 		if (var == null)
 		{
-			field_type = SYMBOL_TABLE.get_instance().find_by_hierarchy(curr_scope_class, this.fieldName);
+			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.fieldName);
 		}
 		else
 		{
 			TYPE var_type = this.var.SemantMe();
 
-			if (var_type.getClass() != TYPE_CLASS.class)
+			if ( ! var_type.is_class())
 			{
-				// VAR IS A PRIMITIVE TYPE AND HAS NO FIELDS : THROW EXCEPTION :
+				// VAR's TYPE IS NOT A CLASS AND THUS 'VAR' HAVE NO FIELDS : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");
 			}
 
-			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy((TYPE_CLASS) var_type, this.fieldName);
+			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(((TYPE_CLASS) var_type), this.fieldName);
 		}
 
 		if (field_type == null) 
 		{ 
-			// FIELD_NAME DOES NOT EXIST IN VAR'S CLASS : THROW EXCEPTION :
+			// IF VAR != NULL : FIELD_NAME DOES NOT EXIST IN VAR'S CLASS. IF VAR == NULL : FIELD_NAME DOES NOT EXIST AT CURRENT SCOPES PATH
+			// : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
 		}
 
 		// ELSE
 
 		return field_type;
+	}
+
+	// Method is used only for compilation reasons
+	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	{
+		return null; 
 	}
 }

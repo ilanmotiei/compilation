@@ -1,5 +1,7 @@
 package TYPES;
 
+/* GLOBAL FUNCTION TYPE */
+
 public class TYPE_FUNCTION extends TYPE
 {
 	/***********************************/
@@ -12,26 +14,21 @@ public class TYPE_FUNCTION extends TYPE
 	/*************************/
 	public TYPE_LIST params;
 
-	/*********************************************************************************/
-	/* The type of the class the function is defined at. null if defined at no class */
-	/*********************************************************************************/
-	public TYPE_CLASS cls;
+	/*************************/
+	/*  name of the function */
+	/*************************/
+	public String name;
 	
-	/****************/
-	/* CTROR(S) ... */
-	/****************/
 	public TYPE_FUNCTION(TYPE returnType, String name, TYPE_LIST params)
 	{
 		this.name = name;
 		this.returnType = returnType;
 		this.params = params;
+		this.type_name = "function";
 	}
 
-	public TYPE_FUNCTION(TYPE returnType, String name, TYPE_LIST params, TYPE_CLASS cls)
+	public boolean AcceptableArgs(TYPE_LIST args_types)
 	{
-		this.name = name;
-		this.returnType = returnType;
-		this.params = params;
-		this.cls = cls;
+		return this.params.semantically_equals(args_types);
 	}
 }

@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public abstract class AST_VARDEC extends AST_Node {
     public void PrintMe()
@@ -6,7 +7,7 @@ public abstract class AST_VARDEC extends AST_Node {
 		System.out.print("UNKNOWN AST VARDEC NODE");
 	}
 	
-	public abstract void SemantMe() throws Exception;
+	public abstract TYPE SemantMe() throws Exception;
 
-	public abstract void SemantMe(boolean const_assignment) throws Exception;
+	public abstract TYPE SemantMe(TYPE_CLASS cls) throws Exception;
 }

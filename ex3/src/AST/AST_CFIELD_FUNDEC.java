@@ -39,15 +39,16 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 		if(funcDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,funcDec.SerialNumber);
 	}
 
-	public void SemantMe() throws Exception{
+	public void SemantMe(TYPE_CLASS cls) throws Exception{
 
-		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() == null)
+		TYPE_FUNCTION func = this.funcDec.SemantMe();
+
+		if (cls.function_shadows(func))
 		{
-			// CAN'T DEFINE A CLASS FIELD OUTSIDE ANY CLASS : THROW ERROR :
-
+			// METHOD SHADOWS AN ANOTHER FUNCTION AT THE CLASS : THROW EXCEPTION
 			throw new Exception("SEMANTIC ERROR");
 		}
 
-		this.funcDec.SemantMe();
+		cls.appendField(new TYPE_CLASS_FIELD(func, func.name));
 	}
 }

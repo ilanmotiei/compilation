@@ -33,7 +33,7 @@ public class AST_EXP_STRING extends AST_EXP {
 			// can't use double quotes in a label of Graphviz 
 	}
 
-	public TYPE SemantMe() throws Exception{
+	public TYPE_STRING SemantMe() throws Exception{
 		return TYPE_STRING.getInstance();
 	}
 }

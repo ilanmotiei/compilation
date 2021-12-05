@@ -50,7 +50,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 		TYPE_FUNCTION func = SYMBOL_TABLE.getInstance().find_curr_scope_function();
 
-		if (func_type == null)
+		if (func == null)
 		{
 			// THE 'RETURN' STMT SHOWS OUTSIDE A FUNCTION : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
@@ -70,7 +70,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 		{
 			// exp == null, and this return is empty;
 
-			if (func.returnType != TYPE_VOID.getInstance())
+			if ( ! func.returnType.is_void())
 			{
 				// THIS RETURN SHOULD HAVE RETURNED A VALUE, BUT IS EMPTY : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");

@@ -20,7 +20,7 @@ public class TYPE_STRING extends TYPE
 		if (instance == null)
 		{
 			instance = new TYPE_STRING();
-			instance.name = "string";
+			instance.type_name = "string";
 		}
 		return instance;
 	}

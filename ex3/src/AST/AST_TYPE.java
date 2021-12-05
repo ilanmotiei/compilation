@@ -4,7 +4,8 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_TYPE extends AST_Node {
-    int num; //decide which derivation we used
+
+    int num; // tells us which derivation we have used
 	String name;
 	
 	/* Class Constructor */
@@ -51,7 +52,8 @@ public class AST_TYPE extends AST_Node {
 		}
 	}
 
-	public TYPE SemantMe() throws Exception{
+	public TYPE SemantMe() throws Exception
+	{
 		if (num == 0){
 			return TYPE_INT.getInstance();
 		}
@@ -62,10 +64,26 @@ public class AST_TYPE extends AST_Node {
 			return TYPE_VOID.getInstance();
 		}
 		if (num == 3){
-			return SYMBOL_TABLE.getInstance().find(this.name);
+			TYPE id_cls = SYMBOL_TABLE.getInstance().find(this.name);
+
+			if (id_cls == null) 
+			{
+				// CLASS NAME WASN'T FOUND AT THE SYMBOL TABLE : THROW EXCEPTION
+				throw new Exception("SEMANTIC ERROR");
+			}
+
+			if ( ( ! id_cls.is_class()) && ( ! id_cls.is_array()) )
+			{
+				// CLASS NAME WAS FOUND AT SYMBOL TABLE, BUT NOT AS A CLASS OR AS AN ARRAY DECLERATION : THROW EXCEPTION
+				throw new Exception("SEMANTIC ERROR");
+			}
+
+			// ELSE
+
+			return id_cls;
 		}
 
-		// SHouldn't get here
+		// Shouldn't get here
 		throw new Exception("SEMANTIC TYPE ERROR");
 
 		// return null; // for code's compilation

@@ -1,7 +1,6 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.TYPE_CLASS_VAR_DEC;
 import TYPES.*;
 
 public class AST_STMT_FUNCCALL extends AST_STMT{
@@ -73,13 +72,13 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		/* ------------- CHEKING THE VALIDITY OF THE EXP LIST -------------- */
 
 		TYPE_LIST args_types = this.expList.SemantMe();
+		TYPE func_dec;
 		
 		if (this.var == null)
 		{
 			// THE CALL IS A GENERIC FUNCTION CALL
 
-			TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-			TYPE func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.func_name);
+			func_dec = SYMBOL_TABLE.getInstance().find(this.func_name);
 		}
 		else
 		{
@@ -87,21 +86,13 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 
 			TYPE var_type = this.var.SemantMe();
 
-			if (var_type.getClass() == TYPE_CLASS_VAR_DEC.class)
+			if ( ! var_type.is_class())
 			{
 				// VARIABLE IS NOT A CLASS OBJECT : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");
 			}
 
-			TYPE_CLASS var_class = (TYPE_CLASS_VAR_DEC (var_type)).cls;
-
-			TYPE func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(var_class, this.func_name);
-		}
-
-		if (func_dec.getClass() != TYPE_FUNCTION.class)
-		{
-			// WE CALLED A VERIABLE/CLASS AS A METHOD : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy((TYPE_CLASS) var_type, this.func_name);
 		}
 
 		if (func_dec == null)
@@ -113,12 +104,22 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 
 		// ELSE : 
 
-		if (((TYPE_FUNCTION) func_dec).params.semantically_equals(args_types) == false)
+		if ( ! func_dec.is_function())
 		{
-			// GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION :
+			// WE CALLED A VERIABLE/CLASS AS IT WAS A METHOD : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
 		}
 
-		// VALID;
+		// ELSE : 
+
+		if (((TYPE_FUNCTION) func_dec).AcceptableArgs(args_types) == false)
+		{
+			// THE GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION :
+			throw new Exception("SEMANTIC ERROR");
+		}
+
+		// ELSE : 
+	
+		// CALL IS VALID;
 	}
 }

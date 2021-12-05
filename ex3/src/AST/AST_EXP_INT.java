@@ -44,6 +44,6 @@ public class AST_EXP_INT extends AST_EXP
 	}
 
 	public TYPE SemantMe(){
-		return TYPE_INT().getInstance();
+		return TYPE_INT.getInstance();
 	}
 }

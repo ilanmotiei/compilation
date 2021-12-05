@@ -7,7 +7,6 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	public AST_VAR var;
 	public AST_EXP subscript;
 	
-
 	// Class Constructor
 	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript)
 	{
@@ -46,20 +45,26 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	{
 		TYPE var_type = this.var.SemantMe();
 
-		if (var_type.getClass() != TYPE_ARRAY.class)
+		if ( ! var_type.is_array())
 		{
 			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
 		}
 
-		TYPE subscript_type = this.subscript.SemantMe();
+		TYPE subscript_exp = this.subscript.SemantMe();
 
-		if (subscript_type != TYPE_INT.getInstance())
+		if ( ! subscript_exp.is_int())
 		{
 			// SUBSCRIPT IS NOT INTEGER : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
 		}
 
 		return ((TYPE_ARRAY) var_type).elems_type;
+	}
+
+	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	{
+		// We won't apply this method. It is only for compilation reasons.
+		return this.SemantMe();
 	}
 }

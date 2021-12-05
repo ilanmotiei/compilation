@@ -43,7 +43,7 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 
 	public void SemantMe() throws Exception{
 
-		if (SYMBOL_TABLE.getInstance().find_curr_scope_class() != null)
+		if ( ! SYMBOL_TABLE.getInstance().at_global_scope())
 		{
 			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION :
 

@@ -51,12 +51,12 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public void SemantMe() throws Exception
+	public TYPE SemantMe() throws Exception
 	{
-		SemantMe(false);	
+		return SemantMe(null);	
 	}
 
-	public void SemantMe(boolean const_exp) throws Exception
+	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
 	{
 
 		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
@@ -68,18 +68,40 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		// ELSE : 
 
 		TYPE var_type = this.type.SemantMe();
+		TYPE exp_type = this.exp.SemantMe();
 
-		if (var_type.semantically_equals(this.exp.SemantMe()) == false)
+		if (var_type.semantically_equals(exp_type) == false)
 		{
-			// the exp cannot be assigned to the variable : THROW EXCEPTION :
+			// the newExp cannot be assigned to the variable : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
 		}
 
-		if (const_exp == true){
-			// CHECK ALSO THAT THE EXPRESSION'S VALUE IS CONSTANT :
-			throw new Exception("SEMANTIC ERROR");
+		if (cls != null){
+			// CHECK THAT THE EXPRESSION'S VALUE IS CONSTANT :
+			
+			/*
+			if ( ! exp_type.is_const)
+			{
+				throw new Exception("SEMANTIC ERROR");
+			}
+			*/
+
+			// CHECK THAT THE VARIABLE DOES NOT SHADOW AN ANOTHER CLASS FIELD :
+
+			if (cls.get_field(this.name) != null)
+			{
+				throw new Exception("SEMANTIC ERROR");
+			}
 		}
 
 		SYMBOL_TABLE.getInstance().enter(this.name, var_type);
+
+		if (cls != null)
+		{
+			// MAKE A CLASS FIELD OBJECT OUT OF THIS DECLERATION (WRAP IT WITH A NAME)
+			var_type = new TYPE_CLASS_FIELD(var_type, this.name);
+		}
+
+		return var_type;
 	}
 }

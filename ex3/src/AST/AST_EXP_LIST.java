@@ -55,7 +55,7 @@ public class AST_EXP_LIST extends AST_Node {
 		}
 		else
 		{
-			return new TYPE_LIST(this.head.SemantMe, null);
+			return new TYPE_LIST(this.head.SemantMe(), null);
 		}
 		
 	}

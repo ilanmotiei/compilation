@@ -58,8 +58,7 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 		{
 			// THE CALL IS A GENERIC FUNCTION CALL
 
-			TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-			func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.func_name);
+			func_dec = SYMBOL_TABLE.getInstance().find(this.func_name);
 		}
 		else
 		{
@@ -67,15 +66,13 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 
 			TYPE var_type = this.var.SemantMe();
 
-			if (! (var_type instanceof TYPE_CLASS_VAR_DEC))
+			if (! (var_type.is_class()))
 			{
 				// VARIABLE IS NOT A CLASS OBJECT : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");
 			}
 
-			TYPE_CLASS var_class = (TYPE_CLASS_VAR_DEC (var_type)).cls;
-
-			func_dec = var_class.find_by_hierarchy(var_class, this.func_name);
+			func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy((TYPE_CLASS) var_type, this.func_name);
 		}
 
 		if (func_dec == null)
@@ -85,7 +82,7 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 			throw new Exception("SEMANTIC ERROR");
 		}
 
-		if (! (func_dec.getClass() instanceof TYPE_FUNCTION))
+		if ( ! (func_dec.is_function()))
 		{
 			// WE CALLED A VERIABLE/CLASS AS A METHOD : THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");
@@ -93,7 +90,7 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 
 		// ELSE : 
 
-		if (((TYPE_FUNCTION) func_dec).params.semantically_equals(args_types) == false)
+		if (((TYPE_FUNCTION) func_dec).AcceptableArgs(args_types) == false)
 		{
 			// GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION :
 			throw new Exception("SEMANTIC ERROR");

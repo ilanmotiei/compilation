@@ -41,7 +41,7 @@ public class AST_STMT_WHILE extends AST_STMT
 
 	public void SemantMe() throws Exception{
 		
-		if (cond.SemantMe() != TYPE_INT.getInstance()){
+		if ( ! cond.SemantMe().is_int()){
 			// CONDITION TYPE ISN'T INT : THROW ERROR :
 			throw new Exception("SEMANTIC ERROR");
 		}
@@ -51,7 +51,6 @@ public class AST_STMT_WHILE extends AST_STMT
 		SYMBOL_TABLE.getInstance().beginScope();
 		this.body.SemantMe();
 		SYMBOL_TABLE.getInstance().endScope();
-		
 	}
 }
 

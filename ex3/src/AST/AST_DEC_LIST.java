@@ -2,7 +2,8 @@ package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
 
-public class AST_DEC_LIST extends AST_Node{ 
+public class AST_DEC_LIST extends AST_Node
+{ 
     // DATA MEMBERS
 	public AST_DEC head;
 	public AST_DEC_LIST tail;
@@ -43,25 +44,13 @@ public class AST_DEC_LIST extends AST_Node{
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	/*
-	public void SemantMe(){
-		AST_DEC_LIST dec_list = this.tail;
-
-		for (AST_DEC dec=this.head ; dec != null ; dec=dec_list.head, dec_list=dec_list.tail){
-			Type dec_type = dec.SemantMe();
-
-			// TODO
-		}
-	}
-	*/
-
-	public void SemantMe() throws Exception{
+	public void SemantMe() throws Exception
+	{
 		this.head.SemantMe();
 		
 		if (this.tail != null)
 		{
 			this.tail.SemantMe();
 		}
-		
 	}
 }

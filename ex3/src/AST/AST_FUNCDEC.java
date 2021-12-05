@@ -50,7 +50,7 @@ public class AST_FUNCDEC extends AST_Node {
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception
+	public TYPE_FUNCTION SemantMe() throws Exception
 	{
 
 		/*-------- CHECKING IF THE FUNCTION IS NESTED ---------*/
@@ -70,13 +70,12 @@ public class AST_FUNCDEC extends AST_Node {
 
 		/*-------- DEFINING THE FUNCTION'S TYPE AND ADDING IT TO THE SCOPE --------*/
 
-		TYPE_CLASS func_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types, func_class);
+		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types);
 		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
 
 		/*-------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY --------*/
 
-		this.check_shadows(func_type);
+		// args_types.check_shadows(func_type);
 
 		/*-------- GETTING HERE MEANS THE FUNCTION DIDN'T SHADOW AN ANOTHER METHOD; CHECK THE FUNCTION'S BODY --------*/
 		
@@ -90,13 +89,15 @@ public class AST_FUNCDEC extends AST_Node {
 
 	// Checks if the function illegaly shadows another function. throws an exception if does.
 
+
+	/*
 	public void check_shadows(TYPE_FUNCTION thisfunc_dec)
 	{
 		TYPE_LIST all_decs = SYMBOL_TABLE.getInstance().find_all(this.name);
 
 		for (TYPE dec : all_decs)
 		{
-			if (dec.getClass() != TYPE_FUNCTION.class)
+			if ( ! dec.is_class())
 			{
 				// SHADOWS A VARIABLE OR A CLASS NAME : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");
@@ -135,4 +136,6 @@ public class AST_FUNCDEC extends AST_Node {
 
 		// ALL THE DECLERATIONS CHECKED ARE FINE, SO THIS FUNCTION'S DECLERATION IS LEGAL;
 	}
+
+	*/
 }

@@ -78,8 +78,6 @@ public class AST_TYPE_LIST extends AST_Node {
 		{
 			return new TYPE_LIST(this.type.SemantMe(), null);
 		}
-
-		
 	}
     
 }

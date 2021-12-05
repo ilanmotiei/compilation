@@ -2,6 +2,10 @@ package TYPES;
 
 public class TYPE_CLASS extends TYPE
 {
+
+	/* Class Name */
+	public String name;
+
 	/*********************************************************************/
 	/* If this class does not extend a father class this should be null  */
 	/*********************************************************************/
@@ -12,16 +16,26 @@ public class TYPE_CLASS extends TYPE
 	/* Note that data members coming from the AST are */
 	/* packed together with the class methods         */
 	/**************************************************/
-	public TYPE_LIST data_members;
+	public TYPE_CLASS_FIELD_LIST data_members;
 	
 	/****************/
 	/* CTROR(S) ... */
 	/****************/
-	public TYPE_CLASS(TYPE_CLASS father, String name, TYPE_LIST data_members)
+	public TYPE_CLASS(TYPE_CLASS father, String name, TYPE_CLASS_FIELD_LIST data_members)
 	{
 		this.name = name;
 		this.father = father;
 		this.data_members = data_members;
+
+		this.type_name = "class";
+	}
+
+	public TYPE_CLASS(TYPE_CLASS father, String name)
+	{
+		this.name = name;
+		this.father = father;
+
+		this.type_name = "class";
 	}
 
 	/******************************************************************/
@@ -57,50 +71,107 @@ public class TYPE_CLASS extends TYPE
 
 
 	/*****************************************************************/
-	/* 	    	Finds a method of the class with the given name      */
-	/*****************************************************************/
-
-	public TYPE_FUNCTION find_Method(String method_name)
-	{
-		for (TYPE dec : this.data_members)
-		{
-			if (dec.getClass() == TYPE_FUNCTION.class)
-			{
-				if (((TYPE_FUNCTION) dec).name == method_name)
-				{
-					return (TYPE_FUNCTION) dec;
-				}
-			}
-		}
-
-		// didn't found a method with the given name
-
-		return null;
-	}
-
-
-	/*****************************************************************/
 	/* 	    	Finds a field of the class with the given name       */
 	/*****************************************************************/
 
-	public TYPE find_field(String field_name)
+	/* When the user queries ${Var}.field_name, when var is an instance of this class (i.e. type(Var)==${this_class})
+	 - this method gives him that variable decleration, or returns null if didn't found it */
+
+	public TYPE_CLASS_FIELD get_field(String field_name)
 	{
-		for (TYPE dec : this.data_members)
+		TYPE_CLASS curr_cls = this;
+
+		while (curr_cls != null)
 		{
-			if (dec.getClass() != TYPE_FUNCTION.class)
+			for (TYPE_CLASS_FIELD f : curr_cls.data_members)
 			{
-				if (dec.name == field_name)
-				{
-					return dec;
-				}
+				if (f.name == field_name) { return f; }
 			}
+
+			curr_cls = curr_cls.father;
 		}
 
-		// didn't found a method with the given name
+		// Didn't found that field at ${thisVar}'s class;
+		return null;
+	}
+
+	// Does the same as the above function, but returns the type of the searched field name. Returns null if wasn't found.
+
+	public TYPE get_field_type(String field_name)
+	{
+		TYPE_CLASS_FIELD field = this.get_field(field_name);
+
+		if (field != null)
+		{
+			return field.type;
+		}
 
 		return null;
 	}
 
+
+	/* Adds a new field to the class */
+	public void appendField(TYPE_CLASS_FIELD newField)
+	{
+		if (this.data_members == null)
+		{
+			this.data_members = new TYPE_CLASS_FIELD_LIST(newField, null);
+		}
+		else
+		{
+			this.data_members.Append(newField);
+		}
+	}
+
+
+	/* Checks if the given function shadows currently defined field of the class */
+	public boolean function_shadows(TYPE_FUNCTION func)
+	{
+
+		for (TYPE_CLASS_FIELD f : this.data_members)
+		{
+			if (f.name.equals(func.name))
+			{
+				return true;
+			}
+		}
+
+		TYPE_CLASS curr_cls = this.father;
+
+		while (curr_cls != null)
+		{
+			for (TYPE_CLASS_FIELD f : curr_cls.data_members)
+			{
+				if (f.name.equals(func.name))
+				{
+					if ( ! f.is_function())
+					{
+						// METHOD'S NAME SHADOWES A VARIABLE
+						return true;
+					}
+					// else
+
+					if ( ! ((TYPE_FUNCTION) f.type).returnType.semantically_equals(func.returnType))
+					{
+						return true;
+					}
+
+					// else
+
+					if ( ! ((TYPE_FUNCTION) f.type).AcceptableArgs(func.params))
+					{
+						return true;
+					}
+
+					// else : we are legally overriding an inherited class method
+				}
+			}
+
+			curr_cls = curr_cls.father;
+		}
+
+		return false;
+	}
 
 	/*************/
 	/* isClass() */

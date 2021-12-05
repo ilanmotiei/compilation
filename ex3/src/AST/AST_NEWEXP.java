@@ -61,7 +61,7 @@ public class AST_NEWEXP extends AST_Node {
 		{
 			// THE FORM IS : NEW ${type} [${exp}]
 
-			if (this.exp.SemantMe() != TYPE_INT.getInstance()) 
+			if ( ! this.exp.SemantMe().is_int()) 
 			{
 				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION :
 				throw new Exception("SEMANTIC ERROR");

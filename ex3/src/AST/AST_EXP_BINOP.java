@@ -80,9 +80,9 @@ public class AST_EXP_BINOP extends AST_EXP
 		if (OP == 0)
 		{
 			// OP == "+"
-			if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
+			if ((left_type.is_int() == false) && (right_type.is_int() == false))
 			{
-				if (left_type != TYPE_STRING.getInstance() || right_type != TYPE_STRING.getInstance())
+				if ((left_type.is_string() == false) && (right_type.is_string() == false))
 				{
 					// THE BINARY OPERATION "+" CANNOT BE PERFORMED ON THE TWO SIDES : THROW EXCEPTION :
 					throw new Exception("SEMANTIC ERROR");

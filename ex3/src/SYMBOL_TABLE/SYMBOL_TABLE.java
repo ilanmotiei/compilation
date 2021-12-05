@@ -73,19 +73,7 @@ public class SYMBOL_TABLE
 	/***********************************************/
 	public TYPE find(String name)
 	{
-		SYMBOL_TABLE_ENTRY e;
-				
-		for (e = table[hash(name)]; e != null; e = e.next)
-		{
-			if (name.equals(e.name))
-			{
-				return e.type;
-			}
-		}
-
-		// didn't found that name
-		
-		return null;
+		return find_by_hierarchy(find_curr_scope_class(), name);
 	}
 
 	/*************************************************/
@@ -165,7 +153,8 @@ public class SYMBOL_TABLE
 		
 		SYMBOL_TABLE_ENTRY top_entry = top;
 
-		while (top_entry.type.getClass() != TYPE_CLASS){
+		while ( ! (top_entry.type.is_class()))
+		{
 			top_entry = top_entry.prevtop;
 		}
 
@@ -187,7 +176,7 @@ public class SYMBOL_TABLE
 		
 		SYMBOL_TABLE_ENTRY top_entry = top;
 
-		while (top_entry.type.getClass() != TYPE_FUNCTION){
+		while ( ! top_entry.type.is_function()){
 			top_entry = top_entry.prevtop;
 		}
 
@@ -248,12 +237,9 @@ public class SYMBOL_TABLE
 
 		TYPE founded = find_at_class(cls, name);
 
-		for (; (founded == null) && (cls != null); cls=cls.father, founded=find_at_class(cls, name));
-
 		if (founded == null)
 		{
 			// DIDN'T FOUND IN ANY SUPER CLASS OF THE GIVEN CLASS; SEARCHING IT AT THE GLOBAL CLASS;
-
 			return find_at_global_scope(name);
 		}
 		else
@@ -269,13 +255,14 @@ public class SYMBOL_TABLE
 
 	public TYPE find_at_class(TYPE_CLASS cls, String name)
 	{
-
-		for (TYPE dec : cls.data_members)
+		for (TYPE_CLASS_FIELD dec : cls.data_members)
 		{
 			if (dec.name == name)
 			{
 				return dec;
 			}
+
+			cls = cls.father;
 		}
 
 		return null;
@@ -291,7 +278,7 @@ public class SYMBOL_TABLE
 
 		while (curr_top != null)
 		{
-			if (curr_top.name == "SCOPE_BOUNDARY")
+			if (curr_top.name == "SCOPE-BOUNDARY")
 			{
 				// WER'E NOT AT THE GLOBAL SCOPE
 				return false;
@@ -355,7 +342,7 @@ public class SYMBOL_TABLE
 					fileWriter.format("node_%d_%d ",i,j);
 					fileWriter.format("[label=\"<f0>%s|<f1>%s|<f2>prevtop=%d|<f3>next\"];\n",
 						it.name,
-						it.type.name,
+						it.type.type_name,
 						it.prevtop_index);
 
 					if (it.next != null)

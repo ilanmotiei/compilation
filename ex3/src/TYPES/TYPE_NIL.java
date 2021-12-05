@@ -20,7 +20,7 @@ public class TYPE_NIL extends TYPE
 		if (instance == null)
 		{
 			instance = new TYPE_NIL();
-			instance.name = "nil";
+			instance.type_name = "nil";
 		}
 		return instance;
 	}

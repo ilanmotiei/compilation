@@ -44,13 +44,13 @@ public class AST_CFIELD_LIST extends AST_Node {
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 	
-	public void SemantMe() throws Exception{
-		
-		this.head.SemantMe();
+	public void SemantMe(TYPE_CLASS cls) throws Exception{
+
+		this.head.SemantMe(cls);
 
 		if (this.tail != null)
 		{
-			this.tail.SemantMe();
+			this.tail.SemantMe(cls);
 		}
 	}
 

@@ -38,14 +38,13 @@ public class AST_PROGRAM extends AST_Node{
 	public void SemantMe() throws Exception{
 
 		SYMBOL_TABLE.getInstance().enter("PrintInt", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt", new TYPE_LIST(TYPE_INT.getInstance(), null), 
-										null));
+										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt", new TYPE_LIST(TYPE_INT.getInstance(), null)));
 
 		SYMBOL_TABLE.getInstance().enter("PrintString", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null), null));
+										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null)));
 
 		SYMBOL_TABLE.getInstance().enter("PrintTrace", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null, null));
+										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null));
 
 		decList.SemantMe();
 	}

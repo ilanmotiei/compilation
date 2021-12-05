@@ -46,7 +46,7 @@ public class TYPE_LIST implements Iterable<TYPE>
 		}
 	}
 
-	/* -------------- CHECKS IF THE TWO GIVEN LISTS ARE SYNTACTICALLY (EXACTLY) EQUAL --------------*/
+	/* -------------- CHECKS IF THE TWO GIVEN LISTS ARE SYNTACTICALLY (EXACTLY) EQUAL -------------- */
 	public boolean equals(TYPE_LIST other){
 		if (this.head != other.head)
 		{
@@ -56,10 +56,12 @@ public class TYPE_LIST implements Iterable<TYPE>
 		return this.tail.equals(other.tail);
 	}
 
-	/* ------------------------------------------------------------------------------------------------------- 
-							CHECKS IF THE TWO GIVEN LISTS ARE SEMANTICALLY EQUAL : 
+	/*
+	-----------------------------------------------------------------------------------------------------------------------
+								CHECKS IF THE TWO GIVEN LISTS ARE SEMANTICALLY EQUAL : 
 	i.e. each type in other is a son of the corresponding item in the current list, or is the same as the corrsponding item
-	---------------------------------------------------------------------------------------------------------- */
+	-----------------------------------------------------------------------------------------------------------------------
+	*/
 	public boolean semantically_equals(TYPE_LIST other){
 		if (!this.head.semantically_equals(other.head))
 		{

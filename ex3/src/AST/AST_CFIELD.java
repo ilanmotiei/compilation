@@ -9,6 +9,6 @@ public abstract class AST_CFIELD extends AST_Node {
 		System.out.print("UNKNOWN AST STATEMENT NODE");
 	}
 
-	public abstract void SemantMe() throws Exception;
+	public abstract void SemantMe(TYPE_CLASS cls) throws Exception;
 	
 }

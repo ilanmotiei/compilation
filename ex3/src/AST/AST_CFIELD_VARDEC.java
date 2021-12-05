@@ -39,7 +39,13 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		if(varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 
-	public void SemantMe() throws Exception{
-		this.varDec.SemantMe(true);
+	public void SemantMe(TYPE_CLASS cls) throws Exception{
+
+		boolean class_var_dec = true;
+
+		TYPE_CLASS_FIELD var = (TYPE_CLASS_FIELD) this.varDec.SemantMe(cls); 
+		// The above call checks also if no shadowing occured, and throws an error if does
+
+		cls.appendField(new TYPE_CLASS_FIELD(var, var.name));
 	}
 }
