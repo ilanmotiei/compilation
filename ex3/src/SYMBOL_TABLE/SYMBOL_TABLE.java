@@ -31,13 +31,13 @@ public class SYMBOL_TABLE
 	private int hash(String s)
 	{
 		if (s.charAt(0) == 'l') {return 1;}
-		if (s.charAt(0) == 'm') {return 1;}
+		if (s.charAt(0) == 'm') {return 2;}
 		if (s.charAt(0) == 'r') {return 3;}
-		if (s.charAt(0) == 'i') {return 6;}
-		if (s.charAt(0) == 'd') {return 6;}
+		if (s.charAt(0) == 'i') {return 4;}
+		if (s.charAt(0) == 'd') {return 5;}
 		if (s.charAt(0) == 'k') {return 6;}
-		if (s.charAt(0) == 'f') {return 6;}
-		if (s.charAt(0) == 'S') {return 6;}
+		if (s.charAt(0) == 'f') {return 7;}
+		if (s.charAt(0) == 'S') {return 8;}
 		return 12;
 	}
 
@@ -66,6 +66,7 @@ public class SYMBOL_TABLE
 		
 		/* [6] Print Symbol Table */
 		PrintMe();
+		System.out.println(e.name);
 	}
 
 	/***********************************************/
@@ -151,9 +152,9 @@ public class SYMBOL_TABLE
 	/****************************************************************************************/
 	public TYPE_CLASS find_curr_scope_class(){
 		
-		SYMBOL_TABLE_ENTRY top_entry = top;
+		SYMBOL_TABLE_ENTRY top_entry = this.top;
 
-		while ( ! (top_entry.type.is_class()))
+		while ( (top_entry != null) && ( ! (top_entry.type.is_class())))
 		{
 			top_entry = top_entry.prevtop;
 		}
@@ -161,7 +162,7 @@ public class SYMBOL_TABLE
 		// if top_entry == null that means no we are at no class' scope
 
 		if (top_entry != null){
-			return ((TYPE_CLASS) top_entry.type);
+			return ((TYPE_CLASS) top_entry.type); // auto-casting
 		}
 
 		// else
