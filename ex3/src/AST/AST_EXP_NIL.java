@@ -4,15 +4,19 @@ import TYPES.*;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 
 public class AST_EXP_NIL extends AST_EXP {
+
+	public int line;
     
 	/* Class Constructor */
-	public AST_EXP_NIL()
+	public AST_EXP_NIL(int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER 
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		// PRINT CORRESPONDING DERIVATION RULE
 		System.out.format("====================== exp -> NIL\n");
+
+		this.line = line;
 	}
 
 	
@@ -28,9 +32,9 @@ public class AST_EXP_NIL extends AST_EXP {
 			String.format("NIL"));
 	}
 
-	public TYPE_NIL SemantMe()
+	public BOX SemantMe()
 	{
-		return TYPE_NIL.getInstance();
+		return new BOX(TYPE_NIL.getInstance(), null, true);
 	}
     
 }

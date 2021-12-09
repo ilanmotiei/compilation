@@ -7,9 +7,10 @@ public class AST_VAR_FIELD extends AST_VAR
 {
 	public AST_VAR var;
 	public String fieldName;
+	public int line;
 	
 	// Class Constructor
-	public AST_VAR_FIELD(AST_VAR var,String fieldName)
+	public AST_VAR_FIELD(AST_VAR var,String fieldName, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -20,6 +21,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		// COPY INPUT DATA NENBERS
 		this.var = var;
 		this.fieldName = fieldName;
+		this.line = line;
 	}
 
 	// The printing message for a field var AST node
@@ -42,7 +44,7 @@ public class AST_VAR_FIELD extends AST_VAR
 	}
 
 	
-	public TYPE SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
 
 		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
@@ -54,12 +56,13 @@ public class AST_VAR_FIELD extends AST_VAR
 		}
 		else
 		{
-			TYPE var_type = this.var.SemantMe();
+			TYPE var_type = this.var.SemantMe().type;
 
 			if ( ! var_type.is_class())
 			{
 				// VAR's TYPE IS NOT A CLASS AND THUS 'VAR' HAVE NO FIELDS : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(((TYPE_CLASS) var_type), this.fieldName);
@@ -69,16 +72,17 @@ public class AST_VAR_FIELD extends AST_VAR
 		{ 
 			// IF VAR != NULL : FIELD_NAME DOES NOT EXIST IN VAR'S CLASS. IF VAR == NULL : FIELD_NAME DOES NOT EXIST AT CURRENT SCOPES PATH
 			// : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE
 
-		return field_type;
+		return new BOX(field_type, fieldName);
 	}
 
 	// Method is used only for compilation reasons
-	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	public BOX SemantMe(TYPE_CLASS cls) throws Exception
 	{
 		return null; 
 	}

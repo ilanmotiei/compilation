@@ -6,9 +6,10 @@ import TYPES.*;
 public class AST_ARRAYTYPEDEF extends AST_Node {
     public String name;
 	public AST_TYPE type;
+	public int line;
 	
 	// Class Constructor
-	public AST_ARRAYTYPEDEF(String name, AST_TYPE type)
+	public AST_ARRAYTYPEDEF(String name, AST_TYPE type, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -19,6 +20,7 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 		// COPY INPUT DATA NENBERS
 		this.type = type;
 		this.name = name;
+		this.line = line;
 	}
 
 
@@ -41,23 +43,26 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 		if (type != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,type.SerialNumber);
 	}
 
-	public void SemantMe() throws Exception{
+	public void SemantMe() throws Exception
+	{
 
 		if ( ! SYMBOL_TABLE.getInstance().at_global_scope())
 		{
 			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION :
 
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
 		{
 			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :
 
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		TYPE array_elems_type = this.type.SemantMe();
+		TYPE array_elems_type = this.type.SemantMe().type;
 		TYPE_ARRAY arr_type = new TYPE_ARRAY(this.name, array_elems_type); // Defining the new array type, with its name;
 
 		SYMBOL_TABLE.getInstance().enter(this.name, arr_type);

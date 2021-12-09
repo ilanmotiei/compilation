@@ -7,9 +7,10 @@ public class AST_STMT_LIST extends AST_Node
 	// DATA MEMBERS
 	public AST_STMT head;
 	public AST_STMT_LIST tail;
+	public int line;
 
 	// Class Constructor
-	public AST_STMT_LIST(AST_STMT head,AST_STMT_LIST tail)
+	public AST_STMT_LIST(AST_STMT head,AST_STMT_LIST tail, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -21,6 +22,7 @@ public class AST_STMT_LIST extends AST_Node
 		// COPY INPUT DATA NENBERS
 		this.head = head;
 		this.tail = tail;
+		this.line = line;
 	}
 
 

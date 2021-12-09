@@ -7,9 +7,10 @@ public class AST_EXP_LIST extends AST_Node {
     // DATA MEMBERS
 	public AST_EXP head;
 	public AST_EXP_LIST tail;
+	public int line;
 
 	// Class Constructor
-	public AST_EXP_LIST(AST_EXP head,AST_EXP_LIST tail)
+	public AST_EXP_LIST(AST_EXP head,AST_EXP_LIST tail, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -21,6 +22,7 @@ public class AST_EXP_LIST extends AST_Node {
 		// COPY INPUT DATA NENBERS
 		this.head = head;
 		this.tail = tail;
+		this.line = line;
 	}
 
 
@@ -53,11 +55,11 @@ public class AST_EXP_LIST extends AST_Node {
 	{
 		if (this.tail != null)
 		{
-			return new TYPE_LIST(this.head.SemantMe(), this.tail.createTypelist());
+			return new TYPE_LIST(this.head.SemantMe().type, this.tail.createTypelist());
 		}
 		else
 		{
-			return new TYPE_LIST(this.head.SemantMe(), null);
+			return new TYPE_LIST(this.head.SemantMe().type, null);
 		}
 		
 	}

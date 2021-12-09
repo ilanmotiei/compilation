@@ -17,11 +17,11 @@ public class TYPE_CLASS_FIELD_LIST implements Iterable<TYPE_CLASS_FIELD>
 		return new TYPE_CLASS_FIELD_ITER();
 	}
 
-	class TYPE_CLASS_FIELD_ITER implements Iterator<TYPE_CLASS_FIELD>
+	public class TYPE_CLASS_FIELD_ITER implements Iterator<TYPE_CLASS_FIELD>
 	{	
 		private TYPE_CLASS_FIELD curr = head;
 		private TYPE_CLASS_FIELD_LIST curr_list_tail = tail;
-		private boolean end = false;
+		private boolean end = (head == null);
 
 		public boolean hasNext(){
 			return (!end);

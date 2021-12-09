@@ -196,158 +196,152 @@ v58 [label = "funcDec
 v58 -> v57;
 v59 [label = "TYPE_VOID"];
 v60 [label = "TYPE_INT"];
-v61 [label = "TYPE_INT"];
-v62 [label = "TYPE LIST
- type ID(end) 
+v61 [label = "TYPE LIST
+ type ID(start) 
 "];
-v62 -> v61;
-v63 [label = "TYPE LIST
- type ID(start), tpyeList 
-"];
-v63 -> v60;
-v63 -> v62;
-v64 [label = "TYPE_INT"];
-v65 [label = "SIMPLE
+v61 -> v60;
+v62 [label = "TYPE_INT"];
+v63 [label = "SIMPLE
 VAR
 (start)"];
-v66 [label = "EXP
+v64 [label = "EXP
 VAR"];
-v66 -> v65;
-v67 [label = "EXP ASSIGN
+v64 -> v63;
+v65 [label = "EXP ASSIGN
 type ID(p) := right
 "];
-v67 -> v64;
-v67 -> v66;
-v68 [label = "VARDEC
+v65 -> v62;
+v65 -> v64;
+v66 [label = "VARDEC
  var declaration
 "];
+v66 -> v65;
+v67 [label = "SIMPLE
+VAR
+(p)"];
+v68 [label = "EXP
+VAR"];
 v68 -> v67;
 v69 [label = "SIMPLE
 VAR
-(p)"];
+(end)"];
 v70 [label = "EXP
 VAR"];
 v70 -> v69;
-v71 [label = "SIMPLE
-VAR
-(end)"];
-v72 [label = "EXP
-VAR"];
+v71 [label = "INT(1)"];
+v72 [label = "BINOP(+)"];
+v72 -> v70;
 v72 -> v71;
-v73 [label = "INT(1)"];
-v74 [label = "BINOP(+)"];
-v74 -> v72;
-v74 -> v73;
-v75 [label = "BINOP(<)"];
-v75 -> v70;
-v75 -> v74;
-v76 [label = "SIMPLE
+v73 [label = "BINOP(<)"];
+v73 -> v68;
+v73 -> v72;
+v74 [label = "SIMPLE
 VAR
 (p)"];
-v77 [label = "EXP
+v75 [label = "EXP
 VAR"];
-v77 -> v76;
-v78 [label = "EXP
+v75 -> v74;
+v76 [label = "EXP
 LIST
 "];
-v78 -> v77;
-v79 [label = "EXP
+v76 -> v75;
+v77 [label = "EXP
 [var.]ID(IsPrime) (exps)"];
-v79 -> v78;
-v80 [label = "SIMPLE
+v77 -> v76;
+v78 [label = "SIMPLE
 VAR
 (p)"];
-v81 [label = "EXP
+v79 [label = "EXP
 VAR"];
+v79 -> v78;
+v80 [label = "EXP
+LIST
+"];
+v80 -> v79;
+v81 [label = "ID stmt
+ ID(PrintInt)(expList);
+"];
 v81 -> v80;
-v82 [label = "EXP
+v82 [label = "STMT
 LIST
 "];
 v82 -> v81;
-v83 [label = "ID stmt
- ID(PrintInt)(expList);
+v83 [label = "IF
+ if(cond){body} 
 "];
+v83 -> v77;
 v83 -> v82;
 v84 [label = "STMT
 LIST
 "];
 v84 -> v83;
-v85 [label = "IF
- if(cond){body} 
+v85 [label = "WHILE
+ while(cond){body} 
 "];
-v85 -> v79;
+v85 -> v73;
 v85 -> v84;
 v86 [label = "STMT
 LIST
 "];
 v86 -> v85;
-v87 [label = "WHILE
- while(cond){body} 
+v87 [label = "STMT
+LIST
 "];
-v87 -> v75;
+v87 -> v66;
 v87 -> v86;
-v88 [label = "STMT
-LIST
-"];
-v88 -> v87;
-v89 [label = "STMT
-LIST
-"];
-v89 -> v68;
-v89 -> v88;
-v90 [label = "FUNCDEC
+v88 [label = "FUNCDEC
 type ID(PrintPrimes)(arg1,...argn) { body }
 "];
-v90 -> v59;
-v90 -> v63;
-v90 -> v89;
-v91 [label = "funcDec
+v88 -> v59;
+v88 -> v61;
+v88 -> v87;
+v89 [label = "funcDec
 "];
-v91 -> v90;
-v92 [label = "TYPE_VOID"];
-v93 [label = "INT(2)"];
-v94 [label = "INT(100)"];
-v95 [label = "EXP
+v89 -> v88;
+v90 [label = "TYPE_VOID"];
+v91 [label = "INT(2)"];
+v92 [label = "INT(100)"];
+v93 [label = "EXP
 LIST
 "];
-v95 -> v94;
-v96 [label = "EXP
+v93 -> v92;
+v94 [label = "EXP
 LIST
 "];
-v96 -> v93;
-v96 -> v95;
-v97 [label = "ID stmt
+v94 -> v91;
+v94 -> v93;
+v95 [label = "ID stmt
  ID(PrintPrimes)(expList);
 "];
-v97 -> v96;
-v98 [label = "STMT
+v95 -> v94;
+v96 [label = "STMT
 LIST
 "];
-v98 -> v97;
-v99 [label = "FUNCDEC
+v96 -> v95;
+v97 [label = "FUNCDEC
 type ID(main)(arg1,...argn) { body }
 "];
-v99 -> v92;
-v99 -> v98;
-v100 [label = "funcDec
+v97 -> v90;
+v97 -> v96;
+v98 [label = "funcDec
 "];
+v98 -> v97;
+v99 [label = "DEC
+LIST
+"];
+v99 -> v98;
+v100 [label = "DEC
+LIST
+"];
+v100 -> v89;
 v100 -> v99;
 v101 [label = "DEC
 LIST
 "];
+v101 -> v58;
 v101 -> v100;
-v102 [label = "DEC
-LIST
-"];
-v102 -> v91;
-v102 -> v101;
-v103 [label = "DEC
-LIST
-"];
-v103 -> v58;
-v103 -> v102;
-v104 [label = "PROGRAM
+v102 [label = "PROGRAM
 DECLIST
 "];
-v104 -> v103;
+v102 -> v101;
 }

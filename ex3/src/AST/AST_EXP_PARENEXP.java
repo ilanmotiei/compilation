@@ -3,10 +3,11 @@ package AST;
 import TYPES.*;
 
 public class AST_EXP_PARENEXP extends AST_EXP {
-    public AST_EXP exp;
+	public AST_EXP exp;
+	public int line;
 
 	// Class Constructor
-	public AST_EXP_PARENEXP(AST_EXP exp)
+	public AST_EXP_PARENEXP(AST_EXP exp,int line)
 	{
 		
 		// SET A UNIQUE SERIAL NUMBER
@@ -17,6 +18,7 @@ public class AST_EXP_PARENEXP extends AST_EXP {
 
 		// COPY INPUT DATA NENBERS
 		this.exp = exp;
+		this.line = line;
 	}
 	
 	
@@ -41,7 +43,8 @@ public class AST_EXP_PARENEXP extends AST_EXP {
 			
 	}
 
-	public TYPE SemantMe() throws Exception{
+	public BOX SemantMe() throws Exception
+	{
 		return this.exp.SemantMe();
 	}
     

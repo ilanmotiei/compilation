@@ -5,9 +5,10 @@ import TYPES.*;
 
 public class AST_NEWEXP extends AST_Node {
 	public AST_TYPE type;
-    public AST_EXP exp;
+	public AST_EXP exp;
+	public int line;
 
-    public AST_NEWEXP(AST_TYPE type, AST_EXP exp) {
+    public AST_NEWEXP(AST_TYPE type, AST_EXP exp, int line) {
         // SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
@@ -20,6 +21,7 @@ public class AST_NEWEXP extends AST_Node {
 		// COPY INPUT DATA NENBERS
 		this.type = type;
 		this.exp = exp;
+		this.line = line;
     }
 
     public void PrintMe()
@@ -50,7 +52,7 @@ public class AST_NEWEXP extends AST_Node {
 		if(exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception{
+	public BOX SemantMe() throws Exception{
 		if (exp == null)
 		{
 			// THE FORM IS : NEW ${type}
@@ -61,15 +63,16 @@ public class AST_NEWEXP extends AST_Node {
 		{
 			// THE FORM IS : NEW ${type} [${exp}]
 
-			if ( ! this.exp.SemantMe().is_int()) 
+			if ( ! this.exp.SemantMe().type.is_int()) 
 			{
 				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			// ELSE :
 
-			return this.type.SemantMe();
+			return new BOX(this.type.SemantMe().type, null, false, true);
 		}
 	}
     

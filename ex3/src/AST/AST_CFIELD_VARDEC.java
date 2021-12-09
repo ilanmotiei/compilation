@@ -4,10 +4,11 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_CFIELD_VARDEC extends AST_CFIELD {
-    public AST_VARDEC varDec;
+	public AST_VARDEC varDec;
+	public int line;
 
 	//  Class Constructor
-	public AST_CFIELD_VARDEC(AST_VARDEC varDec)
+	public AST_CFIELD_VARDEC(AST_VARDEC varDec, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -17,6 +18,7 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 
 		// COPY INPUT DATA NENBERS
 		this.varDec = varDec;
+		this.line = line;
 	}
 
 	
@@ -39,13 +41,11 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		if(varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 
-	public void SemantMe(TYPE_CLASS cls) throws Exception{
-
-		boolean class_var_dec = true;
-
-		TYPE_CLASS_FIELD var = (TYPE_CLASS_FIELD) this.varDec.SemantMe(cls); 
+	public void SemantMe(TYPE_CLASS cls) throws Exception
+	{
+		TYPE_CLASS_FIELD var = (TYPE_CLASS_FIELD) this.varDec.SemantMe(cls).type; 
 		// The above call checks also if no shadowing occured, and throws an error if does
 
-		cls.appendField(new TYPE_CLASS_FIELD(var, var.name));
+		cls.appendField(new TYPE_CLASS_FIELD(var.type, var.name));
 	}
 }

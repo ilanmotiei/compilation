@@ -6,10 +6,11 @@ import TYPES.*;
 public class AST_STMT_FUNCCALL extends AST_STMT{
     public AST_VAR var;
     public String func_name;
-    public AST_EXP_LIST expList;
+	public AST_EXP_LIST expList;
+	public int line;
 
 	//  Class Constructor
-	public AST_STMT_FUNCCALL(AST_VAR var, String func_name, AST_EXP_LIST expList)
+	public AST_STMT_FUNCCALL(AST_VAR var, String func_name, AST_EXP_LIST expList, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -21,6 +22,7 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		this.var = var;
 		this.func_name = func_name;
 		this.expList = expList;
+		this.line = line;
 	}
 
 	
@@ -70,8 +72,14 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 	public void SemantMe() throws Exception{
 
 		/* ------------- CHEKING THE VALIDITY OF THE EXP LIST -------------- */
+		
+		TYPE_LIST args_types = null;
 
-		TYPE_LIST args_types = this.expList.SemantMe();
+		if (this.expList != null)
+		{
+			args_types = this.expList.SemantMe();
+		}
+		
 		TYPE func_dec;
 		
 		if (this.var == null)
@@ -84,12 +92,13 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		{
 			// WE'RE CALLING FOR A CLASS METHOD ON AN INSTANCE OF IT
 
-			TYPE var_type = this.var.SemantMe();
+			TYPE var_type = this.var.SemantMe().type;
 
 			if ( ! var_type.is_class())
 			{
 				// VARIABLE IS NOT A CLASS OBJECT : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			func_dec = SYMBOL_TABLE.getInstance().find_by_hierarchy((TYPE_CLASS) var_type, this.func_name);
@@ -99,7 +108,8 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		{
 			// THE FUNCTION WAS NOT DEFINED YET, OR NOT DEFINED FOR THE CLASS OF THE INSTANCE WHICH CALLED IT : THROW EXCEPTION
 
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE : 
@@ -107,7 +117,8 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		if ( ! func_dec.is_function())
 		{
 			// WE CALLED A VERIABLE/CLASS AS IT WAS A METHOD : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE : 
@@ -115,7 +126,8 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		if (((TYPE_FUNCTION) func_dec).AcceptableArgs(args_types) == false)
 		{
 			// THE GIVEN ARGUMENTS AREN'T ACCEPTABLE; THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE : 

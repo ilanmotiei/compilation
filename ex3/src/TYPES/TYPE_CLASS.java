@@ -83,9 +83,21 @@ public class TYPE_CLASS extends TYPE
 
 		while (curr_cls != null)
 		{
+			/*
 			for (TYPE_CLASS_FIELD f : curr_cls.data_members)
 			{
-				if (f.name == field_name) { return f; }
+				if (f.name.equals(field_name)) { return f; }
+			}
+
+			curr_cls = curr_cls.father; 
+			*/
+
+			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
+			while (curr != null)
+			{
+				TYPE_CLASS_FIELD f = curr.head;
+				if (f.name.equals(field_name)) { return f; }
+				curr = curr.tail;
 			}
 
 			curr_cls = curr_cls.father;
@@ -127,18 +139,20 @@ public class TYPE_CLASS extends TYPE
 	/* Checks if the given function shadows currently defined field of the class */
 	public boolean function_shadows(TYPE_FUNCTION func)
 	{
-
-		for (TYPE_CLASS_FIELD f : this.data_members)
+		if (this.data_members != null)
 		{
-			if (f.name.equals(func.name))
+			for (TYPE_CLASS_FIELD f : this.data_members)
 			{
-				return true;
+				if (f.name.equals(func.name))
+				{
+					return true;
+				}
 			}
 		}
 
 		TYPE_CLASS curr_cls = this.father;
 
-		while (curr_cls != null)
+		while ((curr_cls != null) && (curr_cls.data_members != null))
 		{
 			for (TYPE_CLASS_FIELD f : curr_cls.data_members)
 			{

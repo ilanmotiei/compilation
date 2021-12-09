@@ -10,10 +10,11 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	/***************/
 	public AST_VAR var;
 	public AST_EXP exp;
+	public int line;
 
 
 	//  Class Constructor
-	public AST_STMT_ASSIGN(AST_VAR var,AST_EXP exp)
+	public AST_STMT_ASSIGN(AST_VAR var,AST_EXP exp, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -24,6 +25,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		// COPY INPUT DATA NENBERS
 		this.var = var;
 		this.exp = exp;
+		this.line = line;
 	}
 
 	
@@ -48,13 +50,14 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public void SemantMe() throws Exception{
-
-		if (!(this.var.SemantMe().semantically_equals(this.exp.SemantMe())))
+	public void SemantMe() throws Exception
+	{
+		if (!(this.var.SemantMe().type.semantically_equals(this.exp.SemantMe().type)))
 		{
 			// TYPES OF LHS AND RHS ARE INEQUAL : THROW AN EXCEPTION
 
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// else - the assignment statement is valid.

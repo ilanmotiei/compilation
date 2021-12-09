@@ -46,4 +46,35 @@ public class SYMBOL_TABLE_ENTRY
 		this.prevtop = prevtop;
 		this.prevtop_index = prevtop_index;
 	}
+
+	public boolean isScopeBoundary()
+	{
+		return this.name.equals("SCOPE-BOUNDARY");
+	}
+
+	public boolean isClassBoundary()
+	{
+		if ( ! this.isScopeBoundary())
+		{
+			return false;
+		}
+		
+		return ((TYPE_FOR_SCOPE_BOUNDARIES) this.type).isClassWrapper();
+	}
+
+	public boolean isFunctionBoundary()
+	{
+		if ( ! this.isScopeBoundary())
+		{
+			return false;
+		}
+		
+		return ((TYPE_FOR_SCOPE_BOUNDARIES) this.type).isFunctionWrapper();
+	}
+
+	public TYPE getScopeWrapper()
+	{
+		return ((TYPE_FOR_SCOPE_BOUNDARIES) this.type).getScopeWrapper();
+	}
+
 }

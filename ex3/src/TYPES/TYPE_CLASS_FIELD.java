@@ -9,6 +9,8 @@ public class TYPE_CLASS_FIELD extends TYPE
 	{
 		this.type = type;
 		this.name = name;
+
+		this.type_name = "class_field";
 	}
 	
 	// Is this a variable FIELD

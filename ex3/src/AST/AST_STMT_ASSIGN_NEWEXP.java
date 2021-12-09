@@ -9,10 +9,10 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 	/********************/
 	public AST_VAR var;
 	public AST_NEWEXP newExp;
-
+	public int line;
 
 	//  Class Constructor
-	public AST_STMT_ASSIGN_NEWEXP(AST_VAR var,AST_NEWEXP newExp)
+	public AST_STMT_ASSIGN_NEWEXP(AST_VAR var,AST_NEWEXP newExp, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -23,6 +23,7 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 		// COPY INPUT DATA NENBERS
 		this.var = var;
 		this.newExp = newExp;
+		this.line = line;
 	}
 
 	
@@ -49,10 +50,35 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 
 	public void SemantMe() throws Exception{
 
-		if (!(this.var.SemantMe().semantically_equals(this.newExp.SemantMe())))
+		BOX var_box = this.var.SemantMe();
+		BOX exp_box = this.newExp.SemantMe();
+
+		if (var_box.type.is_array())
 		{
-			// TYPES OF RHS TO ON OBJECT OF THE TYPE OF THE LHS : THROW EXCEPTION
-			throw new Exception("SEMANTIC ERROR");
+			if ( ! exp_box.is_array)
+			{
+				// TRYED TO ASSIGN NON-ARRAY OBJECT TYPE TO AN ARRAY-TYPE VARIBALE
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+			else
+			{
+				if ( ! ((TYPE_ARRAY) var_box.type).elems_type.semantically_equals(exp_box.type))
+				{
+					// TRYED TO ASSIGN ARRAY FROM A NON-ACCEPTABLE TYPE TO THIS ARRAY (VAR)
+					String cls_name = this.getClass().getName();
+					throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+				}
+			}
+		}
+		else
+		{
+			if (!(var_box.type.semantically_equals(exp_box.type)))
+			{
+				// TYPES OF RHS TO ON OBJECT OF THE TYPE OF THE LHS : THROW EXCEPTION
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
 		}
 
 		// else - the assignment statement is valid.

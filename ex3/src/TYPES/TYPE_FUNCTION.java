@@ -29,6 +29,25 @@ public class TYPE_FUNCTION extends TYPE
 
 	public boolean AcceptableArgs(TYPE_LIST args_types)
 	{
+		if (params == null)
+		{
+			if (args_types == null){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		if (args_types == null)
+		{
+			if (params == null){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		return this.params.semantically_equals(args_types);
 	}
 }

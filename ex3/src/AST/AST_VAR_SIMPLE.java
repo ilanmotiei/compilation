@@ -7,11 +7,11 @@ public class AST_VAR_SIMPLE extends AST_VAR
 {
 	// simple variable name
 	public String name;
+	public int line;
 	
-
 	// Class Constructor
 
-	public AST_VAR_SIMPLE(String name)
+	public AST_VAR_SIMPLE(String name, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -21,6 +21,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		// COPY INPUT DATA NENBERS
 		this.name = name;
+		this.line = line;
 	}
 
 
@@ -36,22 +37,23 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			String.format("SIMPLE\nVAR\n(%s)",name));
 	}
 
-	public TYPE SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
 		TYPE var_type = SYMBOL_TABLE.getInstance().find(this.name);
 
 		if (var_type == null)
 		{
 			// VAR WASN'T FOUND : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE
 
-		return var_type;
+		return new BOX(var_type);
 	}
 
-	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	public BOX SemantMe(TYPE_CLASS cls) throws Exception
 	{
 		// We won't apply this method. It is only for compilation reasons.
 

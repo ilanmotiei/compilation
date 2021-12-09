@@ -51,7 +51,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_01_Print_Primes.txt
+INPUT    = ${INPUT_DIR}/TEST_06_Print_Primes_Error.txt
 OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 
 ##########

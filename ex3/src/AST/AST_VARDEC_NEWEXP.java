@@ -8,9 +8,10 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 	public AST_TYPE type;
 	public String name; 
 	public AST_NEWEXP newExp;
+	public int line;
 
 	// Class Constructor
-	public AST_VARDEC_NEWEXP(AST_TYPE type, String name, AST_NEWEXP newExp)
+	public AST_VARDEC_NEWEXP(AST_TYPE type, String name, AST_NEWEXP newExp, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -22,6 +23,8 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 		this.type = type;
 		this.name = name;
 		this.newExp = newExp;
+
+		this.line = line;
 	}
 
 
@@ -46,46 +49,65 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 	}
 
 
-	public TYPE SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
 		return SemantMe(null);	
 	}
 
-	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	public BOX SemantMe(TYPE_CLASS cls) throws Exception
 	{
-
-		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
+		if (cls != null)
 		{
-			// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED : THROW ERROR :
-			throw new Exception("SEMANTIC ERROR");
+			if (SYMBOL_TABLE.getInstance().find_at_class(cls, this.name) != null)
+			{
+				// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED AT THE GIVEN CLASS : THROW ERROR :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
 		}
 
 		// ELSE : 
 
-		TYPE var_type = this.type.SemantMe();
-		TYPE exp_type = this.newExp.SemantMe();
+		TYPE var_type = this.type.SemantMe().type;
+		BOX exp_box = this.newExp.SemantMe();
+		TYPE exp_type = exp_box.type;
 
-		if (var_type.semantically_equals(exp_type) == false)
+		if (exp_box.is_array)
 		{
-			// the newExp cannot be assigned to the variable : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			if ( ! var_type.is_array())
+			{
+				// var is not an array and newExp is: THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
+			// else:
+
+			if ( ! ((TYPE_ARRAY) var_type).elems_type.semantically_equals(exp_type))
+			{
+				// newExp array type is not compatible with var type : THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+		}
+		else
+		{
+			if (var_type.semantically_equals(exp_type) == false)
+			{
+				// the newExp cannot be assigned to the variable : THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
 		}
 
-		if (cls != null){
-			// CHECK THAT THE EXPRESSION'S VALUE IS CONSTANT :
-			
-			/*
-			if ( ! exp_type.is_const)
-			{
-				throw new Exception("SEMANTIC ERROR");
-			}
-			*/
-
+		if (cls != null)
+		{
 			// CHECK THAT THE VARIABLE DOES NOT SHADOW AN ANOTHER CLASS FIELD :
 
 			if (cls.get_field(this.name) != null)
 			{
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 		}
 
@@ -97,6 +119,6 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			var_type = new TYPE_CLASS_FIELD(var_type, this.name);
 		}
 
-		return var_type;
+		return new BOX(var_type);
 	}
 }

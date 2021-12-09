@@ -4,10 +4,11 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_CFIELD_FUNDEC extends AST_CFIELD {
-    public AST_FUNCDEC funcDec;
+	public AST_FUNCDEC funcDec;
+	public int line;
 
 	//  Class Constructor
-	public AST_CFIELD_FUNDEC(AST_FUNCDEC funcDec)
+	public AST_CFIELD_FUNDEC(AST_FUNCDEC funcDec, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -17,6 +18,7 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 
 		// COPY INPUT DATA NENBERS
 		this.funcDec = funcDec;
+		this.line = line;
 	}
 
 	
@@ -41,12 +43,13 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD {
 
 	public void SemantMe(TYPE_CLASS cls) throws Exception{
 
-		TYPE_FUNCTION func = this.funcDec.SemantMe();
+		TYPE_FUNCTION func = (TYPE_FUNCTION) this.funcDec.SemantMe().type;
 
 		if (cls.function_shadows(func))
 		{
 			// METHOD SHADOWS AN ANOTHER FUNCTION AT THE CLASS : THROW EXCEPTION
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		cls.appendField(new TYPE_CLASS_FIELD(func, func.name));

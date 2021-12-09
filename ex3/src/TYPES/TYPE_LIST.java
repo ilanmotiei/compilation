@@ -63,11 +63,34 @@ public class TYPE_LIST implements Iterable<TYPE>
 	-----------------------------------------------------------------------------------------------------------------------
 	*/
 	public boolean semantically_equals(TYPE_LIST other){
+
+		if (other == null)
+		{
+			return false;
+		}
+
+		if ((this.head == null) && (other.head != null))
+		{
+			return false;
+		}
+		if ((other.head == null) && (this.head != null))
+		{
+			return false;
+		}
+
+		// else
 		if (!this.head.semantically_equals(other.head))
 		{
 			return false;
 		}
 
-		return this.tail.semantically_equals(other.tail);
+		if (this.tail != null)
+		{
+			return this.tail.semantically_equals(other.tail);
+		}
+
+		// else:
+
+		return true;
 	}
 }

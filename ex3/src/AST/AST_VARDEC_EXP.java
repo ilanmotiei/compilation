@@ -8,9 +8,10 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 	public AST_TYPE type;
 	public String name;
 	public AST_EXP exp;
+	public int line;
 
 	// Class Constructor
-	public AST_VARDEC_EXP(AST_TYPE type, String name, AST_EXP exp)
+	public AST_VARDEC_EXP(AST_TYPE type, String name, AST_EXP exp, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -22,6 +23,8 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		this.type = type;
 		this.name = name;
 		this.exp = exp;
+
+		this.line = line;
 	}
 
 
@@ -51,46 +54,60 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
 		return SemantMe(null);	
 	}
 
-	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
-	{
-
-		if (SYMBOL_TABLE.getInstance().find(this.name) != null)
+	public BOX SemantMe(TYPE_CLASS cls) throws Exception
+	{	
+		if (cls != null)
 		{
-			// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED : THROW ERROR :
-			throw new Exception("SEMANTIC ERROR");
+			if (SYMBOL_TABLE.getInstance().find_at_class(cls, this.name) != null)
+			{
+				// A VARIABLE WITH THE SAME NAME WAS ALLREADY DECLARED AT THE GIVEN CLASS : THROW ERROR :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
 		}
 
 		// ELSE : 
 
-		TYPE var_type = this.type.SemantMe();
-		TYPE exp_type = this.exp.SemantMe();
+		TYPE var_type = this.type.SemantMe().type;
+		TYPE exp_type = null;
 
-		if (var_type.semantically_equals(exp_type) == false)
+		if (this.exp != null)
 		{
-			// the newExp cannot be assigned to the variable : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			BOX exp_box = this.exp.SemantMe();
+			exp_type = exp_box.type;
+
+			if (var_type.semantically_equals(exp_type) == false)
+			{
+				// the newExp cannot be assigned to the variable : THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
+			if (cls != null)
+			{
+				// CHECK THAT THE EXPRESSION'S VALUE IS CONSTANT :
+
+				if ( ! exp_box.is_const)
+				{
+					String cls_name = this.getClass().getName();
+					throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+				}
+			}
 		}
 
-		if (cls != null){
-			// CHECK THAT THE EXPRESSION'S VALUE IS CONSTANT :
-			
-			/*
-			if ( ! exp_type.is_const)
-			{
-				throw new Exception("SEMANTIC ERROR");
-			}
-			*/
-
+		if (cls != null)
+		{
 			// CHECK THAT THE VARIABLE DOES NOT SHADOW AN ANOTHER CLASS FIELD :
 
 			if (cls.get_field(this.name) != null)
 			{
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 		}
 
@@ -102,6 +119,6 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			var_type = new TYPE_CLASS_FIELD(var_type, this.name);
 		}
 
-		return var_type;
+		return new BOX(var_type);
 	}
 }

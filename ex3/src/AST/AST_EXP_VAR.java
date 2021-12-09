@@ -6,9 +6,10 @@ import TYPES.*;
 public class AST_EXP_VAR extends AST_EXP
 {
 	public AST_VAR var;
+	public int line;
 
 	// Class Constructor
-	public AST_EXP_VAR(AST_VAR var)
+	public AST_EXP_VAR(AST_VAR var, int line)
 	{
 		
 		// SET A UNIQUE SERIAL NUMBER
@@ -19,6 +20,7 @@ public class AST_EXP_VAR extends AST_EXP
 
 		// COPY INPUT DATA NENBERS
 		this.var = var;
+		this.line = line;
 	}
 	
 	
@@ -42,7 +44,7 @@ public class AST_EXP_VAR extends AST_EXP
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception{
+	public BOX SemantMe() throws Exception{
 		return this.var.SemantMe();
 	}
 }

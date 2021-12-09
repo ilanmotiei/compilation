@@ -21,6 +21,7 @@ public class SYMBOL_TABLE
 	/**********************************************/
 	/* The actual symbol table data structure ... */
 	/**********************************************/
+
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top = null; // The last entry which was inserted to the symbol table
 	private int top_index = 0;
@@ -66,7 +67,6 @@ public class SYMBOL_TABLE
 		
 		/* [6] Print Symbol Table */
 		PrintMe();
-		System.out.println(e.name);
 	}
 
 	/***********************************************/
@@ -74,32 +74,54 @@ public class SYMBOL_TABLE
 	/***********************************************/
 	public TYPE find(String name)
 	{
-		return find_by_hierarchy(find_curr_scope_class(), name);
-	}
+		SYMBOL_TABLE_ENTRY e = top;
 
-	/*************************************************/
-	/* Finds all of the elements with the given name */
-	/*************************************************/
-	public TYPE_LIST find_all(String name){
-		return find_all_rec(name, this.table[hash(name)]);
-	}
-
-	public TYPE_LIST find_all_rec(String name, SYMBOL_TABLE_ENTRY curr)
-	{
-		for (SYMBOL_TABLE_ENTRY e = curr; e != null; e = e.next)
+		while (e != null)
 		{
-			if (name.equals(e.name))
+			if (e.isClassBoundary())
 			{
-				return new TYPE_LIST(e.type, find_all_rec(name, e.next));
+				break;
 			}
+
+			// else:
+
+			if (e.name.equals(name))
+			{
+				return e.type;
+			}
+
+			e = e.prevtop;
 		}
 
-		return null;
+		if (e == null) { return null; }
+
+		// else : we are inside some class
+
+		return find_by_hierarchy((TYPE_CLASS) e.getScopeWrapper(), name);
 	}
 
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
+	public void beginScope(TYPE scope_wrapper)
+	{
+		/************************************************************************/
+		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
+		/* they are not really types. In order to be able to debug print them,  */
+		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
+		/* class only contain their type name which is the bottom sign: _|_     */
+		/************************************************************************/
+		
+		enter(
+			"SCOPE-BOUNDARY",
+			new TYPE_FOR_SCOPE_BOUNDARIES(scope_wrapper));
+		
+		/*********************************************/
+		/* Print the symbol table after every change */
+		/*********************************************/
+		PrintMe();
+	}
+
 	public void beginScope()
 	{
 		/************************************************************************/
@@ -108,10 +130,11 @@ public class SYMBOL_TABLE
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/
+		
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
-
+			new TYPE_FOR_SCOPE_BOUNDARIES(null));
+		
 		/*********************************************/
 		/* Print the symbol table after every change */
 		/*********************************************/
@@ -127,7 +150,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		while (top.name != "SCOPE-BOUNDARY")
+		while ( ! top.isScopeBoundary())
 		{
 			table[top.index] = top.next;
 			top_index = top_index-1;
@@ -154,15 +177,17 @@ public class SYMBOL_TABLE
 		
 		SYMBOL_TABLE_ENTRY top_entry = this.top;
 
-		while ( (top_entry != null) && ( ! (top_entry.type.is_class())))
+		while (top_entry != null)
 		{
+			if (top_entry.isScopeBoundary())
+			{
+				if (top_entry.isClassBoundary())
+				{
+					return (TYPE_CLASS) top_entry.getScopeWrapper();
+				}
+			}
+
 			top_entry = top_entry.prevtop;
-		}
-
-		// if top_entry == null that means no we are at no class' scope
-
-		if (top_entry != null){
-			return ((TYPE_CLASS) top_entry.type); // auto-casting
 		}
 
 		// else
@@ -175,19 +200,22 @@ public class SYMBOL_TABLE
 	/*******************************************************************************************/
 	public TYPE_FUNCTION find_curr_scope_function(){
 		
-		SYMBOL_TABLE_ENTRY top_entry = top;
+		SYMBOL_TABLE_ENTRY top_entry = this.top;
 
-		while ( ! top_entry.type.is_function()){
+		while (top_entry != null)
+		{
+			if (top_entry.isScopeBoundary())
+			{
+				if (top_entry.isFunctionBoundary())
+				{
+					return (TYPE_FUNCTION) top_entry.getScopeWrapper();
+				}
+			}
+
 			top_entry = top_entry.prevtop;
 		}
 
-		// if top_entry == null that means no we are at no FUNCTION's scope
-
-		if (top_entry != null){
-			return ((TYPE_FUNCTION) top_entry.type);
-		}
-
-		// else
+		// if we got here that means no we are at no FUNCTION's scope
 
 		return null;
 	}
@@ -204,7 +232,7 @@ public class SYMBOL_TABLE
 
 		while (curr_top != null)
 		{
-			if (curr_top.name == "SCOPE-BOUNDARY")
+			if (curr_top.isScopeBoundary())
 			{
 				curr_scope_top = curr_top;
 			}
@@ -216,10 +244,12 @@ public class SYMBOL_TABLE
 
 		while (global_scope_top != null)
 		{
-			if (global_scope_top.name == name)
+			if (global_scope_top.name.equals(name))
 			{
 				return global_scope_top.type;
 			}
+
+			global_scope_top = global_scope_top.prevtop;
 		}
 
 		return null;
@@ -234,14 +264,33 @@ public class SYMBOL_TABLE
 
 	public TYPE find_by_hierarchy(TYPE_CLASS cls, String name)
 	{
-		if (cls == null) { return null; }
+		TYPE founded = null;
 
-		TYPE founded = find_at_class(cls, name);
+		if (cls != null)
+		{	
+			founded = find_at_class(cls, name);
+		}
 
 		if (founded == null)
 		{
-			// DIDN'T FOUND IN ANY SUPER CLASS OF THE GIVEN CLASS; SEARCHING IT AT THE GLOBAL CLASS;
-			return find_at_global_scope(name);
+			// DIDN'T FOUND IN ANY SUPER CLASS OF THE GIVEN CLASS,
+			// OR WE ARE AT THE GLOBAL SCOPE; 
+			// SEARCHING IT AT THE GLOBAL SCOPE;
+
+			SYMBOL_TABLE_ENTRY curr = this.top;
+
+			while (curr != null)
+			{
+				if (curr.name.equals(name))
+				{
+					return curr.type;
+				}
+
+				curr = curr.prevtop;
+			}
+
+			// else : name was not found
+			return null;
 		}
 		else
 		{
@@ -256,11 +305,17 @@ public class SYMBOL_TABLE
 
 	public TYPE find_at_class(TYPE_CLASS cls, String name)
 	{
-		for (TYPE_CLASS_FIELD dec : cls.data_members)
+		while (cls != null)
 		{
-			if (dec.name == name)
+			if (cls.data_members != null)
 			{
-				return dec;
+				for (TYPE_CLASS_FIELD dec : cls.data_members)
+				{
+					if (dec.name.equals(name))
+					{
+						return dec.type;
+					}
+				}
 			}
 
 			cls = cls.father;
@@ -279,7 +334,7 @@ public class SYMBOL_TABLE
 
 		while (curr_top != null)
 		{
-			if (curr_top.name == "SCOPE-BOUNDARY")
+			if (curr_top.isScopeBoundary())
 			{
 				// WER'E NOT AT THE GLOBAL SCOPE
 				return false;
@@ -413,7 +468,20 @@ public class SYMBOL_TABLE
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
 						null)));
-			
+
+			instance.enter("PrintString", 
+						new TYPE_FUNCTION(
+							TYPE_VOID.getInstance(), 
+							"PrintString", 
+							new TYPE_LIST(
+								TYPE_STRING.getInstance(), 
+								null)));
+
+			instance.enter("PrintTrace", 
+						new TYPE_FUNCTION(
+							TYPE_VOID.getInstance(), 
+							"PrintTrace", 
+							null));	
 		}
 		return instance;
 	}

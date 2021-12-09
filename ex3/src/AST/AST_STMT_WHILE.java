@@ -7,9 +7,10 @@ public class AST_STMT_WHILE extends AST_STMT
 {
 	public AST_EXP cond;
 	public AST_STMT_LIST body;
+	public int line;
 
 	// Class Constructor
-	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body)
+	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body, int line)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
@@ -18,6 +19,7 @@ public class AST_STMT_WHILE extends AST_STMT
 
 		this.cond = cond;
 		this.body = body;
+		this.line = line;
 	}
 
 	public void PrintMe()
@@ -41,9 +43,10 @@ public class AST_STMT_WHILE extends AST_STMT
 
 	public void SemantMe() throws Exception{
 		
-		if ( ! cond.SemantMe().is_int()){
+		if ( ! cond.SemantMe().type.is_int()){
 			// CONDITION TYPE ISN'T INT : THROW ERROR :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 		
 		// ELSE

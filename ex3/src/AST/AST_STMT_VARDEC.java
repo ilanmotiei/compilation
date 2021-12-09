@@ -3,10 +3,11 @@ package AST;
 import TYPES.*;
 
 public class AST_STMT_VARDEC extends AST_STMT {
-    public AST_VARDEC varDec;
+	public AST_VARDEC varDec;
+	public int line;
 
 	//  Class Constructor
-	public AST_STMT_VARDEC(AST_VARDEC varDec)
+	public AST_STMT_VARDEC(AST_VARDEC varDec, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -16,6 +17,7 @@ public class AST_STMT_VARDEC extends AST_STMT {
 
 		// COPY INPUT DATA NENBERS
 		this.varDec = varDec;
+		this.line = line;
 	}
 
 	

@@ -4,16 +4,18 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_PROGRAM extends AST_Node{
-    public AST_DEC_LIST decList;
+	public AST_DEC_LIST decList;
+	public int line;
 
-    public AST_PROGRAM(AST_DEC_LIST decList){
+    public AST_PROGRAM(AST_DEC_LIST decList, int line){
         // SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		// PRINT CORRESPONDING DERIVATION RULE 
 		System.out.print("====================== Program -> decList\n");
 
-        this.decList = decList;
+		this.decList = decList;
+		this.line = line;
     }
 
     public void PrintMe()
@@ -35,17 +37,8 @@ public class AST_PROGRAM extends AST_Node{
 			
 	}
 
-	public void SemantMe() throws Exception{
-
-		SYMBOL_TABLE.getInstance().enter("PrintInt", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintInt", new TYPE_LIST(TYPE_INT.getInstance(), null)));
-
-		SYMBOL_TABLE.getInstance().enter("PrintString", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintString", new TYPE_LIST(TYPE_STRING.getInstance(), null)));
-
-		SYMBOL_TABLE.getInstance().enter("PrintTrace", 
-										new TYPE_FUNCTION(TYPE_VOID.getInstance(), "PrintTrace", null));
-
+	public void SemantMe() throws Exception
+	{
 		decList.SemantMe();
 	}
 }

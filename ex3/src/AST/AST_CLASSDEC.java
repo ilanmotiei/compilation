@@ -7,9 +7,10 @@ public class AST_CLASSDEC extends AST_Node {
     public String class_name;
 	public String father_name;
 	public AST_CFIELD_LIST cFieldList;
+	public int line;
 	
 	// Class Constructor
-	public AST_CLASSDEC(String class_name, String father_name, AST_CFIELD_LIST cFieldList)
+	public AST_CLASSDEC(String class_name, String father_name, AST_CFIELD_LIST cFieldList, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -25,6 +26,7 @@ public class AST_CLASSDEC extends AST_Node {
 		this.class_name = class_name;
 		this.father_name = father_name;
 		this.cFieldList = cFieldList;
+		this.line = line;
 	}
 
 
@@ -59,13 +61,15 @@ public class AST_CLASSDEC extends AST_Node {
 		if (SYMBOL_TABLE.getInstance().at_global_scope() == false)
 		{
 			// WE ARE NOT AT THE GLOBAL SCOPE : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		if (SYMBOL_TABLE.getInstance().find(this.class_name) != null)
 		{
 			// AN ANOTHER OBJECT WITH THIS NAME WAS ALREADY BEEN DECLARED : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		TYPE parent_cls = null;
@@ -77,19 +81,23 @@ public class AST_CLASSDEC extends AST_Node {
 			if (parent_cls == null)
 			{
 				// MENTIONED "PARENT" CLASS DOES NOT EXIST : THROW EXCEPTION
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			if  ( ! parent_cls.is_class())
 			{
 				// MENTIONED "PARENT" IS NOT A CLASS : THROW EXCEPTION
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 		}
 
 		TYPE_CLASS cls_dec = new TYPE_CLASS((TYPE_CLASS) parent_cls, this.class_name);
+		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec);
 
-		SYMBOL_TABLE.getInstance().beginScope();
+		SYMBOL_TABLE.getInstance().beginScope(cls_dec);
+		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec);
 		this.cFieldList.SemantMe(cls_dec); // Adds methods to the class
 		SYMBOL_TABLE.getInstance().endScope();
 

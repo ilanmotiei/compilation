@@ -8,6 +8,7 @@ public class AST_EXP_BINOP extends AST_EXP
 	int OP;
 	public AST_EXP left;
 	public AST_EXP right;
+	public int line;
 
 	
 	/* Operators */
@@ -24,7 +25,7 @@ public class AST_EXP_BINOP extends AST_EXP
 
 
 	/* Class Constructor */
-	public AST_EXP_BINOP(AST_EXP left, AST_EXP right, int OP)
+	public AST_EXP_BINOP(AST_EXP left, AST_EXP right, int OP, int line)
 	{
 		SerialNumber = AST_Node_Serial_Number.getFresh(); // SET A UNIQUE SERIAL NUMBER
 
@@ -35,6 +36,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		this.left = left;
 		this.right = right;
 		this.OP = OP;
+		this.line = line;
 	}
 	
 	
@@ -73,9 +75,9 @@ public class AST_EXP_BINOP extends AST_EXP
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception{
-		TYPE left_type = this.left.SemantMe();
-		TYPE right_type = this.right.SemantMe();
+	public BOX SemantMe() throws Exception{
+		TYPE left_type = this.left.SemantMe().type;
+		TYPE right_type = this.right.SemantMe().type;
 
 		if (OP == 0)
 		{
@@ -85,13 +87,14 @@ public class AST_EXP_BINOP extends AST_EXP
 				if ((left_type.is_string() == false) && (right_type.is_string() == false))
 				{
 					// THE BINARY OPERATION "+" CANNOT BE PERFORMED ON THE TWO SIDES : THROW EXCEPTION :
-					throw new Exception("SEMANTIC ERROR");
+					String cls_name = this.getClass().getName();
+					throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 				}
 			}
 
 			// ELSE :
 
-			return left_type;
+			return new BOX(left_type);
 		}
 
 		// ELSE :
@@ -103,10 +106,11 @@ public class AST_EXP_BINOP extends AST_EXP
 			if (! (left_type.semantically_equals(right_type) || right_type.semantically_equals(left_type)))
 			{
 				// TYPES CANNOT BE TESTED FOR AN EQUALITY : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
-			return TYPE_INT.getInstance();
+			return new BOX(TYPE_INT.getInstance(), null, false);
 		}
 
 		// ELSE : 1 <= OP <= 5 (i.e. OP is one of ["-", "*", "/", "<", ">"])
@@ -114,11 +118,12 @@ public class AST_EXP_BINOP extends AST_EXP
 		if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
 		{
 			// ONE OF THE BINARY OPERATION SIDES TYPE IS NOT AN INTEGER : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE : EXPERSSION IS VALID AND ITS TYPE IS "TYPE_INT"
 
-		return TYPE_INT.getInstance();
+		return new BOX(TYPE_INT.getInstance(), null, false);
 	}
 }

@@ -8,9 +8,10 @@ public class AST_EXP_INT extends AST_EXP
 {
 	public int value;
 	public int hasMinus; // 0 if doesn't have a "-" before the value, 1 if does.
+	public int line;
 
 	/* Class Constructor */
-	public AST_EXP_INT(int value, int hasMinus)
+	public AST_EXP_INT(int value, int hasMinus, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER 
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -21,6 +22,7 @@ public class AST_EXP_INT extends AST_EXP
 		// COPY INPUT DATA NENBERS
 		this.value = value;
 		this.hasMinus = hasMinus;
+		this.line = line;
 	}
 
 	
@@ -43,7 +45,7 @@ public class AST_EXP_INT extends AST_EXP
 		}
 	}
 
-	public TYPE SemantMe(){
-		return TYPE_INT.getInstance();
+	public BOX SemantMe(){
+		return new BOX(TYPE_INT.getInstance(), null, true);
 	}
 }

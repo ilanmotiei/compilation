@@ -1,8 +1,8 @@
 package AST;
 
-import TYPES.TYPE;
+import TYPES.*;
 
 public abstract class AST_EXP extends AST_Node
 {	
-	public abstract TYPE SemantMe() throws Exception;
+	public abstract BOX SemantMe() throws Exception;
 }

@@ -57,26 +57,36 @@ public abstract class TYPE
 		return this.type_name.equals("class");
 	}
 
+	public boolean is_class_field()
+	{
+		return this.type_name.equals("class_field");
+	}
+
 	public boolean is_array()
 	{
 		return this.type_name.equals("array");
 	}
 
+	public boolean is_scope_boundary()
+	{
+		return this.type_name.equals("SCOPE-BOUNDARY");
+	}
+
+	// checks if the 'other' type is acceptable as 'this' type
 	public boolean semantically_equals(TYPE other)
 	{
+		/* --------- CHECK : NIL --> TYPE_CLASS ---------- */
 
-		/* --------- CHECK : NIL --> TYPE_ARRAY ---------- */
-
-		if ((other == TYPE_NIL.getInstance()) && (this.getClass() == TYPE_CLASS.class))
+		if ((other.is_nil()) && (this.is_class()))
 		{
 			// NIL IS ALWAYS ACCEPTABLE WHEN A CLASS OBJECT IS ACCEPTABLE;
 
 			return true;
 		}
 
-		/* --------- CHECK : NIL --> TYPE_CLASS ---------- */
+		/* --------- CHECK : NIL --> TYPE_ARRAY ---------- */
 
-		if ((other.type_name.equals("nil")) && (this.type_name.equals("array")))
+		if (other.is_nil() && (this.is_array()))
 		{
 			// NIL IS ALWAYS ACCEPTABLE WHEN AN ARRAY OBJECT IS ACCEPTABLE;
 			
@@ -87,7 +97,7 @@ public abstract class TYPE
 
 		if (this != other)
 		{
-			if (( ! this.type_name.equals("class")) || ( ! other.type_name.equals("class")))
+			if (( ! this.is_class()) || ( ! other.is_class()))
 			{
 				return false;
 			}
@@ -100,7 +110,7 @@ public abstract class TYPE
 			}
 		}
 
-		// else: the two types are semantically or syntactically valid
+		// else : the two types are semantically or syntactically valid
 
 		return true;
 	}

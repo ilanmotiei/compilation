@@ -3,10 +3,11 @@ package AST;
 import TYPES.*;
 
 public class AST_EXP_STRING extends AST_EXP {
-    public String s;
+	public String s;
+	public int line;
 
 	/* Class Constructor */
-	public AST_EXP_STRING(String s)
+	public AST_EXP_STRING(String s, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER 
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -16,6 +17,7 @@ public class AST_EXP_STRING extends AST_EXP {
 
 		// COPY INPUT DATA NENBERS
 		this.s = s;
+		this.line = line;
 	}
 
 	
@@ -33,7 +35,7 @@ public class AST_EXP_STRING extends AST_EXP {
 			// can't use double quotes in a label of Graphviz 
 	}
 
-	public TYPE_STRING SemantMe() throws Exception{
-		return TYPE_STRING.getInstance();
+	public BOX SemantMe() throws Exception{
+		return new BOX(TYPE_STRING.getInstance(), true);
 	}
 }

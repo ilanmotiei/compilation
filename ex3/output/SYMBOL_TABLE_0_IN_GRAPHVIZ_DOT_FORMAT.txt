@@ -28,6 +28,6 @@ hashTable [label="<f0>
 |<f12>
 12
 "];
-hashTable:f6 -> node_6_0:f0;
-node_6_0 [label="<f0>int|<f1>int|<f2>prevtop=0|<f3>next"];
+hashTable:f4 -> node_4_0:f0;
+node_4_0 [label="<f0>int|<f1>int|<f2>prevtop=0|<f3>next"];
 }

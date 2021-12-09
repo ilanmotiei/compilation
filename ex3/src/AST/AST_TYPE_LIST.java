@@ -6,10 +6,11 @@ import TYPES.*;
 public class AST_TYPE_LIST extends AST_Node {
     public AST_TYPE type;
     String name;
-    public AST_TYPE_LIST typeList;
+	public AST_TYPE_LIST typeList;
+	public int line;
 
 	//  Class Constructor
-	public AST_TYPE_LIST(AST_TYPE type, String name, AST_TYPE_LIST typeList)
+	public AST_TYPE_LIST(AST_TYPE type, String name, AST_TYPE_LIST typeList, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -27,6 +28,7 @@ public class AST_TYPE_LIST extends AST_Node {
         this.name = name;
         this.typeList = typeList;
 
+		this.line = line;
 	}
 
 	
@@ -66,17 +68,17 @@ public class AST_TYPE_LIST extends AST_Node {
 
 		/*---------- Inserting the new variable to the current scope ------------*/
 
-		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe());
+		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe().type);
 
 		/*---------- Creating a list contains all of the types of elements in the list ------------*/
 
 		if (this.typeList != null)
 		{
-			return new TYPE_LIST(this.type.SemantMe(), this.typeList.createTypelist());
+			return new TYPE_LIST(this.type.SemantMe().type, this.typeList.createTypelist());
 		}
 		else 
 		{
-			return new TYPE_LIST(this.type.SemantMe(), null);
+			return new TYPE_LIST(this.type.SemantMe().type, null);
 		}
 	}
     

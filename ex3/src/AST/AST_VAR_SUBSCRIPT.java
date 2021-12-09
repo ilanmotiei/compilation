@@ -6,9 +6,10 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
 	public AST_VAR var;
 	public AST_EXP subscript;
+	public int line;
 	
 	// Class Constructor
-	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript)
+	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -19,6 +20,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		// COPY INPUT DATA NENBERS
 		this.var = var;
 		this.subscript = subscript;
+		this.line = line;
 	}
 
 	// The printing message for a subscript var AST node
@@ -41,28 +43,30 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		if (subscript != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,subscript.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
-		TYPE var_type = this.var.SemantMe();
+		TYPE var_type = this.var.SemantMe().type;
 
 		if ( ! var_type.is_array())
 		{
 			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		TYPE subscript_exp = this.subscript.SemantMe();
+		TYPE subscript_exp = this.subscript.SemantMe().type;
 
 		if ( ! subscript_exp.is_int())
 		{
 			// SUBSCRIPT IS NOT INTEGER : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		return ((TYPE_ARRAY) var_type).elems_type;
+		return new BOX(((TYPE_ARRAY) var_type).elems_type);
 	}
 
-	public TYPE SemantMe(TYPE_CLASS cls) throws Exception
+	public BOX SemantMe(TYPE_CLASS cls) throws Exception
 	{
 		// We won't apply this method. It is only for compilation reasons.
 		return this.SemantMe();

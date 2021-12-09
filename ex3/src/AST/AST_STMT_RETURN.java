@@ -4,10 +4,11 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_STMT_RETURN extends AST_STMT {
-    public AST_EXP exp;
+	public AST_EXP exp;
+	public int line;
 
 	//  Class Constructor
-	public AST_STMT_RETURN(AST_EXP exp)
+	public AST_STMT_RETURN(AST_EXP exp, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -17,6 +18,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 		// COPY INPUT DATA NENBERS
 		this.exp = exp;
+		this.line = line;
 	}
 
 	
@@ -53,17 +55,19 @@ public class AST_STMT_RETURN extends AST_STMT {
 		if (func == null)
 		{
 			// THE 'RETURN' STMT SHOWS OUTSIDE A FUNCTION : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
 		// ELSE
 
 		if (exp != null)
 		{
-			if (func.returnType.semantically_equals(this.exp.SemantMe()) == false)
+			if (func.returnType.semantically_equals(this.exp.SemantMe().type) == false)
 			{
 				// THIS RETURN'S VALUE TYPE IS INVALID : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 		}
 		else
@@ -73,7 +77,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 			if ( ! func.returnType.is_void())
 			{
 				// THIS RETURN SHOULD HAVE RETURNED A VALUE, BUT IS EMPTY : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 		}
 

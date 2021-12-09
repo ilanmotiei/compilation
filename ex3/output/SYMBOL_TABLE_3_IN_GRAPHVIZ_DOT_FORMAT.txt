@@ -28,10 +28,10 @@ hashTable [label="<f0>
 |<f12>
 12
 "];
-hashTable:f6 -> node_6_0:f0;
-node_6_0 [label="<f0>int|<f1>int|<f2>prevtop=0|<f3>next"];
+hashTable:f4 -> node_4_0:f0;
+node_4_0 [label="<f0>int|<f1>int|<f2>prevtop=0|<f3>next"];
 hashTable:f12 -> node_12_0:f0;
-node_12_0 [label="<f0>PrintInt|<f1>function|<f2>prevtop=3|<f3>next"];
+node_12_0 [label="<f0>PrintString|<f1>function|<f2>prevtop=3|<f3>next"];
 node_12_0 -> node_12_1 [style=invis,weight=10];
 node_12_0:f3 -> node_12_1:f0;
 node_12_1 [label="<f0>PrintInt|<f1>function|<f2>prevtop=2|<f3>next"];

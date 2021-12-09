@@ -8,10 +8,11 @@ public class AST_FUNCDEC extends AST_Node {
     public AST_TYPE type;
 	public String name;
 	public AST_TYPE_LIST typeList;
-    public AST_STMT_LIST body;
+	public AST_STMT_LIST body;
+	public int line;
 
 	// Class Constructor
-	public AST_FUNCDEC(AST_TYPE type, String name, AST_TYPE_LIST typeList, AST_STMT_LIST body)
+	public AST_FUNCDEC(AST_TYPE type, String name, AST_TYPE_LIST typeList, AST_STMT_LIST body, int line)
 	{
 		// SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -23,7 +24,8 @@ public class AST_FUNCDEC extends AST_Node {
 		this.type = type;
 		this.name = name;
 		this.typeList = typeList;
-        this.body = body;
+		this.body = body;
+		this.line = line;
 	}
 
 
@@ -50,41 +52,62 @@ public class AST_FUNCDEC extends AST_Node {
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TYPE_FUNCTION SemantMe() throws Exception
+	public BOX SemantMe() throws Exception
 	{
-
 		/*-------- CHECKING IF THE FUNCTION IS NESTED ---------*/
 
 		if (SYMBOL_TABLE.getInstance().find_curr_scope_function() != null)
 		{
 			// IT IS NESTED (WE PROHIBIT THIS) : THROW EXCEPTION :
-			throw new Exception("SEMANTIC ERROR");
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
-
+		
 		/*-------- EXTRACTING FUNCTION'S META DATA --------*/
 
-		SYMBOL_TABLE.getInstance().beginScope();
-		TYPE_LIST args_types = this.typeList.SemantMe(); // Adds the new arg names and their types to the new scope recursively
-		TYPE returnType = this.type.SemantMe(); // Returns the type of the function's return value
+		SYMBOL_TABLE.getInstance().beginScope(null);
+		
+		TYPE_LIST args_types = null;
+		if (this.typeList != null)
+		{
+			args_types = this.typeList.SemantMe(); 
+			// Adds the new arg names and their types to the new scope recursively
+		}
+		
+		TYPE returnType = this.type.SemantMe().type; // Returns the type of the function's return value
+
 		SYMBOL_TABLE.getInstance().endScope();
 
-		/*-------- DEFINING THE FUNCTION'S TYPE AND ADDING IT TO THE SCOPE --------*/
+		/* ------------------ DEFINING THE FUNCTION'S TYPE --------------------- */
 
 		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types);
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
 
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type); 
+		// Adding it to the current scope (so functions from the same scope can access it)
+		
 		/*-------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY --------*/
 
 		// args_types.check_shadows(func_type);
 
 		/*-------- GETTING HERE MEANS THE FUNCTION DIDN'T SHADOW AN ANOTHER METHOD; CHECK THE FUNCTION'S BODY --------*/
 		
-		SYMBOL_TABLE.getInstance().beginScope();
-		this.typeList.SemantMe(); // Adds the new arg names and their types to the new scope recursively
-		this.body.SemantMe(); // Makes semantic checks for the body (checks also the validity of the types of the return stmts in it)
-		SYMBOL_TABLE.getInstance().endScope();
+		SYMBOL_TABLE.getInstance().beginScope(func_type); // -------------------------
+		
+		// Add the function also to the scope of its body (for supporting recursion)
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
+		
+		// Adds the new arg names and their types to the new scope recursively
+		if (this.typeList != null)
+		{
+			this.typeList.SemantMe();
+		}
+		
+		// Makes semantic checks for the body (checks also the validity of the types of the return stmts in it)
+		this.body.SemantMe();
+		
+		SYMBOL_TABLE.getInstance().endScope(); // ------------------------------------
 
-		return func_type;
+		return new BOX(func_type, func_type.name);
 	}
 
 	// Checks if the function illegaly shadows another function. throws an exception if does.
@@ -100,7 +123,8 @@ public class AST_FUNCDEC extends AST_Node {
 			if ( ! dec.is_class())
 			{
 				// SHADOWS A VARIABLE OR A CLASS NAME : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			TYPE_FUNCTION func_dec = (TYPE_FUNCTION) dec; 
@@ -108,19 +132,22 @@ public class AST_FUNCDEC extends AST_Node {
 			if (func_dec.returnType != thisfunc_dec.returnType)
 			{
 				// ABSOLUTELY SHADOWS : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			if (thisfunc_dec.cls == null)
 			{
 				// OUR METHOD IS NOT IN ANY CLASS THEREFORE SHADOWS AN ANOTHER FUNCTION NAME : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			if (thisfunc_dec.cls.is_ancestor(func_dec.cls) == false)
 			{
 				// WE AREN'T OVERRIDING AN INHERITED METHOD, BUT SHADOWING A METHOD : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			// ELSE : WE ARE TRYING TO OVERRIDE AN INHERITED METHOD
@@ -128,7 +155,8 @@ public class AST_FUNCDEC extends AST_Node {
 			if (func_dec.params.semantically_equals(thisfunc_dec.params) == false)
 			{
 				// WE ARE SHADOWING A FUNCTION WITH THE SAME NAME AND RETURN_TYPE IN SOME PARENT METHOD : THROW EXCEPTION :
-				throw new Exception("SEMANTIC ERROR");
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
 			// ELSE : WE ARE LEGALLY OVERRIDING AN INHERITED METHOD : CONTINUE TO CHECK THE NEXT DECLERATION

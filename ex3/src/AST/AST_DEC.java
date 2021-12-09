@@ -6,8 +6,9 @@ import TYPES.*;
 public class AST_DEC extends AST_Node {
     public AST_Node son;
 	public int i; // Indicates which from  varDec | funcDec | classDec | arrayTypedef
-
-    public AST_DEC(AST_Node son, int i) {
+	public int line;
+	
+    public AST_DEC(AST_Node son, int i, int line) {
         // SET A UNIQUE SERIAL NUMBER
 		SerialNumber = AST_Node_Serial_Number.getFresh();
 
@@ -20,6 +21,7 @@ public class AST_DEC extends AST_Node {
 		// COPY INPUT DATA NENBERS
 		this.son = son;
 		this.i = i;
+		this.line = line;
     }
 
     public void PrintMe()
