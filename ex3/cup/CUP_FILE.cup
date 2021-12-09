@@ -79,7 +79,7 @@ scan with
 	}	
 	catch(Throwable e)
 	{	
-		report_error("ERROR", LEXICAL_ERROR);
+		report_error("ERROR" + "(" + lexer.getLine() + ")", LEXICAL_ERROR);
 	}
 
 	// Won't get here
