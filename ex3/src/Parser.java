@@ -346,7 +346,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 	}	
 	catch(Throwable e)
 	{	
-		report_error("ERROR", LEXICAL_ERROR);
+		report_error("ERROR" + "(" + lexer.getLine() + ")", LEXICAL_ERROR);
 	}
 
 	// Won't get here
