@@ -72,6 +72,18 @@ public class AST_FUNCDEC extends AST_Node {
 		{
 			args_types = this.typeList.SemantMe(); 
 			// Adds the new arg names and their types to the new scope recursively
+			// Checks also for shadowing at the global scope
+
+			for (TYPE t : args_types)
+			{
+				if (t.is_void())
+				{
+					// FUNCTION'S PARAMATER TYPE CANNOT BE VOID : THROW EXCEPTION :
+					
+					String cls_name = this.getClass().getName();
+					throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+				}
+			}
 		}
 		
 		TYPE returnType = this.type.SemantMe().type; // Returns the type of the function's return value
@@ -82,10 +94,10 @@ public class AST_FUNCDEC extends AST_Node {
 
 		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types);
 
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type); 
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
 		// Adding it to the current scope (so functions from the same scope can access it)
 		
-		/*-------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY --------*/
+		/* ------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY ------- */
 
 		// args_types.check_shadows(func_type);
 
@@ -110,60 +122,4 @@ public class AST_FUNCDEC extends AST_Node {
 		return new BOX(func_type, func_type.name);
 	}
 
-	// Checks if the function illegaly shadows another function. throws an exception if does.
-
-
-	/*
-	public void check_shadows(TYPE_FUNCTION thisfunc_dec)
-	{
-		TYPE_LIST all_decs = SYMBOL_TABLE.getInstance().find_all(this.name);
-
-		for (TYPE dec : all_decs)
-		{
-			if ( ! dec.is_class())
-			{
-				// SHADOWS A VARIABLE OR A CLASS NAME : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
-
-			TYPE_FUNCTION func_dec = (TYPE_FUNCTION) dec; 
-
-			if (func_dec.returnType != thisfunc_dec.returnType)
-			{
-				// ABSOLUTELY SHADOWS : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
-
-			if (thisfunc_dec.cls == null)
-			{
-				// OUR METHOD IS NOT IN ANY CLASS THEREFORE SHADOWS AN ANOTHER FUNCTION NAME : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
-
-			if (thisfunc_dec.cls.is_ancestor(func_dec.cls) == false)
-			{
-				// WE AREN'T OVERRIDING AN INHERITED METHOD, BUT SHADOWING A METHOD : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
-
-			// ELSE : WE ARE TRYING TO OVERRIDE AN INHERITED METHOD
-
-			if (func_dec.params.semantically_equals(thisfunc_dec.params) == false)
-			{
-				// WE ARE SHADOWING A FUNCTION WITH THE SAME NAME AND RETURN_TYPE IN SOME PARENT METHOD : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
-
-			// ELSE : WE ARE LEGALLY OVERRIDING AN INHERITED METHOD : CONTINUE TO CHECK THE NEXT DECLERATION
-		}
-
-		// ALL THE DECLERATIONS CHECKED ARE FINE, SO THIS FUNCTION'S DECLERATION IS LEGAL;
-	}
-
-	*/
 }
