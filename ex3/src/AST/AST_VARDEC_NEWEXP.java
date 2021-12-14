@@ -92,6 +92,13 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 		}
 		else
 		{
+			if (var_type.is_void())
+			{
+				// VARIABLE CANNOT BE OF TYPE VOID : THROW EXCEPTION
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
 			if (var_type.semantically_equals(exp_type) == false)
 			{
 				// the newExp cannot be assigned to the variable : THROW EXCEPTION :

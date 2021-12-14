@@ -76,6 +76,13 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		TYPE var_type = this.type.SemantMe().type;
 		TYPE exp_type = null;
 
+		if (var_type.is_void())
+		{
+			// VARIABLE CANNOT BE OF TYPE VOID : THROW EXCEPTION
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+		}
+
 		if (this.exp != null)
 		{
 			BOX exp_box = this.exp.SemantMe();

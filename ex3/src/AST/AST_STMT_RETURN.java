@@ -63,9 +63,18 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 		if (exp != null)
 		{
-			if (func.returnType.semantically_equals(this.exp.SemantMe().type) == false)
+			TYPE exp_type = this.exp.SemantMe().type;
+
+			if (func.returnType.semantically_equals(exp_type) == false)
 			{
 				// THIS RETURN'S VALUE TYPE IS INVALID : THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
+			if (exp_type.is_void())
+			{
+				// RETURN VALUE TYPE SHOULDN'T BE VOID : THROW EXCEPTION :
 				String cls_name = this.getClass().getName();
 				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
