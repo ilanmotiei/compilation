@@ -63,9 +63,18 @@ public class AST_NEWEXP extends AST_Node {
 		{
 			// THE FORM IS : NEW ${type} [${exp}]
 
-			if ( ! this.exp.SemantMe().type.is_int()) 
+			BOX exp_box = this.exp.SemantMe().type;
+
+			if ( ! exp_box.is_int()) 
 			{
 				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION :
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
+			if (exp_box.is_negative || exp_box.is_zero) 
+			{
+				// EXP'S VALUE IS <= 0, WHICH IS ILLEGAL : THROW EXCEPTION :
 				String cls_name = this.getClass().getName();
 				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}

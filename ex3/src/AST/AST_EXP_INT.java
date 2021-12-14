@@ -46,6 +46,13 @@ public class AST_EXP_INT extends AST_EXP
 	}
 
 	public BOX SemantMe(){
-		return new BOX(TYPE_INT.getInstance(), null, true);
+
+		BOX rv = new BOX(TYPE_INT.getInstance(), null, true);
+		
+		rv.is_zero = (this.value == 0);
+
+		rv.is_negative = this.hasMinus;
+
+		return rv;
 	}
 }
