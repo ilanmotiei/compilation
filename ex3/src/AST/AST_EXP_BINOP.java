@@ -76,8 +76,12 @@ public class AST_EXP_BINOP extends AST_EXP
 	}
 
 	public BOX SemantMe() throws Exception{
-		TYPE left_type = this.left.SemantMe().type;
-		TYPE right_type = this.right.SemantMe().type;
+
+		BOX left_box = this.left.SemantMe();
+		BOX right_box = this.right.SemantMe();
+
+		TYPE left_type = left_box.type;
+		TYPE right_type = right_box.type;
 
 		if (OP == 0)
 		{
@@ -105,24 +109,51 @@ public class AST_EXP_BINOP extends AST_EXP
 
 			if (! (left_type.semantically_equals(right_type) || right_type.semantically_equals(left_type)))
 			{
-				// TYPES CANNOT BE TESTED FOR AN EQUALITY : THROW EXCEPTION :
+				// TYPES CANNOT BE TESTED FOR EQUALITY : THROW EXCEPTION :
+				
 				String cls_name = this.getClass().getName();
 				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+
+			if (left_type.is_void() || right_type.is_void())
+			{
+				// CAN'T COMPARE VOID TYPES OBJECTS
+
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			
 			}
 
 			return new BOX(TYPE_INT.getInstance(), null, false);
 		}
 
-		// ELSE : 1 <= OP <= 5 (i.e. OP is one of ["-", "*", "/", "<", ">"])
+		// ELSE : OP is one of ["-", "*", "/", "<", ">"]
 
-		if (left_type != TYPE_INT.getInstance() || right_type != TYPE_INT.getInstance())
+		if ( (! left_type.is_int()) || (! right_type.is_int()) )
 		{
 			// ONE OF THE BINARY OPERATION SIDES TYPE IS NOT AN INTEGER : THROW EXCEPTION :
+			
 			String cls_name = this.getClass().getName();
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		// ELSE : EXPERSSION IS VALID AND ITS TYPE IS "TYPE_INT"
+		// ELSE : THE OPERATION IS DONE BETWEEN 2 INTS
+
+		if (OP == 3)
+		{
+			// OPERATION IS "/"
+
+			if (right_box.is_zero)
+			{
+				// A DIVISION BY 0 WAS BEEN TRIES : THROW EXCEPTION :
+
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+		}
+
+		// ELSE : OP is one of ["-", "*", "<", ">"]
+		// EXPERSSION IS VALID AND ITS TYPE IS "TYPE_INT"
 
 		return new BOX(TYPE_INT.getInstance(), null, false);
 	}

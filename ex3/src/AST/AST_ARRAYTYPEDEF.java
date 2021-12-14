@@ -65,6 +65,14 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 		TYPE array_elems_type = this.type.SemantMe().type;
 		TYPE_ARRAY arr_type = new TYPE_ARRAY(this.name, array_elems_type); // Defining the new array type, with its name;
 
+		if (arr_type.is_void())
+		{
+			// AN ARRAY OF TYPE VOID WAS DEFINED : THROW EXCEPTION
+
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+		}
+
 		SYMBOL_TABLE.getInstance().enter(this.name, arr_type);
 	}
     
