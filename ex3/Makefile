@@ -183,7 +183,7 @@ debug:
 	@echo "*                           *"
 	@echo "*****************************"
 
-	# @for f in $(shell ls ${INPUT_DIR}); do java -jar COMPILER ${INPUT_DIR}/$${f} ${OUTPUT_DIR}/$${f}; done
+	# for f in $(shell ls ${INPUT_DIR}); do java -jar COMPILER ${INPUT_DIR}/$${f} ${OUTPUT_DIR}/$${f}; done
 
 	java -jar COMPILER ${INPUT} ${OUTPUT}
 
