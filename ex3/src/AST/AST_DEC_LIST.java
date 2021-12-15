@@ -25,6 +25,20 @@ public class AST_DEC_LIST extends AST_Node
 		this.line = line;
 	}
 
+	public AST_DEC_LIST(AST_DEC head,AST_DEC_LIST tail)
+	{
+		// SET A UNIQUE SERIAL NUMBER
+		SerialNumber = AST_Node_Serial_Number.getFresh();
+
+		// PRINT CORRESPONDING DERIVATION RULE
+		if (tail != null) System.out.print("====================== decs -> dec decs\n");
+		if (tail == null) System.out.print("====================== decs -> dec      \n");
+
+		// COPY INPUT DATA NENBERS
+		this.head = head;
+		this.tail = tail;
+	}
+
 
 	// The printing message for a statement list AST node
 	public void PrintMe()

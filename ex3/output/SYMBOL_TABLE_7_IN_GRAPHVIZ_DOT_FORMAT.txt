@@ -31,9 +31,9 @@ hashTable [label="<f0>
 hashTable:f4 -> node_4_0:f0;
 node_4_0 [label="<f0>int|<f1>int|<f2>prevtop=0|<f3>next"];
 hashTable:f8 -> node_8_0:f0;
-node_8_0 [label="<f0>SCOPE-BOUNDARY|<f1>SCOPE-BOUNDARY|<f2>prevtop=5|<f3>next"];
+node_8_0 [label="<f0>SCOPE-BOUNDARY|<f1>SCOPE-BOUNDARY|<f2>prevtop=6|<f3>next"];
 hashTable:f12 -> node_12_0:f0;
-node_12_0 [label="<f0>p|<f1>int|<f2>prevtop=6|<f3>next"];
+node_12_0 [label="<f0>Grandfather|<f1>class|<f2>prevtop=5|<f3>next"];
 node_12_0 -> node_12_1 [style=invis,weight=10];
 node_12_0:f3 -> node_12_1:f0;
 node_12_1 [label="<f0>PrintTrace|<f1>function|<f2>prevtop=4|<f3>next"];

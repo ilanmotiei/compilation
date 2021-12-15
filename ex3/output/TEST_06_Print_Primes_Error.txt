@@ -1,0 +1,1 @@
+ERROR(25) at function : AST.AST_VAR_SIMPLE

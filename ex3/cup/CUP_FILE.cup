@@ -39,7 +39,7 @@ parser code
 	{
 		if ((int) info == PARSING_ERROR){
 
-			/* error is syntactic (we were called from the 'syntax_error' method */
+			/* error is syntactic (we were called from the 'syntax_error' method) */
 
 			System.out.print("Parsing ");
 			
@@ -179,99 +179,99 @@ start with Program;
 /* DERIVATION RULES */
 /********************/
 
-Program		::=		decList:l				{: RESULT = new AST_PROGRAM(l, getLine());    :}
+Program		::=		decList:l				{: RESULT = new AST_PROGRAM(l, lleft + 1);    :}
 					;
 
-decList		::=		dec:d   decList:dl				{: RESULT = new AST_DEC_LIST(d, dl, getLine());    :}
-					| dec:d   						{: RESULT = new AST_DEC_LIST(d, null, getLine());    :}
+decList		::=		dec:d   decList:dl				{: RESULT = new AST_DEC_LIST(d, dl, dleft + 1);    :}
+					| dec:d   						{: RESULT = new AST_DEC_LIST(d, null, dleft + 1);    :}
 					;
 
-dec			::=		varDec:v				{: RESULT = new AST_DEC(v, 0, getLine());    :}
-					| funcDec:f				{: RESULT = new AST_DEC(f, 1, getLine());    :}
-					| classDec:c			{: RESULT = new AST_DEC(c, 2, getLine());    :}
-					| arrayTypedef:a		{: RESULT = new AST_DEC(a, 3, getLine());    :}
+dec			::=		varDec:v				{: RESULT = new AST_DEC(v, 0, vleft + 1);    :}
+					| funcDec:f				{: RESULT = new AST_DEC(f, 1, fleft + 1);    :}
+					| classDec:c			{: RESULT = new AST_DEC(c, 2, cleft + 1);    :}
+					| arrayTypedef:a		{: RESULT = new AST_DEC(a, 3, aleft + 1);    :}
 					;
 
 type		::=		TYPE_INT		{: RESULT = new AST_TYPE(0, null, getLine());    :}
 					| TYPE_STRING	{: RESULT = new AST_TYPE(1, null, getLine());    :}
 					| TYPE_VOID		{: RESULT = new AST_TYPE(2, null, getLine());    :}
-					| ID:name		{: RESULT = new AST_TYPE(3, name, getLine());    :}
+					| ID:name		{: RESULT = new AST_TYPE(3, name, nameleft + 1);    :}
 					;
 
-arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON		{: RESULT = new AST_ARRAYTYPEDEF(name,t, getLine());    :}
+arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON		{: RESULT = new AST_ARRAYTYPEDEF(name,t, nameleft + 1);    :}
 					;
 
-varDec		::=		type:t ID:name SEMICOLON					{: RESULT = new AST_VARDEC_EXP(t, name, null, getLine());    :}
-					| type:t ID:name ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VARDEC_EXP(t, name, e, getLine());    :}
-					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_NEWEXP(t, name, e, getLine());    :}
+varDec		::=		type:t ID:name SEMICOLON					{: RESULT = new AST_VARDEC_EXP(t, name, null, nameleft + 1);    :}
+					| type:t ID:name ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VARDEC_EXP(t, name, e, tleft + 1);    :}
+					| type:t ID:name ASSIGN newExp:e SEMICOLON	{: RESULT = new AST_VARDEC_NEWEXP(t, name, e, tleft + 1);    :}
 					;
 
-funcDec		::=		type:t ID:func_name LPAREN RPAREN LBRACE stmtList:body RBRACE				{: RESULT = new AST_FUNCDEC(t, func_name, null, body, getLine());    :}
-					|type:t ID:func_name LPAREN typeList:params_types RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_FUNCDEC(t, func_name, params_types, body, getLine());    :}
+funcDec		::=		type:t ID:func_name LPAREN RPAREN LBRACE stmtList:body RBRACE				{: RESULT = new AST_FUNCDEC(t, func_name, null, body, func_nameleft + 1);    :}
+					|type:t ID:func_name LPAREN typeList:params_types RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_FUNCDEC(t, func_name, params_types, body, func_nameleft + 1);    :}
 					;
 
-classDec	::=		CLASS ID:class_name LBRACE cFieldList:fields RBRACE						{: RESULT = new AST_CLASSDEC(class_name, null, fields, getLine());    :}
-					| CLASS ID:class_name EXTENDS ID:super_class LBRACE cFieldList:fields RBRACE	{: RESULT = new AST_CLASSDEC(class_name, super_class, fields, getLine());    :}
+classDec	::=		CLASS ID:class_name LBRACE cFieldList:fields RBRACE						{: RESULT = new AST_CLASSDEC(class_name, null, fields, class_nameleft + 1);    :}
+					| CLASS ID:class_name EXTENDS ID:super_class LBRACE cFieldList:fields RBRACE	{: RESULT = new AST_CLASSDEC(class_name, super_class, fields, class_nameleft + 1);    :}
 					;
 
-newExp  	::=		NEW type:t 								{: RESULT = new AST_NEWEXP(t, null, getLine());    :}
-					| NEW type:t LBRACK exp:e RBRACK			{: RESULT = new AST_NEWEXP(t, e, getLine());    :}
+newExp  	::=		NEW type:t 								{: RESULT = new AST_NEWEXP(t, null, tleft + 1);    :}
+					| NEW type:t LBRACK exp:e RBRACK			{: RESULT = new AST_NEWEXP(t, e, tleft + 1);    :}
 					;
 
-cField  	::=		varDec:vd 								{: RESULT = new AST_CFIELD_VARDEC(vd, getLine());    :}
-					| funcDec:vd 							{: RESULT = new AST_CFIELD_FUNDEC(vd, getLine());    :}
+cField  	::=		varDec:vd 								{: RESULT = new AST_CFIELD_VARDEC(vd, vdleft + 1);    :}
+					| funcDec:fd 							{: RESULT = new AST_CFIELD_FUNDEC(fd, fdleft +  1);    :}
 					;
 
-cFieldList	::=		cField:c	cFieldList:l		{: RESULT = new AST_CFIELD_LIST(c,l, getLine());    :}
-					| cField:c						{: RESULT = new AST_CFIELD_LIST(c,null, getLine()); :}
+cFieldList	::=		cField:c	cFieldList:l		{: RESULT = new AST_CFIELD_LIST(c,l, cleft + 1);    :}
+					| cField:c						{: RESULT = new AST_CFIELD_LIST(c,null, cleft + 1); :}
 					;
 
-expList		::=		exp:e COMMA	expList:li		{: RESULT = new AST_EXP_LIST(e,li, getLine());    :}
-					| exp:e						{: RESULT = new AST_EXP_LIST(e,null, getLine()); :}
+expList		::=		exp:e COMMA	expList:li		{: RESULT = new AST_EXP_LIST(e,li, eleft + 1);    :}
+					| exp:e						{: RESULT = new AST_EXP_LIST(e,null, eleft + 1); :}
 					;
 
-typeList	::=		type:t ID:name COMMA typeList:tl		{: RESULT = new AST_TYPE_LIST(t, name, tl, getLine());    :}
-					| type:t ID:name						{: RESULT = new AST_TYPE_LIST(t, name, null, getLine()); :}
+typeList	::=		type:t ID:name COMMA typeList:tl		{: RESULT = new AST_TYPE_LIST(t, name, tl, nameleft + 1);    :}
+					| type:t ID:name						{: RESULT = new AST_TYPE_LIST(t, name, null, nameleft + 1); :}
 					;
 
-stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l, getLine());    :}
-					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null, getLine()); :}
+stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l, sleft + 1);    :}
+					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null, sleft + 1); :}
 					;
 
 
-var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name, getLine());       :}
-					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName, getLine()); :} 
-					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e, getLine());     :} 
+var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name, nameleft + 1);       :}
+					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName, vleft + 1); :} 
+					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e, vleft + 1);     :} 
 					;
 					
-stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e, getLine());	 :}
-					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body, getLine()); 	:}
-					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body, getLine()); 	:}
-					| varDec:vd													{: RESULT = new AST_STMT_VARDEC(vd, getLine()); 	:}
-					| var:v ASSIGN newExp:ne SEMICOLON							{: RESULT = new AST_STMT_ASSIGN_NEWEXP(v,ne, getLine()); 	:}
-					| RETURN SEMICOLON											{: RESULT = new AST_STMT_RETURN(null, getLine()); 		:}
-					| RETURN exp:e SEMICOLON									{: RESULT = new AST_STMT_RETURN(e, getLine()); 	:}
-					| ID:name LPAREN RPAREN SEMICOLON								{: RESULT = new AST_STMT_FUNCCALL(null, name, null, getLine()); 	:}
-					| var:v DOT ID:func_name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_FUNCCALL(v, func_name, null, getLine()); 	:}
-					| ID:func_name LPAREN expList:args RPAREN SEMICOLON					{: RESULT = new AST_STMT_FUNCCALL(null, func_name, args, getLine()); 	:}
-					| var:v DOT ID:func_name LPAREN expList:args RPAREN SEMICOLON			{: RESULT = new AST_STMT_FUNCCALL(v, func_name, args, getLine()); 	:}
+stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e, vleft + 1);	 :}
+					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body, condleft + 1); 	:}
+					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body, condleft + 1); 	:}
+					| varDec:vd													{: RESULT = new AST_STMT_VARDEC(vd, vdleft + 1); 	:}
+					| var:v ASSIGN newExp:ne SEMICOLON							{: RESULT = new AST_STMT_ASSIGN_NEWEXP(v,ne, vleft +  1); 	:}
+					| RETURN SEMICOLON											{: RESULT = new AST_STMT_RETURN(null, getLine() - 1); 		:}
+					| RETURN exp:e SEMICOLON									{: RESULT = new AST_STMT_RETURN(e, eleft + 1); :}
+					| ID:name LPAREN RPAREN SEMICOLON								{: RESULT = new AST_STMT_FUNCCALL(null, name, null, nameleft + 1); 	:}
+					| var:v DOT ID:func_name LPAREN RPAREN SEMICOLON						{: RESULT = new AST_STMT_FUNCCALL(v, func_name, null, vleft + 1); 	:}
+					| ID:func_name LPAREN expList:args RPAREN SEMICOLON					{: RESULT = new AST_STMT_FUNCCALL(null, func_name, args, func_nameleft + 1); 	:}
+					| var:v DOT ID:func_name LPAREN expList:args RPAREN SEMICOLON			{: RESULT = new AST_STMT_FUNCCALL(v, func_name, args, vleft + 1); 	:}
 					;
 
-exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0, getLine());          :}
-					| MINUS INT:i						{: RESULT = new AST_EXP_INT(i, 1, getLine());          :}
-					| STRING:s							{: RESULT = new AST_EXP_STRING(s, getLine());          :}
+exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i, 0, ileft + 1);          :}
+					| MINUS INT:i						{: RESULT = new AST_EXP_INT(i, 1, ileft + 1);          :}
+					| STRING:s							{: RESULT = new AST_EXP_STRING(s, sleft + 1);          :}
 					| NIL								{: RESULT = new AST_EXP_NIL(getLine());          :}
-					| var:v								{: RESULT = new AST_EXP_VAR(v, getLine());          :}
-					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0, getLine());		:}
-					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1, getLine());		:}
-					| exp:e1 TIMES exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 2, getLine());		:}
-					| exp:e1 DIVIDE exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 3, getLine());		:}
-					| exp:e1 LT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 4, getLine());		:}
-					| exp:e1 GT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 5, getLine());		:}
-					| exp:e1 EQ exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 6, getLine());		:}
-					| LPAREN exp:e RPAREN				{: RESULT = new AST_EXP_PARENEXP(e, getLine());		:}
-					| ID:func_name LPAREN RPAREN				{: RESULT = new AST_EXP_FUNCCALL(null, func_name, null, getLine());		:}
-					| var:v DOT ID:func_name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, null, getLine());		:}
-					| ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, func_name, args, getLine());		:}
-					| var:v DOT ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, args, getLine());		:}
+					| var:v								{: RESULT = new AST_EXP_VAR(v, vleft + 1);          :}
+					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0, e1left + 1);		:}
+					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1, e1left + 1);		:}
+					| exp:e1 TIMES exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 2, e1left + 1);		:}
+					| exp:e1 DIVIDE exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 3, e1left + 1);		:}
+					| exp:e1 LT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 4, e1left + 1);		:}
+					| exp:e1 GT exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 5, e1left + 1);		:}
+					| exp:e1 EQ exp:e2					{: RESULT = new AST_EXP_BINOP(e1, e2, 6, e1left + 1);		:}
+					| LPAREN exp:e RPAREN				{: RESULT = new AST_EXP_PARENEXP(e, eleft + 1);		:}
+					| ID:func_name LPAREN RPAREN				{: RESULT = new AST_EXP_FUNCCALL(null, func_name, null, func_nameleft + 1);		:}
+					| var:v DOT ID:func_name LPAREN RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, null, vleft + 1);		:}
+					| ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(null, func_name, args, func_nameleft + 1);		:}
+					| var:v DOT ID:func_name LPAREN expList:args RPAREN		{: RESULT = new AST_EXP_FUNCCALL(v, func_name, args, vleft + 1);		:}
 					;

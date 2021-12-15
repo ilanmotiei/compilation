@@ -40,27 +40,30 @@ public class Main
 
 			/* Semant the AST ... */
 			
-			try
-			{
-				AST.SemantMe();
+			// try
+			// {
+			// 	AST.SemantMe();
 
-				/* 
-				Getting here means no semantic errors have been occured.
-				In particular no lexical and syntactic errors have been occured.
-				*/
+			// 	/* 
+			// 	Getting here means no semantic errors have been occured.
+			// 	In particular no lexical and syntactic errors have been occured.
+			// 	*/
 					
-				file_writer.print("OK");
-			}
-			catch (Exception e)
-			{
-				// A semantic error have been occured.
+			// 	file_writer.print("OK");
+			// }
+			// catch (Exception e)
+			// {
+			// 	// A semantic error have been occured.
 
-				System.out.println(e.getMessage());
-				String line = e.getMessage().split(" : ")[1];
-				String where = e.getMessage().split(" : ")[2];
+			// 	System.out.println(e.getMessage());
+			// 	String line = e.getMessage().split(" : ")[1];
+			// 	String where = e.getMessage().split(" : ")[2];
 
-				file_writer.print("ERROR" + "(" + line + ") at function : " + where);
-			}
+			// 	file_writer.print("ERROR" + "(" + line + ") at function : " + where);
+			// }
+
+			AST.SemantMe();
+
 			
 			/***********************************/
 

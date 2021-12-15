@@ -43,17 +43,18 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 
 	public void SemantMe(TYPE_CLASS cls) throws Exception
 	{
-
 		BOX var_box = this.varDec.SemantMe(cls);
 		TYPE_CLASS_FIELD var = (TYPE_CLASS_FIELD) var_box.type; 
 		// The above call checks also if no shadowing occured, and throws an error if does
 
+		/*
 		if ( ! var_box.is_const)
 		{
 			// CANNO'T ASSIGN NON-CONSTANT VARIABLE FOR A CLASS FIELD : THROW EXCEPTION
 			String cls_name = this.getClass().getName();
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
+		*/
 
 		cls.appendField(new TYPE_CLASS_FIELD(var.type, var.name));
 	}

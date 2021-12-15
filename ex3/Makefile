@@ -51,7 +51,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_06_Print_Primes_Error.txt
+INPUT    = ${INPUT_DIR}/TEST_05_Classes.txt
 OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 
 ##########
@@ -182,7 +182,11 @@ debug:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
+
+	# @for f in $(shell ls ${INPUT_DIR}); do java -jar COMPILER ${INPUT_DIR}/$${f} ${OUTPUT_DIR}/$${f}; done
+
 	java -jar COMPILER ${INPUT} ${OUTPUT}
+
 	@echo "\n"
 	@echo "***************************************"
 	@echo "*                                     *"

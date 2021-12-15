@@ -28,7 +28,6 @@ public class AST_FUNCDEC extends AST_Node {
 		this.line = line;
 	}
 
-
 	// The printing message for a statement list AST node
 	public void PrintMe()
 	{

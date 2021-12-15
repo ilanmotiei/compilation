@@ -71,6 +71,13 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			}
 		}
 
+		if (SYMBOL_TABLE.getInstance().find_at_curr_scope(this.name) != null)
+		{
+			// A VARIABLE WITH THAT NAME WAS ALREADY DECLARED AT OUR SCOPE : THROW ERROR :
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+		}
+
 		// ELSE : 
 
 		TYPE var_type = this.type.SemantMe().type;

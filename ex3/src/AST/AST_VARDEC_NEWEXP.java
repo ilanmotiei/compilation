@@ -66,11 +66,28 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			}
 		}
 
+		if (SYMBOL_TABLE.getInstance().find_at_curr_scope(this.name) != null)
+		{
+			// A VARIABLE WITH THAT NAME WAS ALREADY DECLARED AT OUR SCOPE : THROW ERROR :
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+		}
+
 		// ELSE : 
 
 		TYPE var_type = this.type.SemantMe().type;
 		BOX exp_box = this.newExp.SemantMe();
 		TYPE exp_type = exp_box.type;
+
+		if (cls != null)
+		{
+			if (! exp_box.is_const)
+			{
+				// CANNOT ASSIGN A CLASS FIELD A NON-CONSTANT VALUE
+				String cls_name = this.getClass().getName();
+				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
+			}
+		}
 
 		if (exp_box.is_array)
 		{

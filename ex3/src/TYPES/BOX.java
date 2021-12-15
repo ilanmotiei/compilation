@@ -8,8 +8,8 @@ public class BOX
     public TYPE type;
     public String name = null;
     public boolean is_const = false;
-    public boolean is_zero;
-    public boolean is_negative;
+    public boolean is_zero = false;
+    public boolean is_negative = false;
 
     public boolean is_array = false;
 

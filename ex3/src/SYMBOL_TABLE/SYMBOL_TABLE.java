@@ -100,6 +100,40 @@ public class SYMBOL_TABLE
 		return find_by_hierarchy((TYPE_CLASS) e.getScopeWrapper(), name);
 	}
 
+	/*
+	Finds the given name at the current scope. Returns null if wasn't found.
+	*/
+	public TYPE find_at_curr_scope(String name)
+	{
+		SYMBOL_TABLE_ENTRY e = top;
+
+		while (e != null)
+		{
+			if (e.name.equals(name))
+			{
+				return e.type;
+			}
+
+			if (e.isScopeBoundary())
+			{
+				break;
+			}
+
+			e = e.prevtop;
+		}
+
+		if (e == null) 
+		{ 
+			// We were at the outermost scope and we didn't found the given name in it
+			return null; 
+		}
+
+		// else : e != null,
+		// thus we are inside some class/function scope and we didn't found the given name in it
+
+		return null;
+	}
+
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
