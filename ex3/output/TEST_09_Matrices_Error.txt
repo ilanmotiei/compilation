@@ -1,1 +1,0 @@
-ERROR(17) at function : AST.AST_STMT_ASSIGN

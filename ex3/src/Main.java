@@ -59,7 +59,7 @@ public class Main
 				String line = e.getMessage().split(" : ")[1];
 				String where = e.getMessage().split(" : ")[2];
 
-				file_writer.print("ERROR" + "(" + line + ") at function : " + where);
+				file_writer.print("ERROR" + "(" + line + ")");
 			}
 
 			

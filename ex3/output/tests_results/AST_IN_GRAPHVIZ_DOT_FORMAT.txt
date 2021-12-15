@@ -1,0 +1,245 @@
+digraph
+{
+graph [ordering = "out"]
+v0 [label = "TYPE_INT"];
+v1 [label = "INT(8)"];
+v2 [label = "EXP ASSIGN
+type ID(WALK) := right
+"];
+v2 -> v0;
+v2 -> v1;
+v3 [label = "CFIELD
+ varDec;
+"];
+v3 -> v2;
+v4 [label = "TYPE_STRING"];
+v5 [label = "STRING( ' 'RUN) ' "];
+v6 [label = "EXP ASSIGN
+type ID(RUN) := right
+"];
+v6 -> v4;
+v6 -> v5;
+v7 [label = "CFIELD
+ varDec;
+"];
+v7 -> v6;
+v8 [label = "CFIELD
+LIST
+"];
+v8 -> v7;
+v9 [label = "CFIELD
+LIST
+"];
+v9 -> v3;
+v9 -> v8;
+v10 [label = "CLASSDEC
+CLASS ID(Grandfather) {cFields} 
+"];
+v10 -> v9;
+v11 [label = "classDec
+"];
+v11 -> v10;
+v12 [label = "ID(Father)"];
+v13 [label = "NIL"];
+v14 [label = "EXP ASSIGN
+type ID(g) := right
+"];
+v14 -> v12;
+v14 -> v13;
+v15 [label = "CFIELD
+ varDec;
+"];
+v15 -> v14;
+v16 [label = "CFIELD
+LIST
+"];
+v16 -> v15;
+v17 [label = "CLASSDEC
+CLASS ID(Father) EXTENDS ID(Grandfather) {cFields} 
+"];
+v17 -> v16;
+v18 [label = "classDec
+"];
+v18 -> v17;
+v19 [label = "ID(Son)"];
+v20 [label = "EXP ASSIGN
+type ID(swim)
+"];
+v20 -> v19;
+v21 [label = "CFIELD
+ varDec;
+"];
+v21 -> v20;
+v22 [label = "TYPE_INT"];
+v23 [label = "EXP ASSIGN
+type ID(iii)
+"];
+v23 -> v22;
+v24 [label = "CFIELD
+ varDec;
+"];
+v24 -> v23;
+v25 [label = "CFIELD
+LIST
+"];
+v25 -> v24;
+v26 [label = "CFIELD
+LIST
+"];
+v26 -> v21;
+v26 -> v25;
+v27 [label = "CLASSDEC
+CLASS ID(Son) EXTENDS ID(Father) {cFields} 
+"];
+v27 -> v26;
+v28 [label = "classDec
+"];
+v28 -> v27;
+v29 [label = "ID(Grandfather)"];
+v30 [label = "ARRAYTYPEDEF
+ARRAY ID(WisePeople) = type[] 
+"];
+v30 -> v29;
+v31 [label = "arrayTypedef
+"];
+v31 -> v30;
+v32 [label = "TYPE_VOID"];
+v33 [label = "ID(Father)"];
+v34 [label = "ID(Father)"];
+v35 [label = "newExp
+ NEW type 
+"];
+v35 -> v34;
+v36 [label = "NEWEXP ASSIGN
+type ID(g) := right
+"];
+v36 -> v33;
+v36 -> v35;
+v37 [label = "VARDEC
+ var declaration
+"];
+v37 -> v36;
+v38 [label = "SIMPLE
+VAR
+(g)"];
+v39 [label = "FIELD
+VAR
+...->g"];
+v39 -> v38;
+v40 [label = "ID(Son)"];
+v41 [label = "newExp
+ NEW type 
+"];
+v41 -> v40;
+v42 [label = "ASSIGN NEWEXP
+left := new right
+"];
+v42 -> v39;
+v42 -> v41;
+v43 [label = "ID(WisePeople)"];
+v44 [label = "ID(Grandfather)"];
+v45 [label = "SIMPLE
+VAR
+(g)"];
+v46 [label = "FIELD
+VAR
+...->RUN"];
+v46 -> v45;
+v47 [label = "EXP
+VAR"];
+v47 -> v46;
+v48 [label = "newExp
+ NEW type[exp] 
+"];
+v48 -> v44;
+v48 -> v47;
+v49 [label = "NEWEXP ASSIGN
+type ID(wp) := right
+"];
+v49 -> v43;
+v49 -> v48;
+v50 [label = "VARDEC
+ var declaration
+"];
+v50 -> v49;
+v51 [label = "SIMPLE
+VAR
+(wp)"];
+v52 [label = "SIMPLE
+VAR
+(g)"];
+v53 [label = "EXP
+VAR"];
+v53 -> v52;
+v54 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v54 -> v51;
+v54 -> v53;
+v55 [label = "SIMPLE
+VAR
+(g)"];
+v56 [label = "EXP
+VAR"];
+v56 -> v55;
+v57 [label = "ASSIGN
+left := right
+"];
+v57 -> v54;
+v57 -> v56;
+v58 [label = "STMT
+LIST
+"];
+v58 -> v57;
+v59 [label = "STMT
+LIST
+"];
+v59 -> v50;
+v59 -> v58;
+v60 [label = "STMT
+LIST
+"];
+v60 -> v42;
+v60 -> v59;
+v61 [label = "STMT
+LIST
+"];
+v61 -> v37;
+v61 -> v60;
+v62 [label = "FUNCDEC
+type ID(main)(arg1,...argn) { body }
+"];
+v62 -> v32;
+v62 -> v61;
+v63 [label = "funcDec
+"];
+v63 -> v62;
+v64 [label = "DEC
+LIST
+"];
+v64 -> v63;
+v65 [label = "DEC
+LIST
+"];
+v65 -> v31;
+v65 -> v64;
+v66 [label = "DEC
+LIST
+"];
+v66 -> v28;
+v66 -> v65;
+v67 [label = "DEC
+LIST
+"];
+v67 -> v18;
+v67 -> v66;
+v68 [label = "DEC
+LIST
+"];
+v68 -> v11;
+v68 -> v67;
+v69 [label = "PROGRAM
+DECLIST
+"];
+v69 -> v68;
+}
