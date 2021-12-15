@@ -1,4 +1,4 @@
-array IntArray = int[];
+array IntArray = void[];
 
 int monthJuly()
 {

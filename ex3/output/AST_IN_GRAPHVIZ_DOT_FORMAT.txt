@@ -1,7 +1,7 @@
 digraph
 {
 graph [ordering = "out"]
-v0 [label = "TYPE_INT"];
+v0 [label = "TYPE_VOID"];
 v1 [label = "ARRAYTYPEDEF
 ARRAY ID(IntArray) = type[] 
 "];

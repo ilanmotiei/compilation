@@ -65,7 +65,7 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 		TYPE array_elems_type = this.type.SemantMe().type;
 		TYPE_ARRAY arr_type = new TYPE_ARRAY(this.name, array_elems_type); // Defining the new array type, with its name;
 
-		if (arr_type.is_void())
+		if (arr_type.elems_type.is_void())
 		{
 			// AN ARRAY OF TYPE VOID WAS DEFINED : THROW EXCEPTION
 
