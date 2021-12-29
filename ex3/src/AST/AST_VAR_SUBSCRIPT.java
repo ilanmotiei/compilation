@@ -46,7 +46,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	public BOX SemantMe() throws Exception
 	{
 		TYPE var_type = this.var.SemantMe().type;
-
+		
 		if ( ! var_type.is_array())
 		{
 			// ONLY ARRAYS ARE SUBSCRIPTABLE : THROW EXCEPTION :
