@@ -45,7 +45,7 @@ public class SYMBOL_TABLE
 	/****************************************************************************/
 	/* Enter a variable, function, class type or array type to the symbol table */
 	/****************************************************************************/
-	public void enter(String name, TYPE t)
+	public void enter(String name, TYPE t, boolean isArg, boolean isLocalVar)
 	{
 		/* [1] Compute the hash value for this new entry */
 
@@ -57,7 +57,7 @@ public class SYMBOL_TABLE
 		SYMBOL_TABLE_ENTRY next = table[hashValue];
 	
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name, t, hashValue, next, top, top_index++);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name, t, hashValue, next, top, top_index++, isArg, isLocalVar);
 
 		/* [4] Update the top of the symbol table ... */
 		top = e;
@@ -99,6 +99,25 @@ public class SYMBOL_TABLE
 
 		return find_by_hierarchy((TYPE_CLASS) e.getScopeWrapper(), name);
 	}
+
+	public SYMBOL_TABLE_ENTRY find_entry(String name)
+	{
+		SYMBOL_TABLE_ENTRY e = top;
+
+		while (e != null)
+		{
+			if (e.name.equals(name))
+			{
+				return e;
+			}
+
+			e = e.prevtop;
+		}
+
+		return null;
+	}
+
+
 
 	/*
 	Finds the given name at the current scope. Returns null if wasn't found.
@@ -148,7 +167,9 @@ public class SYMBOL_TABLE
 		
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES(scope_wrapper));
+			new TYPE_FOR_SCOPE_BOUNDARIES(scope_wrapper),
+				false,
+				false);
 		
 		/*********************************************/
 		/* Print the symbol table after every change */
@@ -167,7 +188,9 @@ public class SYMBOL_TABLE
 		
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES(null));
+			new TYPE_FOR_SCOPE_BOUNDARIES(null),
+				false,
+				false);
 		
 		/*********************************************/
 		/* Print the symbol table after every change */
@@ -331,6 +354,8 @@ public class SYMBOL_TABLE
 			return founded;
 		}
 	}
+
+
 
 
 	/*****************************************************************************************************/

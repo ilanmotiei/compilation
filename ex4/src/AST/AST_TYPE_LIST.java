@@ -68,7 +68,7 @@ public class AST_TYPE_LIST extends AST_Node {
 
 		/*---------- Inserting the new variable to the current scope ------------*/
 
-		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe().type);
+		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe().type, true, false);
 
 		/*---------- Creating a list contains all of the types of elements in the list ------------*/
 

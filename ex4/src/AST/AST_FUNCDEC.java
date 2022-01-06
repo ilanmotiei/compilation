@@ -51,15 +51,16 @@ public class AST_FUNCDEC extends AST_Node {
 		if (body != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,body.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Label("main"));		
-		if (body != null) body.IRme();
 
-		return null;
-	}
+//	public TEMP IRme()
+//	{
+//		IR.
+//		getInstance().
+//		Add_IRcommand(new IRcommand_Label("main"));
+//		if (body != null) body.IRme();
+//
+//		return null;
+//	}
 
 	public BOX SemantMe() throws Exception
 	{
@@ -103,7 +104,7 @@ public class AST_FUNCDEC extends AST_Node {
 
 		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types);
 
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false);
 		// Adding it to the current scope (so functions from the same scope can access it)
 		
 		/* ------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY ------- */
@@ -115,7 +116,7 @@ public class AST_FUNCDEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginScope(func_type); // -------------------------
 		
 		// Add the function also to the scope of its body (for supporting recursion)
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false);
 		
 		// Adds the new arg names and their types to the new scope recursively
 		if (this.typeList != null)

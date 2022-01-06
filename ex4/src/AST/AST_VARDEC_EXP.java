@@ -125,7 +125,7 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			}
 		}
 
-		SYMBOL_TABLE.getInstance().enter(this.name, var_type);
+		SYMBOL_TABLE.getInstance().enter(this.name, var_type, false, true);
 
 		if (cls != null)
 		{

@@ -7,16 +7,16 @@ public abstract class AST_VARDEC extends AST_Node {
 		System.out.print("UNKNOWN AST VARDEC NODE");
 	}
 
-	public TEMP IRme()
-	{
-		IR.getInstance().Add_IRcommand(new IRcommand_Allocate(name));
-		
-		if (initialValue != null)
-		{
-			IR.getInstance().Add_IRcommand(new IRcommand_Store(name,initialValue.IRme()));
-		}
-		return null;
-	}
+//	public TEMP IRme()
+//	{
+//		IR.getInstance().Add_IRcommand(new IRcommand_Allocate(name));
+//
+//		if (initialValue != null)
+//		{
+//			IR.getInstance().Add_IRcommand(new IRcommand_Store(name,initialValue.IRme()));
+//		}
+//		return null;
+//	}
 	
 	public abstract BOX SemantMe() throws Exception;
 
