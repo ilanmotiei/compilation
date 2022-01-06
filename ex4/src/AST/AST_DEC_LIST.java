@@ -25,13 +25,13 @@ public class AST_DEC_LIST extends AST_Node
 		this.line = line;
 	}
 
-	public TEMP IRme()
-	{
-		if (head != null) head.IRme();
-		if (tail != null) tail.IRme();
-		
-		return null;			
-	}
+//	public TEMP IRme()
+//	{
+//		if (head != null) head.IRme();
+//		if (tail != null) tail.IRme();
+//
+//		return null;
+//	}
 
 	public AST_DEC_LIST(AST_DEC head,AST_DEC_LIST tail)
 	{

@@ -74,41 +74,41 @@ public class AST_EXP_BINOP extends AST_EXP
 		if (right != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,right.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		TEMP t1 = null;
-		TEMP t2 = null;
-		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
-				
-		if (left  != null) t1 = left.IRme();
-		if (right != null) t2 = right.IRme();
-		
-		if (OP == 0)
-		{
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
-		}
-		if (OP == 2)
-		{
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
-		}
-		if (OP == 3)
-		{
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
-		}
-		if (OP == 4)
-		{
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t1,t2));
-		}
-		return dst;
-	}
+//	public TEMP IRme()
+//	{
+//		TEMP t1 = null;
+//		TEMP t2 = null;
+//		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+//
+//		if (left  != null) t1 = left.IRme();
+//		if (right != null) t2 = right.IRme();
+//
+//		if (OP == 0)
+//		{
+//			IR.
+//			getInstance().
+//			Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+//		}
+//		if (OP == 2)
+//		{
+//			IR.
+//			getInstance().
+//			Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
+//		}
+//		if (OP == 3)
+//		{
+//			IR.
+//			getInstance().
+//			Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
+//		}
+//		if (OP == 4)
+//		{
+//			IR.
+//			getInstance().
+//			Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t1,t2));
+//		}
+//		return dst;
+//	}
 
 	public BOX SemantMe() throws Exception{
 

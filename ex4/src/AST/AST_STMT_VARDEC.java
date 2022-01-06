@@ -40,10 +40,10 @@ public class AST_STMT_VARDEC extends AST_STMT {
 		if (varDec != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,varDec.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		return var.IRme();
-	}
+//	public TEMP IRme()
+//	{
+//		return var.IRme();
+//	}
 
 	public void SemantMe() throws Exception{
 		this.varDec.SemantMe();
