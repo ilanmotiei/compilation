@@ -1,6 +1,6 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
@@ -8,7 +8,13 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	// simple variable name
 	public String name;
 	public int line;
-	
+
+	// metadata for code generation
+	public int offset;
+	public boolean isArg;
+	public boolean isLocalVar;
+
+
 	// Class Constructor
 
 	public AST_VAR_SIMPLE(String name, int line)
@@ -57,7 +63,17 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		// ELSE
 
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
+		this.setCodeGenMetaData(entry);
+
 		return new BOX(var_type);
+	}
+
+	public void setCodeGenMetaData(SYMBOL_TABLE_ENTRY entry)
+	{
+		this.offset = entry.offset;
+		this.isArg = entry.isArg;
+		this.isLocalVar = entry.isLocalVar;
 	}
 
 	public BOX SemantMe(TYPE_CLASS cls) throws Exception

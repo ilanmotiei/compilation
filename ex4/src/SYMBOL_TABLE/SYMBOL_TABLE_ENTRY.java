@@ -33,6 +33,7 @@ public class SYMBOL_TABLE_ENTRY
 
 	public int offset;
 	public boolean isArg;
+	public boolean isLocalVar;
 
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -54,6 +55,7 @@ public class SYMBOL_TABLE_ENTRY
 		this.prevtop = prevtop;
 		this.prevtop_index = prevtop_index;
 		this.isArg = isArg;
+		this.isLocalVar = isLocalVar;
 		this.offset = 0; // default invalid offset
 
 		if(type.is_function())
