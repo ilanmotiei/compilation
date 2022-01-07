@@ -49,16 +49,16 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 		if (expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		TEMP t=null;
-		
-		if (params != null) { t = params.head.IRme(); }
-		
-		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
-		
-		return null;
-	}
+//	public TEMP IRme()
+//	{
+//		TEMP t=null;
+//
+//		if (params != null) { t = params.head.IRme(); }
+//
+//		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
+//
+//		return null;
+//	}
 
 	public BOX SemantMe() throws Exception
 	{

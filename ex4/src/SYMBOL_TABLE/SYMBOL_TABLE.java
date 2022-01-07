@@ -509,8 +509,8 @@ public class SYMBOL_TABLE
 			/*****************************************/
 			/* [1] Enter primitive types int, string */
 			/*****************************************/
-			instance.enter("int",   TYPE_INT.getInstance());
-			instance.enter("string",TYPE_STRING.getInstance());
+			instance.enter("int",   TYPE_INT.getInstance(), false, false);
+			instance.enter("string",TYPE_STRING.getInstance(), false, false);
 
 			/*************************************/
 			/* [2] How should we handle void ??? */
@@ -526,7 +526,7 @@ public class SYMBOL_TABLE
 					"PrintInt",
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
-						null)));
+						null)), false, false);
 
 			instance.enter("PrintString", 
 						new TYPE_FUNCTION(
@@ -534,13 +534,17 @@ public class SYMBOL_TABLE
 							"PrintString", 
 							new TYPE_LIST(
 								TYPE_STRING.getInstance(), 
-								null)));
+								null)),
+							  false,
+					       false);
 
 			instance.enter("PrintTrace", 
 						new TYPE_FUNCTION(
 							TYPE_VOID.getInstance(), 
 							"PrintTrace", 
-							null));	
+							null),
+							false,
+					     false);
 		}
 		return instance;
 	}

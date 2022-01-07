@@ -37,12 +37,12 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			String.format("SIMPLE\nVAR\n(%s)",name));
 	}
 
-	public TEMP IRme()
-	{
-		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
-		return t;
-	}
+//	public TEMP IRme()
+//	{
+//		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+//		IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
+//		return t;
+//	}
 
 	public BOX SemantMe() throws Exception
 	{

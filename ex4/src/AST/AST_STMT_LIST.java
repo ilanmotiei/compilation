@@ -46,13 +46,13 @@ public class AST_STMT_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		if (head != null) head.IRme();
-		if (tail != null) tail.IRme();
-		
-		return null;
-	}
+//	public TEMP IRme()
+//	{
+//		if (head != null) head.IRme();
+//		if (tail != null) tail.IRme();
+//
+//		return null;
+//	}
 
 	public void SemantMe() throws Exception{
 		this.head.SemantMe();

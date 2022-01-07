@@ -3,7 +3,7 @@ package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
-public class ST_STMT_FUNCCALL extends AST_STMT{
+public class AST_STMT_FUNCCALL extends AST_STMT{
     public AST_VAR var;
     public String func_name;
 	public AST_EXP_LIST expList;
@@ -69,12 +69,12 @@ public class ST_STMT_FUNCCALL extends AST_STMT{
 		if(expList != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,expList.SerialNumber);
 	}
 
-	public TEMP IRme()
-	{
-		if (callExp != null) callExp.IRme();
-		
-		return null;
-	}
+//	public TEMP IRme()
+//	{
+//		if (callExp != null) callExp.IRme();
+//
+//		return null;
+//	}
 
 	public void SemantMe() throws Exception{
 
