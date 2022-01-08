@@ -103,5 +103,4 @@ public class AST_CLASSDEC extends AST_Node {
 
 		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec, false, false);
 	}
-    
 }
