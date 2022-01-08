@@ -35,6 +35,8 @@ public class SYMBOL_TABLE_ENTRY
 	public boolean isArg;
 	public boolean isLocalVar;
 
+	public int sizeOnHeap;
+
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
@@ -57,6 +59,7 @@ public class SYMBOL_TABLE_ENTRY
 		this.isArg = isArg;
 		this.isLocalVar = isLocalVar;
 		this.offset = 0; // default invalid offset
+		this.sizeOnHeap = 0;
 
 		if(type.is_function())
 		{
@@ -73,6 +76,14 @@ public class SYMBOL_TABLE_ENTRY
 		{
 			this.offset = localVarOffset;
 			localVarOffset -= 4;
+		}
+		else if(type.isClass())
+		{
+			this.sizeOnHeap = getClassSizeOnHeap();
+		}
+		else if(type.is_array())
+		{
+			this.sizeOnHeap = getArraySizeOnHeap();
 		}
 	}
 
@@ -106,4 +117,5 @@ public class SYMBOL_TABLE_ENTRY
 		return ((TYPE_FOR_SCOPE_BOUNDARIES) this.type).getScopeWrapper();
 	}
 
+	
 }
