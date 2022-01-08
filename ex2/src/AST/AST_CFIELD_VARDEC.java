@@ -16,7 +16,6 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		this.varDec = varDec;
 	}
 
-	
 	// The printing message for an assign statement AST node
 	public void PrintMe()
 	{

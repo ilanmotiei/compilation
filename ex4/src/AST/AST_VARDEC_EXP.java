@@ -1,6 +1,6 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 
 public class AST_VARDEC_EXP extends AST_VARDEC {
@@ -9,6 +9,11 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 	public String name;
 	public AST_EXP exp;
 	public int line;
+
+	// metadata for code generation
+	public int offset;
+	public boolean isArg;
+	public boolean isLocalVar;
 
 	// Class Constructor
 	public AST_VARDEC_EXP(AST_TYPE type, String name, AST_EXP exp, int line)
@@ -133,6 +138,16 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			var_type = new TYPE_CLASS_FIELD(var_type, this.name);
 		}
 
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
+		this.setCodeGenMetaData(entry);
+
 		return new BOX(var_type);
+	}
+
+	public void setCodeGenMetaData(SYMBOL_TABLE_ENTRY entry)
+	{
+		this.offset = entry.offset;
+		this.isArg = entry.isArg;
+		this.isLocalVar = entry.isLocalVar;
 	}
 }

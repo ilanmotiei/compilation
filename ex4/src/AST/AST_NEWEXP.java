@@ -65,7 +65,7 @@ public class AST_NEWEXP extends AST_Node {
 
 			BOX exp_box = this.exp.SemantMe();
 
-			if ( ! exp_box.type.is_int()) 
+			if ( ! exp_box.type.is_int())
 			{
 				// EXP'S SIZE IS NOT AN INTEGER : THROW EXCEPTION :
 				String cls_name = this.getClass().getName();
