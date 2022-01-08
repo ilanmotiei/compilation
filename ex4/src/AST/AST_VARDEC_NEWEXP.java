@@ -164,3 +164,4 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 	}
 }
 
+//
