@@ -84,4 +84,12 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 		// else - the assignment statement is valid.
 	}
     
+	// to change
+	int getSizeOnHeap()
+	{
+		int num_of_class_fields = 2;
+
+		return 4 * (1 + num_of_class_fields);
+	}
+
 }
