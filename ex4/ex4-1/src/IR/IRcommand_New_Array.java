@@ -10,7 +10,7 @@ public class IRcommand_New_Array extends IRcommand
 	TEMP size_reg;
     TYPE type;
     
-    // <dst> = new_array <size_reg>
+    // FORMAT <dst> = new_array <size_reg>
 
 	public IRcommand_New_Array(TEMP dst, TEMP size_reg, TYPE type)
 	{
@@ -18,7 +18,8 @@ public class IRcommand_New_Array extends IRcommand
         this.size_reg = size_reg;
         this.type = type;
 	}
-	
+
+	// get size_in_bytes of array from AST annotations
 	public void MIPSme()
 	{
 		MIPSGenerator.getInstance().malloc(dst, size_reg, type.size_in_bytes);

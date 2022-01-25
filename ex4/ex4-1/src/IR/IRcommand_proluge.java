@@ -17,7 +17,7 @@ public class IRcommand_proluge extends IRcommand {
 	@Override
 	public void MIPSme() {
 		
-		MIPSGenerator.getInstance().proluge(func_data);
+		MIPSGenerator.getInstance().prologue(func_data);
 
 	}
 

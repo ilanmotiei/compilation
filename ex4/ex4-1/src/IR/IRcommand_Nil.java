@@ -6,7 +6,7 @@ public class IRcommand_Nil extends IRcommand{
 
 	TEMP dst;
 
-    // <dst> = Nil
+    // FORMAT <dst> = Nil
 	
 	public IRcommand_Nil(TEMP dst)
 	{

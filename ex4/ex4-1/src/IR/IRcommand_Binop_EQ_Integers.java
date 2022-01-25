@@ -35,7 +35,9 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 		/* [1] Allocate 3 fresh labels */
 		/*******************************/
 		String label_end        = getFreshLabel("end");
+		// label for equal integers
 		String label_AssignOne  = getFreshLabel("AssignOne");
+		// label for not equal integers
 		String label_AssignZero = getFreshLabel("AssignZero");
 		
 		/******************************************/

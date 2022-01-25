@@ -1,5 +1,6 @@
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.TEMP;
 import TEMP.TEMP_LIST;
 import TYPES.TYPE_FUNCTION;
@@ -15,7 +16,7 @@ public class IRcommand_Virtualcall extends IRcommand{
 	TEMP_LIST args;
 		
 	
-	// VirtualCall <obj> <func_name> <args>
+	// FORMAT VirtualCall <obj> <func_name> <args>
 	
 	public IRcommand_Virtualcall(TEMP obj, TYPE obj_type, String func_name, TEMP_LIST args)
 	{
@@ -36,6 +37,10 @@ public class IRcommand_Virtualcall extends IRcommand{
 		this.func_name = func_name;
 		this.args = args;	
 	}
-	
-	
+
+
+	@Override
+	public void MIPSme() {
+		MIPSGenerator.getInstance().virtual_call();
+	}
 }

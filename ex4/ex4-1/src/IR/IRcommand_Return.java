@@ -1,5 +1,6 @@
 package IR;
 
+import MIPS.MIPSGenerator;
 import TEMP.TEMP;
 
 public class IRcommand_Return extends IRcommand{
@@ -12,6 +13,6 @@ public class IRcommand_Return extends IRcommand{
 	}
 	
 	public void MIPSme() {
-		
+		MIPSGenerator.getInstance().rtn();
 	}
 }
