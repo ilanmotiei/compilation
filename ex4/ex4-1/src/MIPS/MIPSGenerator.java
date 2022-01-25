@@ -7,6 +7,7 @@ package MIPS;
 /* GENERAL IMPORTS */
 /*******************/
 import java.io.PrintWriter;
+import java.util.*;
 
 /*******************/
 /* PROJECT IMPORTS */
@@ -27,19 +28,42 @@ public class MIPSGenerator
 	/***********************/
 	public void finalizeFile()
 	{
-		fileWriter.print("\tli $v0,10\n");
-		fileWriter.print("\tsyscall\n");
+		exit();
 		fileWriter.close();
 	}
+
 	public void print_int(TEMP t)
 	{
+		// mips instructions for syscall printInt
 		int idx=t.getSerialNumber();
 		// fileWriter.format("\taddi $a0,Temp_%d,0\n",idx);
 		fileWriter.format("\tmove $a0,Temp_%d\n",idx);
 		fileWriter.format("\tli $v0,1\n");
 		fileWriter.format("\tsyscall\n");
+		// mips instructions for print a space
 		fileWriter.format("\tli $a0,32\n");
 		fileWriter.format("\tli $v0,11\n");
+		fileWriter.format("\tsyscall\n");
+	}
+
+	public void print_string(TEMP t)
+	{
+		// mips instructions for syscall printString
+		int idx=t.getSerialNumber();
+		// fileWriter.format("\taddi $a0,Temp_%d,0\n",idx);
+		fileWriter.format("\tla $a0,Temp_%d\n",idx);
+		fileWriter.format("\tli $v0,4\n");
+		fileWriter.format("\tsyscall\n");
+		// mips instruction for print a space
+		fileWriter.format("\tli $a0,32\n");
+		fileWriter.format("\tli $v0,11\n");
+		fileWriter.format("\tsyscall\n");
+	}
+
+	public void exit()
+	{
+		// final mips instructions to exit the program
+		fileWriter.format("\tli $v0,10\n");
 		fileWriter.format("\tsyscall\n");
 	}
 
@@ -55,23 +79,35 @@ public class MIPSGenerator
 	
 	// -------------------------------------------- FOR FUNCTIONS --------------------------------------------------
 
-	public void proluge(TYPE_FUNCTION func_data)
+	public void prologue(TYPE_FUNCTION func_data)
 	{
+		// mips instructions for the start of each function
 		fileWriter.format("\tsubu $sp,$sp,4\n");
 		fileWriter.format("\tsw $ra,0($sp)\n");
 		fileWriter.format("\tsubu $sp,$sp,4\n");
 		fileWriter.format("\tsw $fp,0($sp)\n");
-		fileWriter.format("\tmove %fp,$sp\n");
-		fileWriter.format("\tsubu $sp,$sp,%d\n", 4 * func_data.num_local_vars);
+		fileWriter.format("\tmove $fp,$sp\n");
+		// take num_local_vars from the AST annotations
+		int dec_offset = 8 + 4 * func_data.num_local_vars;
+		fileWriter.format("\tsubu $sp,$sp,%d\n", dec_offset);
 	}
 	
 	public void epilogue(TYPE_FUNCTION func_data) 
 	{
+		// mips instructions for the end of each function
 		fileWriter.format("\tmove $sp,$fp\n");
 		fileWriter.format("\tlw $fp,0($sp)\n");
 		fileWriter.format("\tlw $ra,4($sp)\n");
-		fileWriter.format("\taddu $sp,$sp,%d\n", 4 * func_data.params.length());
+		// fileWriter.format("\taddu $sp,$sp,%d\n", 4 * func_data.params.length()); wrong becuase we just skip fp and ret old values
+		// the skip over the arguments with be in the caller
+		fileWriter.format("\taddu $sp,$sp,%d\n", 8);
 		fileWriter.format("\tjr $ra");
+	}
+
+	public void rtn()
+	{
+		// mips instruction for the return from function
+		fileWriter.format("\tjr $ra\n");
 	}
 	
 	public void store_return_value(TEMP t)
@@ -79,15 +115,57 @@ public class MIPSGenerator
 		int idx = t.getSerialNumber();
 		fileWriter.format("\tmove Temp_%d,$v0\n", idx);
 	}
-	
+
+
+	// previous put_args_in_stack
+	//	public void put_args_in_stack(TEMP_LIST args)
+	//	{
+	//			for(int idx: reverseSerialNumbers)
+	//		{
+	//			fileWriter.format("\tsubu $sp,$sp,4\n");
+	//			fileWriter.format("\tsw Temp_$d,0($sp)\n", idx);
+	//		}
+	//	}
+
 	public void put_args_in_stack(TEMP_LIST args)
 	{
+		// Creating linked list and reverse serial numbers of the args
+		LinkedList<Integer> reverseSerialNumbers = new LinkedList<Integer>();
 		for (TEMP arg : args)
 		{
 			int idx = arg.getSerialNumber();
+			reverseSerialNumbers.add(idx);
+		}
+		Collections.reverse(reverseSerialNumbers);
+
+		// stack in call f 3,4
+		//
+		// 		|   sp  |
+		//		|  loc2 |
+		//		|  loc1 |
+		//		|   fp  |
+		//		|  ret  |
+		//  	|   3   |
+		//  	|___4___|
+		// when the stack grows up
+
+		for(int idx: reverseSerialNumbers)
+		{
 			fileWriter.format("\tsubu $sp,$sp,4\n");
 			fileWriter.format("\tsw Temp_$d,0($sp)\n", idx);
 		}
+	}
+
+
+	public void array_access(TEMP dst, TEMP arr, TEMP index)
+	{
+		// mips instruction for the access to array
+	}
+
+
+	public void func_call()
+	{
+
 	}
 	
 	public void jal(String label)
@@ -95,12 +173,13 @@ public class MIPSGenerator
 		fileWriter.format("\tjal %s\n", label);
 	}
 	
-	public void restore_stack_pointer(int inc_offset)
+	public void restore_stack_pointer(int args_num)
 	{
-		fileWriter.format("\taddu $sp,$sp,%d\n", inc_offset);
+		// mult 4 because 32bit CPU means the $sp jumps in mult of 4
+		int inc_offset = 4 * args_num;
+		fileWriter.format("\taddu $sp,$sp,%d\n", 4 * inc_offset);
 	}
-	
-	
+
 	
 	// -----------------------------------------------------------------------------------------------------------
 	
@@ -142,12 +221,24 @@ public class MIPSGenerator
 
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
+		// mips instructions for the addition operation
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
 		fileWriter.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+
+	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	{
+		// mips instructions for the subtraction operation
+		int i1 =oprnd1.getSerialNumber();
+		int i2 =oprnd2.getSerialNumber();
+		int dstidx=dst.getSerialNumber();
+
+		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+	}
+
 
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
@@ -223,12 +314,14 @@ public class MIPSGenerator
 				
 		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
 	}
-	
+
+	// for local variables and paramteres user offset from the AST annotations
 	public void lw(TEMP dst, TEMP src, int offset)
 	{
 		fileWriter.format("\tlw Temp_%d,%d(Temp_%d)\n", dst.getSerialNumber(), offset, src.getSerialNumber());
 	}
-	
+
+	// for local variables and paramteres user offset from the AST annotations
 	public void sw(TEMP src, TEMP dst, int offset)
 	{
 		fileWriter.format("\tsw Temp_%d,%d(Temp_%d)\n", src.getSerialNumber(), offset, dst.getSerialNumber());
