@@ -7,7 +7,8 @@ public abstract class AST_VAR extends AST_Node
     // metadata for code generation
 	public int offset;
 	public boolean isArg;
-	public boolean isLocalVar;
+    public boolean isLocalVar;
+    public boolean isClassField;
 
     public abstract BOX SemantMe() throws Exception;
 

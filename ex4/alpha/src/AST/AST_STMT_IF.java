@@ -59,7 +59,7 @@ public class AST_STMT_IF extends AST_STMT
 		SYMBOL_TABLE.getInstance().endScope();
 	}
 
-	public void IRMe()
+	public void IRme()
 	{
 		String label_start = IRcommand.getFreshLabel("start");
 		String label_end   = IRcommand.getFreshLabel("end");

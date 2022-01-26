@@ -48,7 +48,7 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 	{
 		BOX var_box = this.varDec.SemantMe(cls);
 		TYPE_CLASS_FIELD var = (TYPE_CLASS_FIELD) var_box.type; 
-		// The above call checks also if no shadowing occured, and throws an error if does
+		// The above call checks also if no shadowing occured, and throws an error if it was
 
 		/*
 		if ( ! var_box.is_const)

@@ -7,6 +7,7 @@ public abstract class AST_VARDEC extends AST_Node {
 	public int offset;
 	public boolean isArg;
 	public boolean isLocalVar;
+	public boolean isClassField;
 
     public void PrintMe()
 	{

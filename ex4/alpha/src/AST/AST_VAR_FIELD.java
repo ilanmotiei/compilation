@@ -94,6 +94,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		this.offset = entry.offset;
 		this.isArg = entry.isArg;
 		this.isLocalVar = entry.isLocalVar;
+		this.isClassField = entry.isClassField;
 	}
 
 	public BOX SemantMe(TYPE_CLASS cls) throws Exception

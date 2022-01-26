@@ -135,7 +135,28 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			}
 		}
 
-		SYMBOL_TABLE.getInstance().enter(this.name, var_type, false, true);
+		boolean isLocalVar;
+		boolean isClassField;
+
+		if (cls != null)
+		{
+			// it is a class field
+
+			isLocalVar = false;
+			isClassField = true;
+		}
+		else{
+			// it is a local variable
+
+			isLocalVar = true;
+			isClassField = false;
+		}
+
+		SYMBOL_TABLE.getInstance().enter(this.name, var_type, 
+														false, 
+														isLocalVar,
+														isClassField);
+		
 
 		if (cls != null)
 		{
@@ -162,6 +183,7 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 		this.offset = entry.offset;
 		this.isArg = entry.isArg;
 		this.isLocalVar = entry.isLocalVar;
+		this.isClassField = entry.isClassField;
 	}
 
 	public void IRme()

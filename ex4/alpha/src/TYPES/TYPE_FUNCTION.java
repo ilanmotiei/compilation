@@ -19,6 +19,11 @@ public class TYPE_FUNCTION extends TYPE
 	/*************************/
 	public String name;
 
+	/**********************************************************/
+	/*  max amount of local variables defined in the function */
+	/**********************************************************/
+	public int max_local_var_offset = 0;
+
 	/***************************************/
 	/*   the class in which it's defined   */
 	/***************************************/

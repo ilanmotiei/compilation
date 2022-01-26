@@ -45,7 +45,10 @@ public class SYMBOL_TABLE
 	/****************************************************************************/
 	/* Enter a variable, function, class type or array type to the symbol table */
 	/****************************************************************************/
-	public void enter(String name, TYPE t, boolean isArg, boolean isLocalVar)
+	public void enter(String name, TYPE t, 
+									boolean isArg, 
+									boolean isLocalVar, 
+									boolean isClassField)
 	{
 		/* [1] Compute the hash value for this new entry */
 
@@ -57,7 +60,7 @@ public class SYMBOL_TABLE
 		SYMBOL_TABLE_ENTRY next = table[hashValue];
 	
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name, t, hashValue, next, top, top_index++, isArg, isLocalVar);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name, t, hashValue, next, top, top_index++, isArg, isLocalVar, isClassField);
 
 		/* [4] Update the top of the symbol table ... */
 		top = e;
@@ -179,7 +182,7 @@ public class SYMBOL_TABLE
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
 	/********************************************************************************/
-	public void endScope()
+	public int endScope()
 	{
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
@@ -190,6 +193,9 @@ public class SYMBOL_TABLE
 			top_index = top_index-1;
 			top = top.prevtop;
 		}
+
+		int function_max_local_var_offset = SYMBOL_TABLE_ENTRY.localVarOffset;
+
 		/**************************************/
 		/* Pop the SCOPE-BOUNDARY sign itself */		
 		/**************************************/
@@ -201,6 +207,8 @@ public class SYMBOL_TABLE
 		/* Print the symbol table after every change */		
 		/*********************************************/
 		PrintMe();
+
+		return function_max_local_var_offset;
 	}
 
 

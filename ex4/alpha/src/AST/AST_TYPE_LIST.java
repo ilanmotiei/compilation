@@ -66,9 +66,16 @@ public class AST_TYPE_LIST extends AST_Node {
 
 	public TYPE_LIST createTypelist() throws Exception{
 
-		/*---------- Inserting the new variable to the current scope ------------*/
+		/*-----Inserting the new variable to the current scope as parameters------*/
 
-		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe().type, true, false);
+		boolean isArg = true;
+		boolean isLocalVar = false;
+		boolean isClassField = false;
+
+		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe().type, 
+													isArg,
+													isLocalVar,
+													isClassField);
 
 		/*---------- Creating a list contains all of the types of elements in the list ------------*/
 

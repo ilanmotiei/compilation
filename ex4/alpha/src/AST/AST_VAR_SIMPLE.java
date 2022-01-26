@@ -56,7 +56,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		// ELSE
+		// ELSE : 
 
 		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
@@ -76,6 +76,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		this.offset = entry.offset;
 		this.isArg = entry.isArg;
 		this.isLocalVar = entry.isLocalVar;
+		this.isClassField = entry.isClassField;
 	}
 
 	public TEMP IRme()

@@ -33,6 +33,7 @@ public class SYMBOL_TABLE_ENTRY
 	public int offset;
 	public boolean isArg;
 	public boolean isLocalVar;
+	public boolean isClassField;
 
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -45,7 +46,8 @@ public class SYMBOL_TABLE_ENTRY
 		SYMBOL_TABLE_ENTRY prevtop, // the entry defined before this entry at the symbol table
 		int prevtop_index,
 		boolean isArg,
-		boolean isLocalVar)
+		boolean isLocalVar,
+		boolean isClassField)
 	{
 		this.index = index;
 		this.name = name;
@@ -55,13 +57,14 @@ public class SYMBOL_TABLE_ENTRY
 		this.prevtop_index = prevtop_index;
 		this.isArg = isArg;
 		this.isLocalVar = isLocalVar;
+		this.isClassField = isClassField;
 		this.offset = 0; // default invalid offset
 
 		if (type.is_function())
 		{
 			// initialize the relative variables for this function frame
 			localVarOffset = -44;
-			argOffset = 12;  
+			argOffset = 12;
 			// offset 8 is for object instance if the function is a class method
 		}
 		else if(isArg)
@@ -74,6 +77,11 @@ public class SYMBOL_TABLE_ENTRY
 			this.offset = localVarOffset;
 			localVarOffset -= 4;
 		}
+
+		/* 
+		if it's a field it is stored at the memory 
+		at the address of the first argument 
+		*/
 	}
 
 	public boolean isScopeBoundary()

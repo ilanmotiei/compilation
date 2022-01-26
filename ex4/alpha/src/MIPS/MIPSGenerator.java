@@ -56,8 +56,9 @@ public class MIPSGenerator
 	//	
 	//	return t;
 	//}
-
-	public void load(TEMP dst, String var_name, boolean isLocalVar, boolean isArg, int offset)
+	
+	// cls is the class we were in when this loading was called. may be null;
+	public void load(TEMP dst, String var_name, TYPE_CLASS cls, boolean isLocalVar, boolean isArg, boolean isClassField, int offset)
 	{
 		int idxdst = dst.getSerialNumber();
 
@@ -75,13 +76,27 @@ public class MIPSGenerator
 				fileWriter.format("\tlw Temp_%d,%d($fp)\n",idxdst, offset);
 			}
 			else{
-				// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
-				fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst, var_name);
+				if (isClassField)
+				{
+					// we are uploading the value as a field of the instance
+					// stored at the 8'th offset from the frame pointer
+
+					fileWriter.format("\tlw $s0,8($sp)\n");
+					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
+					fileWriter.format("\tlw Temp_%d,%d($s0)\n", idxdst, 
+																field_off);
+				}
+				else
+				{
+					// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
+					fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst, var_name);
+				}
 			}
 		}		
 	}
 
-	public void store(String var_name,TEMP src, boolean isLocalVar, boolean isArg, int offset)
+	// cls is the class we were in when this storing was called. may be null;
+	public void store(String var_name, TYPE_CLASS cls, TEMP src, boolean isLocalVar, boolean isArg, boolean isClassField, int offset)
 	{
 		// fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc,var_name);
 		
@@ -101,8 +116,21 @@ public class MIPSGenerator
 				fileWriter.format("\tsw Temp_%d,%d($fp)\n", idxsrc, offset);
 			}
 			else{
-				// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
-				fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc, var_name);
+				if (isClassField)
+				{
+					// we are storing the value as a field of the instance
+					// stored at the 8'th offset from the frame pointer
+
+					fileWriter.format("\tlw $s0,8($sp)\n");
+					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
+					fileWriter.format("\tsw Temp_%d,%d($s0)\n", idxsrc, 
+																field_off);
+				}
+				else
+				{
+					// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
+					fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc, var_name);
+				}
 			}
 		}		
 	}
@@ -282,7 +310,7 @@ public class MIPSGenerator
 		fileWriter.format("\tli Temp_%d,%d\n", dst.getSerialNumber(), value);
 	}
 
-	public void add_prologue()
+	public void add_prologue(int function_max_local_var_offset)
 	{
 		// STORE RETURN ADDRESS AND FRAME POINTER --------------------------
 
@@ -305,10 +333,7 @@ public class MIPSGenerator
 		// CHANGE CURRENT STACK POINTER IN ORDER TO LEAVE A PLACE FOR ALL
 		// THE LOCAL VARIABLELS WE'LL DEFINE AT THE FUNCTION
 
-		// TODO ------------------------------------------------------------
-
-
-
+		fileWriter.format("\tsubu $sp,$sp,%d\n", function_max_local_var_offset);
 
 		/*
 
@@ -551,7 +576,7 @@ public class MIPSGenerator
 	public void add_to_vtable(TYPE_CLASS cls, String method_name)
 	{
 		/*
-		
+
 		cls : the class that this method is being declared/reimplemented.
 		method_name : the name of the method.
 

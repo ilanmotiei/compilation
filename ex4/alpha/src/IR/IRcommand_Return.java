@@ -11,16 +11,18 @@ package IR;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
+import TYPES.TYPE_FUNCTION;
 import MIPS.*;
 
 public class IRcommand_Return extends IRcommand
 {
     TEMP rv;
     String func_fullname;
-    
-    // return rv;
 
-	public IRcommand_Store(TEMP return_value, String func_fullname)
+    // return <rv>;
+
+    public IRcommand_Store(TEMP return_value, 
+                            String func_fullname)
 	{
         this.rv = return_value;
         this.func_fullname = func_fullname;
