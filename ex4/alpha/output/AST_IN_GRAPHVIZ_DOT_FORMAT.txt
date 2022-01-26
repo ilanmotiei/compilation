@@ -1,0 +1,593 @@
+digraph
+{
+graph [ordering = "out"]
+v0 [label = "TYPE_VOID"];
+v1 [label = "ARRAYTYPEDEF
+ARRAY ID(IntArray) = type[] 
+"];
+v1 -> v0;
+v2 [label = "arrayTypedef
+"];
+v2 -> v1;
+v3 [label = "TYPE_INT"];
+v4 [label = "TYPE_INT"];
+v5 [label = "INT(7)"];
+v6 [label = "EXP ASSIGN
+type ID(july) := right
+"];
+v6 -> v4;
+v6 -> v5;
+v7 [label = "VARDEC
+ var declaration
+"];
+v7 -> v6;
+v8 [label = "SIMPLE
+VAR
+(july)"];
+v9 [label = "EXP
+VAR"];
+v9 -> v8;
+v10 [label = "RETURN
+ RETURN exp;
+"];
+v10 -> v9;
+v11 [label = "STMT
+LIST
+"];
+v11 -> v10;
+v12 [label = "STMT
+LIST
+"];
+v12 -> v7;
+v12 -> v11;
+v13 [label = "FUNCDEC
+type ID(monthJuly)(arg1,...argn) { body }
+"];
+v13 -> v3;
+v13 -> v12;
+v14 [label = "funcDec
+"];
+v14 -> v13;
+v15 [label = "TYPE_INT"];
+v16 [label = "EXP ASSIGN
+type ID(ID)
+"];
+v16 -> v15;
+v17 [label = "CFIELD
+ varDec;
+"];
+v17 -> v16;
+v18 [label = "TYPE_INT"];
+v19 [label = "INT(18)"];
+v20 [label = "EXP ASSIGN
+type ID(age) := right
+"];
+v20 -> v18;
+v20 -> v19;
+v21 [label = "CFIELD
+ varDec;
+"];
+v21 -> v20;
+v22 [label = "ID(IntArray)"];
+v23 [label = "EXP ASSIGN
+type ID(lastYearSalaries)
+"];
+v23 -> v22;
+v24 [label = "CFIELD
+ varDec;
+"];
+v24 -> v23;
+v25 [label = "TYPE_INT"];
+v26 [label = "SIMPLE
+VAR
+(age)"];
+v27 [label = "EXP
+VAR"];
+v27 -> v26;
+v28 [label = "RETURN
+ RETURN exp;
+"];
+v28 -> v27;
+v29 [label = "STMT
+LIST
+"];
+v29 -> v28;
+v30 [label = "FUNCDEC
+type ID(getAge)(arg1,...argn) { body }
+"];
+v30 -> v25;
+v30 -> v29;
+v31 [label = "CFIELD
+ funcDec;
+"];
+v31 -> v30;
+v32 [label = "TYPE_INT"];
+v33 [label = "SIMPLE
+VAR
+(age)"];
+v34 [label = "SIMPLE
+VAR
+(age)"];
+v35 [label = "EXP
+VAR"];
+v35 -> v34;
+v36 [label = "INT(1)"];
+v37 [label = "BINOP(+)"];
+v37 -> v35;
+v37 -> v36;
+v38 [label = "ASSIGN
+left := right
+"];
+v38 -> v33;
+v38 -> v37;
+v39 [label = "SIMPLE
+VAR
+(age)"];
+v40 [label = "EXP
+VAR"];
+v40 -> v39;
+v41 [label = "RETURN
+ RETURN exp;
+"];
+v41 -> v40;
+v42 [label = "STMT
+LIST
+"];
+v42 -> v41;
+v43 [label = "STMT
+LIST
+"];
+v43 -> v38;
+v43 -> v42;
+v44 [label = "FUNCDEC
+type ID(birthday)(arg1,...argn) { body }
+"];
+v44 -> v32;
+v44 -> v43;
+v45 [label = "CFIELD
+ funcDec;
+"];
+v45 -> v44;
+v46 [label = "CFIELD
+LIST
+"];
+v46 -> v45;
+v47 [label = "CFIELD
+LIST
+"];
+v47 -> v31;
+v47 -> v46;
+v48 [label = "CFIELD
+LIST
+"];
+v48 -> v24;
+v48 -> v47;
+v49 [label = "CFIELD
+LIST
+"];
+v49 -> v21;
+v49 -> v48;
+v50 [label = "CFIELD
+LIST
+"];
+v50 -> v17;
+v50 -> v49;
+v51 [label = "CLASSDEC
+CLASS ID(Person) {cFields} 
+"];
+v51 -> v50;
+v52 [label = "classDec
+"];
+v52 -> v51;
+v53 [label = "ID(IntArray)"];
+v54 [label = "EXP ASSIGN
+type ID(grades)
+"];
+v54 -> v53;
+v55 [label = "CFIELD
+ varDec;
+"];
+v55 -> v54;
+v56 [label = "TYPE_INT"];
+v57 [label = "TYPE_INT"];
+v58 [label = "INT(0)"];
+v59 [label = "EXP ASSIGN
+type ID(i) := right
+"];
+v59 -> v57;
+v59 -> v58;
+v60 [label = "VARDEC
+ var declaration
+"];
+v60 -> v59;
+v61 [label = "TYPE_INT"];
+v62 [label = "INT(0)"];
+v63 [label = "EXP ASSIGN
+type ID(sum) := right
+"];
+v63 -> v61;
+v63 -> v62;
+v64 [label = "VARDEC
+ var declaration
+"];
+v64 -> v63;
+v65 [label = "SIMPLE
+VAR
+(i)"];
+v66 [label = "EXP
+VAR"];
+v66 -> v65;
+v67 [label = "INT(10)"];
+v68 [label = "BINOP(<)"];
+v68 -> v66;
+v68 -> v67;
+v69 [label = "SIMPLE
+VAR
+(sum)"];
+v70 [label = "SIMPLE
+VAR
+(sum)"];
+v71 [label = "EXP
+VAR"];
+v71 -> v70;
+v72 [label = "SIMPLE
+VAR
+(grades)"];
+v73 [label = "SIMPLE
+VAR
+(i)"];
+v74 [label = "EXP
+VAR"];
+v74 -> v73;
+v75 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v75 -> v72;
+v75 -> v74;
+v76 [label = "EXP
+VAR"];
+v76 -> v75;
+v77 [label = "BINOP(+)"];
+v77 -> v71;
+v77 -> v76;
+v78 [label = "ASSIGN
+left := right
+"];
+v78 -> v69;
+v78 -> v77;
+v79 [label = "SIMPLE
+VAR
+(i)"];
+v80 [label = "SIMPLE
+VAR
+(i)"];
+v81 [label = "EXP
+VAR"];
+v81 -> v80;
+v82 [label = "INT(1)"];
+v83 [label = "BINOP(+)"];
+v83 -> v81;
+v83 -> v82;
+v84 [label = "ASSIGN
+left := right
+"];
+v84 -> v79;
+v84 -> v83;
+v85 [label = "STMT
+LIST
+"];
+v85 -> v84;
+v86 [label = "STMT
+LIST
+"];
+v86 -> v78;
+v86 -> v85;
+v87 [label = "WHILE
+ while(cond){body} 
+"];
+v87 -> v68;
+v87 -> v86;
+v88 [label = "SIMPLE
+VAR
+(sum)"];
+v89 [label = "EXP
+VAR"];
+v89 -> v88;
+v90 [label = "INT(10)"];
+v91 [label = "BINOP(/)"];
+v91 -> v89;
+v91 -> v90;
+v92 [label = "RETURN
+ RETURN exp;
+"];
+v92 -> v91;
+v93 [label = "STMT
+LIST
+"];
+v93 -> v92;
+v94 [label = "STMT
+LIST
+"];
+v94 -> v87;
+v94 -> v93;
+v95 [label = "STMT
+LIST
+"];
+v95 -> v64;
+v95 -> v94;
+v96 [label = "STMT
+LIST
+"];
+v96 -> v60;
+v96 -> v95;
+v97 [label = "FUNCDEC
+type ID(getAverage)(arg1,...argn) { body }
+"];
+v97 -> v56;
+v97 -> v96;
+v98 [label = "CFIELD
+ funcDec;
+"];
+v98 -> v97;
+v99 [label = "CFIELD
+LIST
+"];
+v99 -> v98;
+v100 [label = "CFIELD
+LIST
+"];
+v100 -> v55;
+v100 -> v99;
+v101 [label = "CLASSDEC
+CLASS ID(Student) EXTENDS ID(Person) {cFields} 
+"];
+v101 -> v100;
+v102 [label = "classDec
+"];
+v102 -> v101;
+v103 [label = "TYPE_VOID"];
+v104 [label = "ID(Student)"];
+v105 [label = "ID(Student)"];
+v106 [label = "newExp
+ NEW type 
+"];
+v106 -> v105;
+v107 [label = "NEWEXP ASSIGN
+type ID(moish) := right
+"];
+v107 -> v104;
+v107 -> v106;
+v108 [label = "VARDEC
+ var declaration
+"];
+v108 -> v107;
+v109 [label = "SIMPLE
+VAR
+(moish)"];
+v110 [label = "FIELD
+VAR
+...->grades"];
+v110 -> v109;
+v111 [label = "TYPE_INT"];
+v112 [label = "INT(10)"];
+v113 [label = "newExp
+ NEW type[exp] 
+"];
+v113 -> v111;
+v113 -> v112;
+v114 [label = "ASSIGN NEWEXP
+left := new right
+"];
+v114 -> v110;
+v114 -> v113;
+v115 [label = "SIMPLE
+VAR
+(moish)"];
+v116 [label = "FIELD
+VAR
+...->lastYearSalaries"];
+v116 -> v115;
+v117 [label = "TYPE_INT"];
+v118 [label = "INT(12)"];
+v119 [label = "newExp
+ NEW type[exp] 
+"];
+v119 -> v117;
+v119 -> v118;
+v120 [label = "ASSIGN NEWEXP
+left := new right
+"];
+v120 -> v116;
+v120 -> v119;
+v121 [label = "TYPE_INT"];
+v122 [label = "INT(6)"];
+v123 [label = "EXP ASSIGN
+type ID(COMPILATION) := right
+"];
+v123 -> v121;
+v123 -> v122;
+v124 [label = "VARDEC
+ var declaration
+"];
+v124 -> v123;
+v125 [label = "SIMPLE
+VAR
+(moish)"];
+v126 [label = "FIELD
+VAR
+...->grades"];
+v126 -> v125;
+v127 [label = "SIMPLE
+VAR
+(COMPILATION)"];
+v128 [label = "EXP
+VAR"];
+v128 -> v127;
+v129 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v129 -> v126;
+v129 -> v128;
+v130 [label = "INT(99)"];
+v131 [label = "ASSIGN
+left := right
+"];
+v131 -> v129;
+v131 -> v130;
+v132 [label = "SIMPLE
+VAR
+(moish)"];
+v133 [label = "EXP
+[var.]ID(getAverage) (exps)"];
+v133 -> v132;
+v134 [label = "INT(90)"];
+v135 [label = "BINOP(>)"];
+v135 -> v133;
+v135 -> v134;
+v136 [label = "SIMPLE
+VAR
+(moish)"];
+v137 [label = "FIELD
+VAR
+...->lastYearSalaries"];
+v137 -> v136;
+v138 [label = "SIMPLE
+VAR
+(moish)"];
+v139 [label = "FIELD
+VAR
+...->age"];
+v139 -> v138;
+v140 [label = "EXP
+VAR"];
+v140 -> v139;
+v141 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v141 -> v137;
+v141 -> v140;
+v142 [label = "SIMPLE
+VAR
+(moish)"];
+v143 [label = "FIELD
+VAR
+...->lastYearSalaries"];
+v143 -> v142;
+v144 [label = "SIMPLE
+VAR
+(moish)"];
+v145 [label = "EXP
+[var.]ID(birthday) (exps)"];
+v145 -> v144;
+v146 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v146 -> v143;
+v146 -> v145;
+v147 [label = "EXP
+VAR"];
+v147 -> v146;
+v148 [label = "INT(1000)"];
+v149 [label = "BINOP(+)"];
+v149 -> v147;
+v149 -> v148;
+v150 [label = "ASSIGN
+left := right
+"];
+v150 -> v141;
+v150 -> v149;
+v151 [label = "STMT
+LIST
+"];
+v151 -> v150;
+v152 [label = "IF
+ if(cond){body} 
+"];
+v152 -> v135;
+v152 -> v151;
+v153 [label = "ID(Student)"];
+v154 [label = "ID(Student)"];
+v155 [label = "newExp
+ NEW type 
+"];
+v155 -> v154;
+v156 [label = "NEWEXP ASSIGN
+type ID(dave) := right
+"];
+v156 -> v153;
+v156 -> v155;
+v157 [label = "VARDEC
+ var declaration
+"];
+v157 -> v156;
+v158 [label = "STMT
+LIST
+"];
+v158 -> v157;
+v159 [label = "STMT
+LIST
+"];
+v159 -> v152;
+v159 -> v158;
+v160 [label = "STMT
+LIST
+"];
+v160 -> v131;
+v160 -> v159;
+v161 [label = "STMT
+LIST
+"];
+v161 -> v124;
+v161 -> v160;
+v162 [label = "STMT
+LIST
+"];
+v162 -> v120;
+v162 -> v161;
+v163 [label = "STMT
+LIST
+"];
+v163 -> v114;
+v163 -> v162;
+v164 [label = "STMT
+LIST
+"];
+v164 -> v108;
+v164 -> v163;
+v165 [label = "FUNCDEC
+type ID(main)(arg1,...argn) { body }
+"];
+v165 -> v103;
+v165 -> v164;
+v166 [label = "funcDec
+"];
+v166 -> v165;
+v167 [label = "DEC
+LIST
+"];
+v167 -> v166;
+v168 [label = "DEC
+LIST
+"];
+v168 -> v102;
+v168 -> v167;
+v169 [label = "DEC
+LIST
+"];
+v169 -> v52;
+v169 -> v168;
+v170 [label = "DEC
+LIST
+"];
+v170 -> v14;
+v170 -> v169;
+v171 [label = "DEC
+LIST
+"];
+v171 -> v2;
+v171 -> v170;
+v172 [label = "PROGRAM
+DECLIST
+"];
+v172 -> v171;
+}
