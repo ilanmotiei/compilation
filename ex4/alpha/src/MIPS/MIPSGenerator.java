@@ -510,14 +510,17 @@ public class MIPSGenerator
 		// DEFINING THE METHODS :
 		LinkedList<String> methods_names_lst = cls.getMethodsNames();
 
+		int curr_off = 0;
+
 		for (String method_name : methods_names_lst)
 		{
+			fileWriter.format("\t.word 0\n");
+
 			TYPE_CLASS method_implementor_cls = cls.getMethodImplementor(method_name);
-			
+	
 			if (method_implementor_cls == null)
 			{
 				// method wasn't defined in any higher class at the hierarchy
-				fileWriter.format("\tvt_%s: .word 0\n", cls.name + "_" + method_name);
 				// leaving for it a place at the vtable for when it'll be defined
 			}
 			else
@@ -528,53 +531,43 @@ public class MIPSGenerator
 				fileWriter.format(".text\n");
 				fileWriter.format("la $s0,vt_%s", method_implementor_cls.name);
 				int imp_off = method_implementor_cls.getMethodNumber(method_name);
-				fileWriter.format("lw $s1,%d($s0)", imp_off);
+				fileWriter.format("lw $s0,%d($s0)", imp_off);
 
 				// storing it at the current class' vtable
-				fileWriter.format("la $s1,vt_%s", cls.name + "_" + method_name);
-				fileWriter.format("sw $s0,0($s1)");
+				fileWriter.format("la $s1,vt_%s", cls.name);
+				fileWriter.format("sw $s0,%d($s1)", curr_off);
+
+				// changing mode back to data
+				fileWriter.format(".data\n");
 			}			
+
+			curr_off += 4;
 		}
 
 		fileWriter.format(".text\n");
 	}
 
 	// changes the virtual table of the current class
-	// and those needed among those of the son classes
-	public void add_to_vtable(TYPE_CLASS original_class, TYPE_CLASS curr_class, String method_name)
+	public void add_to_vtable(TYPE_CLASS cls, String method_name)
 	{
 		/*
-		original_class : the class that this method was declared in
 		
-		curr_class : one of original_cls descendants, that we've got to 
-					 in order to change its vtable.
-		
+		cls : the class that this method is being declared/reimplemented.
 		method_name : the name of the method.
+
 		*/
 
 		// finding the address of the vtable of our current class : 
-		fileWriter.format("\tla $s0,%s\n", "vt_" + curr_class.name);
+		fileWriter.format("\tla $s0,vt_%s\n", cls.name);
 
-		String full_method_name = original_class.name + "_" + method_name;
+		// finding the offset at the vtable for the specified method name :
+		int offset = cls.getMethodNumber(method_name) * WORD_SIZE;
 
-		// finding the address of the function defined right now at some ancestor class:
-		fileWriter.format("\tla $s1,%s\n", full_method_name);
+		// finding the address of the method :
+		fileWriter.format("\tla $s1,method_name\n");
 
-		// finding the offset of the method address at the classe's vtable : 
-		int offset = curr_class.getMethodNumber(method_name) * WORD_SIZE;
-
-		// storing the method's address at the classe's vtable :
+		// updating the suitable line at the vtable of the class :
 		fileWriter.format("\tsw $s1,%d($s0)\n", offset);
-
-		// apply this recuresively on all the other son classes of this class : 
-
-		if (cls.sons != null)
-		{
-			for (TYPE_CLASS son : cls.sons)
-			{
-				add_to_vtable(original_class, son, method_name);
-			}
-		}
 	}
 
 	public void field_set(TEMP obj, TYPE_CLASS cls, String field_name, TEMP value)
