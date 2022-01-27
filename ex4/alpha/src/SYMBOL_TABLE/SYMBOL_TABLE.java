@@ -151,7 +151,10 @@ public class SYMBOL_TABLE
 		
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES(scope_wrapper));
+			new TYPE_FOR_SCOPE_BOUNDARIES(scope_wrapper),
+			false,
+			false,
+			false);
 		
 		/*********************************************/
 		/* Print the symbol table after every change */
@@ -170,7 +173,10 @@ public class SYMBOL_TABLE
 		
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES(null));
+			new TYPE_FOR_SCOPE_BOUNDARIES(null),
+			false,
+			false,
+			false);
 		
 		/*********************************************/
 		/* Print the symbol table after every change */

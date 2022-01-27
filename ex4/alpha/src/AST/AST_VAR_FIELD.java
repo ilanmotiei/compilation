@@ -83,7 +83,7 @@ public class AST_VAR_FIELD extends AST_VAR
 
 		// ELSE :
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.fieldName);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.fieldName);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(field_type, fieldName);

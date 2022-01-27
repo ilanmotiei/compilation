@@ -38,13 +38,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 			String.format("SIMPLE\nVAR\n(%s)",name));
 	}
 
-	// public TEMP IRme()
-	// {
-	// 	TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-	// 	IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
-	// 	return t;
-	// }
-
 	public BOX SemantMe() throws Exception
 	{
 		TYPE var_type = SYMBOL_TABLE.getInstance().find(this.name);
@@ -58,7 +51,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		// ELSE : 
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.name);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(var_type);

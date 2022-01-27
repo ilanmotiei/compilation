@@ -164,7 +164,7 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			}
 		}
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.name);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(var_type);

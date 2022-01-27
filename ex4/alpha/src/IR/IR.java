@@ -45,7 +45,9 @@ public class IR
 
 	public void MIPSme()
 	{
+		// MIPSme for the current head
 		if (head != null) head.MIPSme();
+		// recursive MIPSme for all the rest list
 		if (tail != null) tail.MIPSme();
 	}
 

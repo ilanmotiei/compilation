@@ -97,16 +97,16 @@ public class AST_CLASSDEC extends AST_Node {
 		}
 
 		TYPE_CLASS cls_dec = new TYPE_CLASS((TYPE_CLASS) parent_cls, this.class_name);
-		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec);
+		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec, false, false, false);
 
 		SYMBOL_TABLE.getInstance().beginScope(cls_dec);
-		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec);
+		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec, false, false, false);
 		this.cFieldList.SemantMe(cls_dec); // Adds methods to the class
 		SYMBOL_TABLE.getInstance().endScope();
 
 		this.cls = cls_dec;
 
-		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec);
+		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec, false, false, false);
 	}
 
 	public void IRme()

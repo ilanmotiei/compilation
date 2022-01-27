@@ -97,7 +97,7 @@ public class AST_FUNCDEC extends AST_Node {
 
 		TYPE_FUNCTION func_type = new TYPE_FUNCTION(returnType, this.name, args_types);
 
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type);
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false, false);
 		// Adding it to the current scope (so functions from the same scope can access it)
 		
 		/* ------- CHECKING IF FUNCTION SHADOWS AN ANOTHER FUNCTION ILLEGALY ------- */
@@ -109,7 +109,7 @@ public class AST_FUNCDEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginScope(func_type); // -------------------------
 		
 		// Add the function also to the scope of its body (for supporting recursion)
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false);
+		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false, false);
 		
 		// Adds the new arg names and their types to the new scope recursively
 		if (this.typeList != null)
@@ -138,7 +138,7 @@ public class AST_FUNCDEC extends AST_Node {
 			// the mips code to be 'user_main'.
 			name = "user_" + name;
 		}
-		
+
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(name));
 		IR.getInstance().Add_IRcommand(new IRcommand_AddPrologue(
 												this.func_dec.max_local_var_offset));

@@ -72,6 +72,6 @@ public class AST_ARRAYTYPEDEF extends AST_Node {
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		SYMBOL_TABLE.getInstance().enter(this.name, arr_type);
+		SYMBOL_TABLE.getInstance().enter(this.name, arr_type, false, false, false);
 	}
 }
