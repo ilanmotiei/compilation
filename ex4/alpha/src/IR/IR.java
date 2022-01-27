@@ -6,6 +6,7 @@ package IR;
 /*******************/
 /* GENERAL IMPORTS */
 /*******************/
+import java.util.*;
 
 /*******************/
 /* PROJECT IMPORTS */
@@ -16,39 +17,60 @@ import MIPS.*;
 
 public class IR
 {
-	private IRcommand head=null;
-	private IRcommandList tail=null;
+	private LinkedList<IRcommand> cmd_list = null;
 
-	/******************/
-	/* Add IR command */
-	/******************/
 	public void Add_IRcommand(IRcommand cmd)
 	{
-		if ((head == null) && (tail == null))
+		if (cmd_list == null)
 		{
-			this.head = cmd;
+			cmd_list = new LinkedList<>();
 		}
-		else if ((head != null) && (tail == null))
+
+		cmd_list.add(cmd);
+	}
+
+	private int function_id = 0;
+
+	public void AllocateRegisters()
+	{
+		LinkedList<IRcommand> curr_function_cmds;
+		boolean in_function = false;
+
+		for (IRcommand cmd : cmd_list)
 		{
-			this.tail = new IRcommandList(cmd,null);
-		}
-		else
-		{
-			IRcommandList it = tail;
-			while ((it != null) && (it.tail != null))
+			if (cmd instanceof IRcommand_AddPrologue)
 			{
-				it = it.tail;
+				// we're starting to parse a function :
+				curr_function_cmds = new LinkedList<>();
+				in_function = true;
 			}
-			it.tail = new IRcommandList(cmd,null);
+			
+			if (cmd instanceof IRcommand_AddEpilogue)
+			{
+				// we've finished to parse a function :
+				in_function = false;
+				function_id ++;
+
+				// do liveness analysis and allocate the machine registers :
+				
+			}
+
+			if (in_function)
+			{
+				curr_function_cmds.add(cmd);
+				cmd.function_id = function_id;
+			}
 		}
+
+
 	}
 
 	public void MIPSme()
 	{
-		// MIPSme for the current head
-		if (head != null) head.MIPSme();
-		// recursive MIPSme for all the rest list
-		if (tail != null) tail.MIPSme();
+		for (IRcommand cmd : cmd_list)
+		{
+			cmd.MIPSme();
+		}
 	}
 
 	/**************************************/
