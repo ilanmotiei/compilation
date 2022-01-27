@@ -30,6 +30,6 @@ public class IRcommand_NewArray extends IRcommand
 	
 	public void MIPSme()
 	{
-        
+        MIPSGenerator.getInstance().allocate_array(dst, arr_size);
 	}
 }

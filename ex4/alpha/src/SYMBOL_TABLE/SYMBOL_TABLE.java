@@ -181,6 +181,10 @@ public class SYMBOL_TABLE
 	/********************************************************************************/
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
+	/* 
+	Returns : the maximum offset of a local variable declared inside the scope 
+				which uses us if the scope is some fucntion's scope 
+	*/
 	/********************************************************************************/
 	public int endScope()
 	{

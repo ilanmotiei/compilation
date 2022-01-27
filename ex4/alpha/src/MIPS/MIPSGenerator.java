@@ -14,6 +14,7 @@ import java.util.*;
 /*******************/
 import TEMP.*;
 import TYPES.TYPE_ARRAY;
+import TYPES.TYPE_CLASS;
 import TYPES.TYPE_CLASS_FIELD;
 import IR.*;
 
@@ -175,7 +176,7 @@ public class MIPSGenerator
 		fileWriter.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 
-	public void strings_equal(TEMP dst, TEMP oprnd1, TEMP oprnd2)
+	public void str_cmp(TEMP dst, TEMP oprnd1, TEMP oprnd2)
 	{
 		int i1 = oprnd1.getSerialNumber();
 		int i2 = oprnd2.getSerialNumber();
@@ -184,10 +185,40 @@ public class MIPSGenerator
 		// moving the 'arguments' throght the registers $s0 and $s1
 		fileWriter.format("\tmove $s0,Temp_%d\n", i1);
 		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
-		jump("_strcmp_");
+		jal("_strcmp_");
 
 		// result is stored at the register $s2. moving it to the 'dst' register
 		fileWriter.format("\tmove Temp_%d,$s2", dst_idx);
+	}
+
+	public void str_add(TEMP dst, TEMP oprnd1, TEMP oprnd2)
+	{
+		int i1 = oprnd1.getSerialNumber();
+		int i2 = oprnd2.getSerialNumber();
+		int dst_idx = dst.getSerialNumber();
+
+		// moving the 'arguments' throght the registers $s0 and $s1
+		fileWriter.format("\tmove $s0,Temp_%d\n", i1);
+		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
+		jal("_stradd_");
+
+		// result is stored at the register $s2. moving it to the 'dst' register
+		fileWriter.format("\tmove Temp_%d,$s2", dst_idx);
+	}
+
+	public void str_cpy(TEMP dst, TEMP src)
+	{
+		int dst_idx = dst.getSerialNumber();
+		int src_idx = src.getSerialNumber();
+
+		// moving the 'arguments' throght the registers $s0 and $s1
+		fileWriter.format("\tmove $s0,Temp_%d\n", dst_idx);
+		fileWriter.format("\tmove $s1,Temp_%d\n", src_idx);
+
+		// jumping into the copy section (which then jumps back here)
+		jal("_strcpy_");
+
+		// result is at the address that the 'dst' register is pointing on
 	}
 
 	public void label(String inlabel)
@@ -395,7 +426,7 @@ public class MIPSGenerator
 	}
 
 	// Allocates a class object instance
-	public allocate(TYPE_CLASS cls, TEMP dst)
+	public allocate_class_obj(TYPE_CLASS cls, TEMP dst)
 	{
 		// Allocate the memory :
 		fileWriter.format("\tli $v0,9\n");
@@ -419,18 +450,7 @@ public class MIPSGenerator
 			{
 				if (f.initial_value instanceof String)
 				{
-					String label_name = f.getInitialClass().name + "_const_field";
-
-					fileWriter.format(".data\n");
-					fileWriter.format("\t%s: .asciiz \"%s\"\n", 
-										label_name,
-										(String) f.initial_value);
-
-					fileWriter.format(".text\n");
-
-					fileWriter.format("\tla $s0,%s\n", label_name);
-					fileWriter.format("\tsw $s0,%d(Temp_%d)\n", off, 
-																dst.getSerialNumber());
+					init_string_field(cls, dst, f);
 				}
 
 				if (f.initial_value instanceof Integer)
@@ -451,19 +471,49 @@ public class MIPSGenerator
 		}
 	}
 
+	// an auxiliary function for the above one
+	public void init_string_field(TYPE_CLASS cls, TEMP dst, TYPE_CLASS_FIELD f)
+	{	
+		String label_name = f.getInitialClass().name + "_" + 
+										f.name + "_const_field";
+		// ^ : the name of the label that this field is stored in at the data section
+
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+
+		fileWriter.format("\tla Temp_%d,%s\n", t.getSerialNumber(), 
+												label_name);
+
+		// copy the content t is pointing on to the address of the field
+		// of the newly allocated class object
+
+		int f_offset = (cls.getFieldIndex(f.name) + 1) * WORD_SIZE;
+
+		TEMP f_address = TEMP_FACTORY.getInstance().getFreshTEMP();
+
+		fileWriter.format("\taddi Temp_%d,Temp_%d,%d\n", f_address.getSerialNumber(),
+														 dst.getSerialNumber(),
+														 f_offset);
+
+		str_cpy(f_address, t); // copy's t's content into the address at 'f_address'
+	}
+
 	// Allocates an array from the specified type and size and puts it at the
 	// 'dst' register
-	public void allocate(TYPE elems_type, int size, TEMP dst)
+	public void allocate_array(TEMP size, TEMP dst)
 	{
+		// Find the number of bytes needed :
+		fileWriter.format("\tmove $a0,Temp_%d\n", size.getSerialNumber());
+		fileWriter.format("\taddi $a0, $a0, 1\n");
+		fileWriter.format("\tmul $a0,$a0,%d\n", WORD_SIZE);
+
 		// Allocate the memory :
 		fileWriter.format("\tli $v0,9\n");
-		fileWriter.format("\tli $a0,%d\n", (size+1)*WORD_SIZE);
 		fileWriter.format("\tsyscall\n");
 		fileWriter.format("\tmove Temp_%d,$v0\n", dst.getSerialNumber());
 
-		// Initialize array's size : 
-		fileWriter.format("\tli $s0,%d\n", size);
-		fileWriter.format("\tsw $s0,0(Temp_%d)\n", dst.getSerialNumber());
+		// Initialize array's size :
+		fileWriter.format("\tsw Temp_%d,0(Temp_%d)\n", size.getSerialNumber(),
+														dst.getSerialNumber());
 	}
 
 	public void push_args(TEMP_LIST args)
@@ -568,6 +618,25 @@ public class MIPSGenerator
 
 			curr_off += 4;
 		}
+
+		// initializing classe's string fields : 
+
+		fileWriter.print("class_non_inherited_fields_initalization:\n");
+
+		LinkedList<TYPE_CLASS_FIELD> cls_non_inherited_fields = 
+													cls.getClassNonInheritedFields();
+		
+		for (TYPE_CLASS_FIELD f : cls_non_inherited_fields)
+		{
+			if ((f.hasInitialValue()) && (f.initial_value instanceof string))
+			{
+				String string_label_name = cls.name + "_" + f.name + "_const_field";
+				fileWriter.format("%s: .asciiz \"%s\"\n", string_label_name, 
+															f.initial_value);
+			}
+		}
+
+		// switching back to the text section : -----------------------------
 
 		fileWriter.format(".text\n");
 	}

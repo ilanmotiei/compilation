@@ -31,6 +31,6 @@ public class IRcommand_Binop_EQ_Strings extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().strings_equal(dst, t1, t2);
+		MIPSGenerator.getInstance().str_cmp(dst, t1, t2);
 	}
 }

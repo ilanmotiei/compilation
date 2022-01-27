@@ -21,7 +21,7 @@ public class IRcommand_New_Array extends IRcommand
 	
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().malloc(dst, size_reg, type.size_in_bytes);
+		MIPSGenerator.getInstance().allocate(dst, size_reg);
 	}
 
 }

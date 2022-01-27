@@ -115,7 +115,6 @@ public class AST_CLASSDEC extends AST_Node {
 		getInstance().
 		Add_IRcommand(new IRcommand_ClassDec(cls));
 
-		IR.getInstance().Add_ClassDec(this.cls);  
 		// ^ : adds a class decleration. 
 		// all the class fields and methods identifiers and initial values
 		// were inferred at the semantic analysis.

@@ -16,8 +16,6 @@ public class IR
 	private IRcommand head=null;
 	private IRcommandList tail=null;
 
-	private CLASS_LIST classes = null; // a list of all class declerations
-
 	/******************/
 	/* Add IR command */
 	/******************/
@@ -39,18 +37,6 @@ public class IR
 				it = it.tail;
 			}
 			it.tail = new IRcommandList(cmd,null);
-		}
-	}
-
-	// Adds a class decleration to the IR
-	public void Add_ClassDec(TYPE_CLASS cls)
-	{
-		if (this.classes == null)
-		{
-			this.classes = new CLASS_LIST(cls, null);
-		}
-		else{
-			this.classes.Append(cls);
 		}
 	}
 

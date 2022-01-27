@@ -18,6 +18,6 @@ public class IRcommand_Array_Access extends IRcommand{
 	}
 	
 	public void MIPSme() {
-		MIPS.MIPSGenerator.getInstance()
+		MIPS.MIPSGenerator.getInstance().array_access(dst, arr, index);
 	}
 }

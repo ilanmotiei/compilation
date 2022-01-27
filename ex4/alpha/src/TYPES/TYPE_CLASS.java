@@ -349,6 +349,19 @@ public class TYPE_CLASS extends TYPE
 		return null; // for error if method name wasn't found
 	}
 
+	public LinkedList<TYPE_CLASS_FIELD> getClassNonInheritedFields()
+	{
+		LinkedList<TYPE_CLASS_FIELD> class_non_inherited_fields = new LinkedList<>();
+
+		for (TYPE_CLASS_FIELD f : this.data_members)
+		{
+			if (f.is_var())
+				{ class_non_inherited_fields.addFirst(f); }
+		}
+
+		return class_non_inherited_fields;
+	}
+
 	/*************/
 	/* isClass() */
 	/*************/
