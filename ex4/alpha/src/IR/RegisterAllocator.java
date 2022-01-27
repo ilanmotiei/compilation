@@ -131,6 +131,11 @@ public class RegisterAllocator
             }
         }
 
+        for (TEMP t : all_func_temps)
+        {
+            t.initalize_neighbors_backup();
+        }   
+
         return all_func_temps;
     }
 
@@ -151,12 +156,35 @@ public class RegisterAllocator
         }
     }
 
-    public void ColorInferenceGraph(LinkedList<TEMP> adj_list)
+    public void ColorInferenceGraph(LinkedList<TEMP> adj_list, int num_colors)
     {
         // find the correct mapping and update the serialNumbers of the TEMPs
 
+        Linked_List<TEMP> stack = new LinkedList<>();
 
-        // TODO
+        while (adj_list.size() != 0)
+        {
+            for (TEMP t : adj_list)
+            {
+                if (t.getDegree() < num_colors)
+                {
+                    // remove t from the graph (and all the edges he's connected to)
+                    // and push it to the stack
+                    
+                    t.remove_from_inference_graph();
+                    adj_list.remove(t);
+                    stack.addFirst(t);
+                    break;
+                }
+            }
+        }
+
+        for (TEMP top : stack)
+        {
+            // color it legally with respect to the coloring of the neighbors
+            // of it that we've allready returned to the inference graph
+
+            top.return_to_inference_graph_n_color();
+        }
     }
-
 }
