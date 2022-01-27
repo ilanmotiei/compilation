@@ -803,21 +803,21 @@ public class MIPSGenerator
 		add_backup_save_registers();
 
 		fileWriter.print("li $v0,1\n");
-		label("_strcmp_loop_\n");
-		fileWriter.print("lb $s2,0($s0)");
-		fileWriter.print("lb $s3,0($s1)");
-		fileWriter.print("bne $s2,$s3,_strcmp_noteq_");
-		fileWriter.print("beq $s2,0,_strcmp_end_");
-		fileWriter.print("addu $s0,$s0,1");
-		fileWriter.print("addu $s1,$s1,1");
+		label("_strcmp_loop_");
+		fileWriter.print("lb $s2,0($s0)\n");
+		fileWriter.print("lb $s3,0($s1)\n");
+		fileWriter.print("bne $s2,$s3,_strcmp_noteq_\n");
+		fileWriter.print("beq $s2,0,_strcmp_end_\n");
+		fileWriter.print("addu $s0,$s0,1\n");
+		fileWriter.print("addu $s1,$s1,1\n");
 		jump("_strcmp_loop_");
 		label("_strcmp_noteq_");
-		fileWriter.print("li $v0,0");
+		fileWriter.print("li $v0,0\n");
 
 		label("_strcmp_end_");
 
 		add_restore_save_registers();
-		fileWriter.print("jr $ra");
+		fileWriter.print("jr $ra\n");
 	}
 
 	public void init_strsize()
@@ -826,16 +826,16 @@ public class MIPSGenerator
 		// $s0 = oprnd
 		// result is stored at $v0
 
-		fileWriter.print("li $v0,0");
+		fileWriter.print("li $v0,0\n");
 		label("_strsize_loop_");
-		fileWriter.print("lb $s2,0($s0)");
-		fileWriter.print("beq $s2,0,_strsize_end_");
-		fileWriter.print("addu $s0,$s0,1");
-		fileWriter.print("addu $v0,$v0,1"); // increment the counted size
+		fileWriter.print("lb $s2,0($s0)\n");
+		fileWriter.print("beq $s2,0,_strsize_end_\n");
+		fileWriter.print("addu $s0,$s0,1\n");
+		fileWriter.print("addu $v0,$v0,1\n"); // increment the counted size
 	
 		label("_strsize_end_");
 
-		fileWriter.print("jr $ra");
+		fileWriter.print("jr $ra\n");
 	}
 
 	public void init_stradd()
@@ -848,45 +848,45 @@ public class MIPSGenerator
 		add_backup_save_registers();
 
 		// calculate $s0's size :
-		fileWriter.format("move $s0,$s0");
+		fileWriter.format("move $s0,$s0\n");
 		jal("_strsize_");
-		fileWriter.format("move $s2, $v0"); 
+		fileWriter.format("move $s2, $v0\n"); 
 		// ^ : store the result at $s2
 
 		// calculate $s1's size :
-		fileWriter.format("move $s0,$s1");
+		fileWriter.format("move $s0,$s1\n");
 		jal("_strsize_");
-		fileWriter.format("addu $s2,$s2,$v0"); 
+		fileWriter.format("addu $s2,$s2,$v0\n"); 
 		// ^ : $s2 contains the total size of the strings
 
 		// allocate memory for the new string
-		fileWriter.print("move $a0,$s2");
-		fileWriter.print("addu $a0,$a0,1");
-		fileWriter.print("li $v0,9");
-		fileWriter.print("syscall");
+		fileWriter.print("move $a0,$s2\n");
+		fileWriter.print("addu $a0,$a0,1\n");
+		fileWriter.print("li $v0,9\n");
+		fileWriter.print("syscall\n");
 
-		fileWriter.print("move $s3,$v0"); // move to $s3 the allocated memory address
+		fileWriter.print("move $s3,$v0\n"); // move to $s3 the allocated memory address
 
 		// copy the new strings to the newly allocated place
 		label("_stradd_loop_1_");
 
-		fileWriter.print("lb $s2,0($s0)");
-		fileWriter.print("beqz $s2,_stradd_loop_2_");
-		fileWriter.print("sw $s2,0($s3)");
-		fileWriter.print("addu $s3,$s3,1");
+		fileWriter.print("lb $s2,0($s0)\n");
+		fileWriter.print("beqz $s2,_stradd_loop_2_\n");
+		fileWriter.print("sw $s2,0($s3)\n");
+		fileWriter.print("addu $s3,$s3,1\n");
 
 		label("_stradd_loop_2_");
 
-		fileWriter.print("lb $s2,0($s1)");
-		fileWriter.print("beqz $s2,_stradd_end_");
-		fileWriter.print("sw $s2,0($s3)");
-		fileWriter.print("addu $s3,$s3,1");
+		fileWriter.print("lb $s2,0($s1)\n");
+		fileWriter.print("beqz $s2,_stradd_end_\n");
+		fileWriter.print("sw $s2,0($s3)\n");
+		fileWriter.print("addu $s3,$s3,1\n");
 
 		label("_stradd_end_");
 
-		fileWriter.print("sw $s2,0($s3)");
+		fileWriter.print("sw $s2,0($s3)\n");
 		add_restore_save_registers();
-		fileWriter.print("jr $ra");
+		fileWriter.print("jr $ra\n");
 	}
 
 	public void str_cpy()
@@ -898,18 +898,18 @@ public class MIPSGenerator
 		add_backup_save_registers();
 		
 		label("_strcpy_loop_");
-		fileWriter.print("lb $s2,0($s0)");
-		fileWriter.print("beqz $s2,_strcpy_end_");
-		fileWriter.print("sb $s2,0($s1)");
-		fileWriter.print("addu $s0,$s0,1");
-		fileWriter.print("addu $s1,$s1,1");
+		fileWriter.print("lb $s2,0($s0)\n");
+		fileWriter.print("beqz $s2,_strcpy_end_\n");
+		fileWriter.print("sb $s2,0($s1)\n");
+		fileWriter.print("addu $s0,$s0,1\n");
+		fileWriter.print("addu $s1,$s1,1\n");
 	
 		label("_strcpy_end_");
-		fileWriter.print("$s2,0($s1)");
+		fileWriter.print("$s2,0($s1)\n");
 
 		add_restore_save_registers();
 
-		fileWriter.print("jr $ra");
+		fileWriter.print("jr $ra\n");
 	}
 
 	// adds a section of code for backuping the save registers
@@ -917,8 +917,8 @@ public class MIPSGenerator
 	{
 		for(int i=7; i>=0; i--)
 		{
-			fileWriter.print("subu $sp,$sp,4");
-			fileWriter.format("sw $s%d,0($sp)", i);
+			fileWriter.print("subu $sp,$sp,4\n");
+			fileWriter.format("sw $s%d,0($sp)\n", i);
 		}
 	}
 
@@ -927,8 +927,8 @@ public class MIPSGenerator
 	{
 		for(int i=0; i<=7; i++)
 		{
-			fileWriter.format("lw $s%d,0($sp)", i);
-			fileWriter.print("addu $sp,$sp,4");
+			fileWriter.format("lw $s%d,0($sp)\n", i);
+			fileWriter.print("addu $sp,$sp,4\n");
 		}
 	}
 }
