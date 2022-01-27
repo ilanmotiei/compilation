@@ -64,7 +64,7 @@ public class Main
 			}
 
 			/***********************************/
-
+			IR.getInstance().AllocateRegisters();
 			IR.getInstance().MIPSme();
 
 			/* Close output file */

@@ -14,6 +14,7 @@ import java.util.*;
 
 import TYPES.*;
 import MIPS.*;
+import RegisterAllocation.RegisterAllocator;
 
 public class IR
 {
@@ -29,11 +30,9 @@ public class IR
 		cmd_list.add(cmd);
 	}
 
-	private int function_id = 0;
-
 	public void AllocateRegisters()
 	{
-		LinkedList<IRcommand> curr_function_cmds;
+		RegisterAllocator allocator = new RegisterAllocator();
 		boolean in_function = false;
 
 		for (IRcommand cmd : cmd_list)
@@ -41,7 +40,7 @@ public class IR
 			if (cmd instanceof IRcommand_AddPrologue)
 			{
 				// we're starting to parse a function :
-				curr_function_cmds = new LinkedList<>();
+				allocator = new RegisterAllocator();
 				in_function = true;
 			}
 			
@@ -49,20 +48,16 @@ public class IR
 			{
 				// we've finished to parse a function :
 				in_function = false;
-				function_id ++;
 
-				// do liveness analysis and allocate the machine registers :
-				
+				// allocate the machine registers :
+				allocator.AllocateRegisters();
 			}
 
 			if (in_function)
 			{
-				curr_function_cmds.add(cmd);
-				cmd.function_id = function_id;
+				RegisterAllocator.add_cmd(cmd);
 			}
 		}
-
-
 	}
 
 	public void MIPSme()

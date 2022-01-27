@@ -23,6 +23,19 @@ public class RegisterAllocator
         cmd_list = new LinkedList<>();
     }
 
+    public add_cmd(IRcommand cmd)
+    {
+        cmd_list.add(cmd);
+    }
+
+    public AllocateRegisters()
+    {
+        BuildCFG();
+        Perform_Liveness_Analysis();
+        Build_Inference_Graph();
+        ColorInferenceGraph();
+    }
+
     // updates all of the 'jumps_to' lists of all the commands at the list.
     // note : if a command jumps to a command out of the function then that  
     //        jump will not affect the former's list
