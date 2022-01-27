@@ -156,11 +156,22 @@ public class MIPSGenerator
 		fileWriter.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 
+	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
+	{
+		int i1 =oprnd1.getSerialNumber();
+		int i2 =oprnd2.getSerialNumber();
+		int dstidx=dst.getSerialNumber();
+
+		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+	}
+
 	public void divide(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
+
+		beqz(oprnd2, "division_by_zero_abort");
 
 		fileWriter.format("\tdiv Temp_%d,Temp_%d\n",i1,i2);
 		// result is stored at the register $lo. moving it to the "dst" register
@@ -187,8 +198,8 @@ public class MIPSGenerator
 		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
 		jal("_strcmp_");
 
-		// result is stored at the register $s2. moving it to the 'dst' register
-		fileWriter.format("\tmove Temp_%d,$s2", dst_idx);
+		// result is stored at the register $v0. moving it to the 'dst' register
+		fileWriter.format("\tmove Temp_%d,$v0", dst_idx);
 	}
 
 	public void str_add(TEMP dst, TEMP oprnd1, TEMP oprnd2)
@@ -202,8 +213,8 @@ public class MIPSGenerator
 		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
 		jal("_stradd_");
 
-		// result is stored at the register $s2. moving it to the 'dst' register
-		fileWriter.format("\tmove Temp_%d,$s2", dst_idx);
+		// result is stored at the register $v0. moving it to the 'dst' register
+		fileWriter.format("\tmove Temp_%d,$v0", dst_idx);
 	}
 
 	public void str_cpy(TEMP dst, TEMP src)
@@ -420,7 +431,7 @@ public class MIPSGenerator
 
 		fileWriter.format("\tmove $fp,$s0\n");  // $fp = $s0 = previous_fp
 
-		fileWriter.format("\taddiu $sp,$fp,8\n"); // $sp = $ fp + 8 = previous_sp
+		fileWriter.format("\taddu $sp,$fp,8\n"); // $sp = $ fp + 8 = previous_sp
 
 		fileWriter.format("\tjr $ra\n");        // jump to the return_address
 	}
@@ -490,7 +501,7 @@ public class MIPSGenerator
 
 		TEMP f_address = TEMP_FACTORY.getInstance().getFreshTEMP();
 
-		fileWriter.format("\taddi Temp_%d,Temp_%d,%d\n", f_address.getSerialNumber(),
+		fileWriter.format("\taddu Temp_%d,Temp_%d,%d\n", f_address.getSerialNumber(),
 														 dst.getSerialNumber(),
 														 f_offset);
 
@@ -503,7 +514,7 @@ public class MIPSGenerator
 	{
 		// Find the number of bytes needed :
 		fileWriter.format("\tmove $a0,Temp_%d\n", size.getSerialNumber());
-		fileWriter.format("\taddi $a0, $a0, 1\n");
+		fileWriter.format("\taddu $a0, $a0, 1\n");
 		fileWriter.format("\tmul $a0,$a0,%d\n", WORD_SIZE);
 
 		// Allocate the memory :
@@ -717,20 +728,207 @@ public class MIPSGenerator
 				/***************************************/
 				instance.fileWriter = new PrintWriter(dirname+filename);
 			}
+
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
 
-			/*****************************************************/
-			/* [3] Print data section with error message strings */
-			/*****************************************************/
-			instance.fileWriter.print(".data\n");
-			instance.fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
-			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
-			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
-			instance.fileWriter.print(".text\n");
+			instance.initialize();
 		}
+
 		return instance;
+	}
+
+	// initializing the abort labels and the string methods
+	public void initialize()
+	{
+		/******************************************************/
+		/* initialize data section with error message strings */
+		/******************************************************/
+		fileWriter.print(".data\n");
+		fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
+		fileWriter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+		fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
+		
+		fileWriter.print(".text\n");
+
+		init_main();
+
+		init_aborts();
+		init_strcmp();
+		init_strsize();
+		init_strcpy();
+		init_stradd();
+	}
+
+	public void init_main()
+	{
+		label("main");
+		fileWriter.print("jal user_main\n");
+		
+		label("exit");
+		fileWriter.print("li $v0,10");
+		fileWriter.print("syscall");
+	}
+
+	public void init_aborts()
+	{
+		label("index_out_of_range_abort");
+		fileWriter.print("\tla $a0,string_access_violation\n");
+		fileWriter.print("\tli $v0,4\n");
+		fileWriter.print("\tsyscall\n");
+		jump("exit");
+
+		label("division_by_zero_abort");
+		fileWriter.print("\tla $a0,string_illegal_div_by_0\n");
+		fileWriter.print("\tli $v0,4\n");
+		fileWriter.print("\tsyscall\n");
+		jump("exit");
+
+		label("invalid_ptr_dref_abort");
+		fileWriter.print("\tla $a0,string_invalid_ptr_dref\n");
+		fileWriter.print("\tli $v0,4\n");
+		fileWriter.print("\tsyscall\n");
+		jump("exit");		
+	}
+
+	public void init_strcmp()
+	{
+		label("_strcmp_");
+		// $s0 = oprnd1
+		// $s1 = oprnd2
+		// result is stored at $v0
+
+		add_backup_save_registers();
+
+		fileWriter.print("li $v0,1\n");
+		label("_strcmp_loop_\n");
+		fileWriter.print("lb $s2,0($s0)");
+		fileWriter.print("lb $s3,0($s1)");
+		fileWriter.print("bne $s2,$s3,_strcmp_noteq_");
+		fileWriter.print("beq $s2,0,_strcmp_end_");
+		fileWriter.print("addu $s0,$s0,1");
+		fileWriter.print("addu $s1,$s1,1");
+		jump("_strcmp_loop_");
+		label("_strcmp_noteq_");
+		fileWriter.print("li $v0,0");
+
+		label("_strcmp_end_");
+
+		add_restore_save_registers();
+		fileWriter.print("jr $ra");
+	}
+
+	public void init_strsize()
+	{
+		label("_strsize_");
+		// $s0 = oprnd
+		// result is stored at $v0
+
+		fileWriter.print("li $v0,0");
+		label("_strsize_loop_");
+		fileWriter.print("lb $s2,0($s0)");
+		fileWriter.print("beq $s2,0,_strsize_end_");
+		fileWriter.print("addu $s0,$s0,1");
+		fileWriter.print("addu $v0,$v0,1"); // increment the counted size
+	
+		label("_strsize_end_");
+
+		fileWriter.print("jr $ra");
+	}
+
+	public void init_stradd()
+	{
+		label("_stradd_");
+		// $s0 = oprnd1
+		// $s1 = oprnd2
+		// result is stored at $v0
+
+		add_backup_save_registers();
+
+		// calculate $s0's size :
+		fileWriter.format("move $s0,$s0");
+		jal("_strsize_");
+		fileWriter.format("move $s2, $v0"); 
+		// ^ : store the result at $s2
+
+		// calculate $s1's size :
+		fileWriter.format("move $s0,$s1");
+		jal("_strsize_");
+		fileWriter.format("addu $s2,$s2,$v0"); 
+		// ^ : $s2 contains the total size of the strings
+
+		// allocate memory for the new string
+		fileWriter.print("move $a0,$s2");
+		fileWriter.print("addu $a0,$a0,1");
+		fileWriter.print("li $v0,9");
+		fileWriter.print("syscall");
+
+		fileWriter.print("move $s3,$v0"); // move to $s3 the allocated memory address
+
+		// copy the new strings to the newly allocated place
+		label("_stradd_loop_1_");
+
+		fileWriter.print("lb $s2,0($s0)");
+		fileWriter.print("beqz $s2,_stradd_loop_2_");
+		fileWriter.print("sw $s2,0($s3)");
+		fileWriter.print("addu $s3,$s3,1");
+
+		label("_stradd_loop_2_");
+
+		fileWriter.print("lb $s2,0($s1)");
+		fileWriter.print("beqz $s2,_stradd_end_");
+		fileWriter.print("sw $s2,0($s3)");
+		fileWriter.print("addu $s3,$s3,1");
+
+		label("_stradd_end_");
+
+		fileWriter.print("sw $s2,0($s3)");
+		add_restore_save_registers();
+		fileWriter.print("jr $ra");
+	}
+
+	public void str_cpy()
+	{
+		label("_strcpy_");
+		// $s0 = dst
+		// $s1 = src
+		
+		add_backup_save_registers();
+		
+		label("_strcpy_loop_");
+		fileWriter.print("lb $s2,0($s0)");
+		fileWriter.print("beqz $s2,_strcpy_end_");
+		fileWriter.print("sb $s2,0($s1)");
+		fileWriter.print("addu $s0,$s0,1");
+		fileWriter.print("addu $s1,$s1,1");
+	
+		label("_strcpy_end_");
+		fileWriter.print("$s2,0($s1)");
+
+		add_restore_save_registers();
+
+		fileWriter.print("jr $ra");
+	}
+
+	// adds a section of code for backuping the save registers
+	public void add_backup_save_registers()
+	{
+		for(int i=7; i>=0; i--)
+		{
+			fileWriter.print("subu $sp,$sp,4");
+			fileWriter.format("sw $s%d,0($sp)", i);
+		}
+	}
+
+	// adds a section of code for restoring the save registers
+	public void add_restore_save_registers()
+	{
+		for(int i=0; i<=7; i++)
+		{
+			fileWriter.format("lw $s%d,0($sp)", i);
+			fileWriter.print("addu $sp,$sp,4");
+		}
 	}
 }

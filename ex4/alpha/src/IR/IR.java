@@ -6,10 +6,13 @@ package IR;
 /*******************/
 /* GENERAL IMPORTS */
 /*******************/
-import TYPES.*;
+
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
+
+import TYPES.*;
+import MIPS.*;
 
 public class IR
 {

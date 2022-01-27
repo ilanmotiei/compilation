@@ -132,6 +132,13 @@ public class AST_FUNCDEC extends AST_Node {
 
 	public void IRme()
 	{
+		if (name.equals("main"))
+		{
+			// this is the (global) 'main' function. we'll change its name at 
+			// the mips code to be 'user_main'.
+			name = "user_" + name;
+		}
+		
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(name));
 		IR.getInstance().Add_IRcommand(new IRcommand_AddPrologue(
 												this.func_dec.max_local_var_offset));

@@ -3,6 +3,7 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
+import IR.*;
 
 public class Main
 {
@@ -62,8 +63,9 @@ public class Main
 				file_writer.print("ERROR" + "(" + line + ")");
 			}
 
-			
 			/***********************************/
+
+			IR.getInstance().MIPSme();
 
 			/* Close output file */
 			file_writer.close();
