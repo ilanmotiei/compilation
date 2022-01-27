@@ -28,4 +28,20 @@ public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 	{
 		MIPSGenerator.getInstance().beqz(t,label_name);
 	}
+
+	// get the temps whome values are used when applying the command
+	public LinkedList<TEMP> getUsedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<TEMP>();
+		res.add(t);
+
+		return res;
+	}
+
+	// get the temps whome values are changed after applying the command
+	// (which are the temps whome previous values are no more used)
+	public LinkedList<TEMP> getChangedTemps()
+	{
+		return null;
+	}
 }

@@ -36,4 +36,24 @@ public class IRcommand_Binop_Divide_Integers extends IRcommand
         // PERFORMING THE DIVISION : 
 		MIPSGenerator.getInstance().divide(dst,t1,t2);
 	}
+
+	// get the temps whome values are used when applying the command
+	public LinkedList<TEMP> getUsedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<TEMP>();
+		res.add(t1);
+		res.add(t2);
+
+		return res;
+	}
+
+	// get the temps whome values are changed after applying the command
+	// (which are the temps whome previous values are no more used)
+	public LinkedList<TEMP> getChangedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<TEMP>();
+		res.add(dst);
+
+		return res;
+	}
 }

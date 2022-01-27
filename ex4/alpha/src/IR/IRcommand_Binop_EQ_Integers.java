@@ -72,4 +72,24 @@ public class IRcommand_Binop_EQ_Integers extends IRcommand
 		/******************/
 		MIPSGenerator.getInstance().label(label_end);
 	}
+
+	// get the temps whome values are used when applying the command
+	public LinkedList<TEMP> getUsedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<TEMP>();
+		res.add(t1);
+		res.add(t2);
+
+		return res;
+	}
+
+	// get the temps whome values are changed after applying the command
+	// (which are the temps whome previous values are no more used)
+	public LinkedList<TEMP> getChangedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<TEMP>();
+		res.add(dst);
+
+		return res;
+	}
 }

@@ -11,6 +11,9 @@ package IR;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
+
+import java.util.LinkedList;
+
 import MIPS.*;
 
 public class IRcommand_Call extends IRcommand
@@ -30,5 +33,24 @@ public class IRcommand_Call extends IRcommand
 	{
         MIPSGenerator.getInstance().push_args(args);
 		MIPSGenerator.getInstance().jal(func_name);
+	}
+
+	// get the temps whome values are used when applying the command
+	public LinkedList<TEMP> getUsedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<>();
+		for (TEMP a : args)
+		{
+			res.add(a);
+		}
+
+		return res;
+	}
+
+	// get the temps whome values are changed after applying the command
+	// (which are the temps whome previous values are no more used)
+	public LinkedList<TEMP> getChangedTemps()
+	{
+		return null;
 	}
 }

@@ -22,9 +22,6 @@ public class IRcommandList
 		this.tail = tail;
 	}
 
-	/***************/
-	/* MIPS me !!! */
-	/***************/
 	public void MIPSme()
 	{
 		if (head != null) head.MIPSme();

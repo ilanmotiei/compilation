@@ -52,4 +52,20 @@ public class IRcommand_Store extends IRcommand
 											isClassField,
 											offset);
 	}
+
+	// get the temps whome values are used when applying the command
+	public abstract LinkedList<TEMP> getUsedTemps()
+	{
+		LinkedList<TEMP> res = new LinkedList<>();
+		res.add(src);
+
+		return res;
+	}
+
+	// get the temps whome values are changed after applying the command
+	// (which are the temps whome previous values are no more used)
+	public LinkedList<TEMP> getChangedTemps()
+	{
+		return null;
+	}
 }

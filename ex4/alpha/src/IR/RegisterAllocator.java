@@ -6,12 +6,13 @@ package RegisterAllocation;
 /* GENERAL IMPORTS */
 /*******************/
 
-import java.util.LinkedList;
+import java.util.*;
 
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
 import IR.*;
+import TEMP.*;
 
 public class RegisterAllocator
 {
@@ -88,5 +89,74 @@ public class RegisterAllocator
         return null;
     }
 
-    
+    public void Perform_Liveness_Analysis()
+    {
+        LinkedList<IRcommand> reveresed_list = new LinkedList<>();
+
+        for (TEMP t : cmd_list)
+        {
+            reveresed_list.addFirst(t);
+        }
+
+        for (i=0; i <= 4; i++)
+        {
+            // perform the transform function of the commands in a reverse order
+            for (IRcommand cmd : reveresed_list)
+            {
+                cmd.UpdateINList();
+            }
+        }
+    }
+
+    // Updates the neighbors of every TEMP according to the liveness analysis
+    // performed earlier and returns the list of all the TEMPs used at
+    // the function defined by the given list of IRcommands
+    // (The inference graph is represented as a adjacency *LIST*)
+    public LinkedList<TEMP> Build_Inference_Graph()
+    {
+        LinkedList<TEMP> all_func_temps = new LinkedList<>();
+
+        for (IRcommand cmd : cmd_list)
+        {
+            parse_command_temps(cmd);
+
+            LinkedList<TEMP> cmd_temps = cmd.getCMDTemps();
+
+            for (TEMP t : cmd_temps)
+            {
+                if (! all_func_temps.contains(t))
+                {
+                    all_func_temps.add(t);
+                }
+            }
+        }
+
+        return all_func_temps;
+    }
+
+    // initializes the neighbors of all the temps at the command
+    public LinkedList<TEMP> parse_command_temps(IRcommand cmd)
+    {
+        LinkedList<TEMP> adj_temps = cmd.IN;
+
+        for (TEMP t : adj_temps)
+        {
+            for (TEMP t1 : adj_temps)
+            {
+                if ((t1 != t) && (! t.neighbors.contains(t1)))
+                {
+                    t.neighbors.add(t1);
+                }
+            }
+        }
+    }
+
+    public void ColorInferenceGraph(LinkedList<TEMP> adj_list)
+    {
+        // find the correct mapping and update the serialNumbers of the TEMPs
+
+
+        // TODO
+    }
+
 }
