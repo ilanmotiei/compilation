@@ -2,6 +2,7 @@
 /* PACKAGE */
 /***********/
 package TEMP;
+import java.util.LinkedList;
 
 /*******************/
 /* GENERAL IMPORTS */
