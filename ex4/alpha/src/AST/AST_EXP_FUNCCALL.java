@@ -116,7 +116,7 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 
 		TYPE_FUNCTION func = (TYPE_FUNCTION) func_dec;
 
-		return new BOX(func.returnType, func.name);
+		return new BOX(func.returnType, func.name, false);
 	}
 
 	public TEMP IRme()
