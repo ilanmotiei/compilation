@@ -145,17 +145,27 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 		if (cls != null)
 		{
-			// it is a class field decleration :
+			// it is a class field
 
 			isLocalVar = false;
 			isClassField = true;
 			this._cls_ = cls;
 		}
 		else{
-			// it is a local variable
+			if (SYMBOL_TABLE.getInstance().find_curr_scope_function() != null)
+			{
+				// it is a local variable
 
-			isLocalVar = true;
-			isClassField = false;
+				isLocalVar = true;
+				isClassField = false;
+			}
+			else
+			{
+				// it is a global variable
+
+				isLocalVar = false;
+				isClassField = false;
+			}
 		}
 
 		SYMBOL_TABLE.getInstance().enter(this.name,

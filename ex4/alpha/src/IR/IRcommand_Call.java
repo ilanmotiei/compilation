@@ -31,8 +31,7 @@ public class IRcommand_Call extends IRcommand
 	
 	public void MIPSme()
 	{
-        MIPSGenerator.getInstance().push_args(args);
-		MIPSGenerator.getInstance().jal(func_name);
+        MIPSGenerator.getInstance().call(args, func_name);
 	}
 
 	// get the temps whome values are used when applying the command

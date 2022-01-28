@@ -12,6 +12,8 @@ import IR.*;
 import SYMBOL_TABLE.*;
 import TYPES.*;
 import TEMP.*;
+import java.io.FileReader;
+
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
@@ -34,16 +36,14 @@ public class MIPSGenerator
 	/***********************/
 	public void finalizeFile()
 	{
-		fileWriter.print("\tli $v0,10\n");
-		fileWriter.print("\tsyscall\n");
-		// fileWriter.close();
+		fileWriter.close();
 	}
 
 	public void print_int(TEMP t)
 	{
 		int idx=t.getSerialNumber();
-		// fileWriter.format("\taddi $a0,Temp_%d,0\n",idx);
-		fileWriter.format("\tmove $a0,Temp_%d\n",idx);
+		// fileWriter.format("\taddi $a0,$t%d,0\n",idx);
+		fileWriter.format("\tmove $a0,$t%d\n",idx);
 		fileWriter.format("\tli $v0,1\n");
 		fileWriter.format("\tsyscall\n");
 		fileWriter.format("\tli $a0,32\n");
@@ -53,10 +53,10 @@ public class MIPSGenerator
 
 	//public TEMP addressLocalVar(int serialLocalVarNum)
 	//{
-	//	TEMP t  = TEMP_FACTORY.getInstance().getFreshTEMP();
+	//	TEMP t  = $tFACTORY.getInstance().getFreshTEMP();
 	//	int idx = t.getSerialNumber();
 	//
-	//	fileWriter.format("\taddi Temp_%d,$fp,%d\n",idx,-serialLocalVarNum*WORD_SIZE);
+	//	fileWriter.format("\taddi $t%d,$fp,%d\n",idx,-serialLocalVarNum*WORD_SIZE);
 	//	
 	//	return t;
 	//}
@@ -70,14 +70,14 @@ public class MIPSGenerator
 		{
 			// IT'S A LOCAL VARIABLE AND WE DON'T NEED ITS NAME - ONLY ITS OFFSET
 			// FROM THE FRAME POINTER
-			fileWriter.format("\tlw Temp_%d,%d($fp)\n",idxdst, offset);
+			fileWriter.format("\tlw $t%d,%d($fp)\n",idxdst, offset);
 		}
 		else{
 			if (isArg)
 			{
 				// IT'S A LOCAL VARIABLE AND WE DON'T NEED ITS NAME - ONLY ITS OFFSET
 				// FROM THE FRAME POINTER
-				fileWriter.format("\tlw Temp_%d,%d($fp)\n",idxdst, offset);
+				fileWriter.format("\tlw $t%d,%d($fp)\n",idxdst, offset);
 			}
 			else{
 				if (isClassField)
@@ -87,13 +87,13 @@ public class MIPSGenerator
 
 					fileWriter.format("\tlw $s0,8($sp)\n");
 					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
-					fileWriter.format("\tlw Temp_%d,%d($s0)\n", idxdst, 
+					fileWriter.format("\tlw $t%d,%d($s0)\n", idxdst, 
 																field_off);
 				}
 				else
 				{
 					// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
-					fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst, var_name);
+					fileWriter.format("\tlw $t%d,global_%s\n",idxdst, var_name);
 				}
 			}
 		}		
@@ -102,7 +102,7 @@ public class MIPSGenerator
 	// cls is the class we were in when this storing was called. may be null;
 	public void store(String var_name, TYPE_CLASS cls, TEMP src, boolean isLocalVar, boolean isArg, boolean isClassField, int offset)
 	{
-		// fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc,var_name);
+		// fileWriter.format("\tsw $t%d,global_%s\n",idxsrc,var_name);
 		
 		int idxsrc = src.getSerialNumber();
 
@@ -110,14 +110,14 @@ public class MIPSGenerator
 		{
 			// IT'S A LOCAL VARIABLE AND WE DON'T NEED ITS NAME - ONLY ITS OFFSET
 			// FROM THE FRAME POINTER
-			fileWriter.format("\tsw Temp_%d,%d($fp)\n", idxsrc, offset);
+			fileWriter.format("\tsw $t%d,%d($fp)\n", idxsrc, offset);
 		}
 		else{
 			if (isArg)
 			{
 				// IT'S A LOCAL VARIABLE AND WE DON'T NEED ITS NAME - ONLY ITS OFFSET
 				// FROM THE FRAME POINTER
-				fileWriter.format("\tsw Temp_%d,%d($fp)\n", idxsrc, offset);
+				fileWriter.format("\tsw $t%d,%d($fp)\n", idxsrc, offset);
 			}
 			else{
 				if (isClassField)
@@ -127,13 +127,13 @@ public class MIPSGenerator
 
 					fileWriter.format("\tlw $s0,8($sp)\n");
 					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
-					fileWriter.format("\tsw Temp_%d,%d($s0)\n", idxsrc, 
+					fileWriter.format("\tsw $t%d,%d($s0)\n", idxsrc, 
 																field_off);
 				}
 				else
 				{
 					// IT'S A GLOBAL VARIABLE - WE NEED ITS NAME
-					fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc, var_name);
+					fileWriter.format("\tsw $t%d,global_%s\n",idxsrc, var_name);
 				}
 			}
 		}		
@@ -141,14 +141,14 @@ public class MIPSGenerator
 
 	public void lw(TEMP dst, TEMP src)
 	{
-		fileWriter.format("\tlw Temp_%d,0(Temp_%d)\n", dst.getSerialNumber(),
+		fileWriter.format("\tlw $t%d,0($t%d)\n", dst.getSerialNumber(),
 													   src.getSerialNumber());
 	}
 
 	public void li(TEMP t,int value)
 	{
 		int idx=t.getSerialNumber();
-		fileWriter.format("\tli Temp_%d,%d\n",idx,value);
+		fileWriter.format("\tli $t%d,%d\n",idx,value);
 	}
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
@@ -156,7 +156,7 @@ public class MIPSGenerator
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tadd $t%d,$t%d,$t%d\n",dstidx,i1,i2);
 	}
 
 	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
@@ -165,7 +165,7 @@ public class MIPSGenerator
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tsub $t%d,$t%d,$t%d\n",dstidx,i1,i2);
 	}
 
 	public void divide(TEMP dst,TEMP oprnd1,TEMP oprnd2)
@@ -176,9 +176,9 @@ public class MIPSGenerator
 
 		beqz(oprnd2, "division_by_zero_abort");
 
-		fileWriter.format("\tdiv Temp_%d,Temp_%d\n",i1,i2);
+		fileWriter.format("\tdiv $t%d,$t%d\n",i1,i2);
 		// result is stored at the register $lo. moving it to the "dst" register
-		fileWriter.format("\tmflo Temp_%d\n", dstidx);
+		fileWriter.format("\tmflo $t%d\n", dstidx);
 	}
 
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
@@ -187,7 +187,7 @@ public class MIPSGenerator
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		fileWriter.format("\tmul $t%d,$t%d,$t%d\n",dstidx,i1,i2);
 	}
 
 	public void str_cmp(TEMP dst, TEMP oprnd1, TEMP oprnd2)
@@ -197,12 +197,12 @@ public class MIPSGenerator
 		int dst_idx = dst.getSerialNumber();
 
 		// moving the 'arguments' throght the registers $s0 and $s1
-		fileWriter.format("\tmove $s0,Temp_%d\n", i1);
-		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
+		fileWriter.format("\tmove $s0,$t%d\n", i1);
+		fileWriter.format("\tmove $s1,$t%d\n", i2);
 		jal("_strcmp_");
 
 		// result is stored at the register $v0. moving it to the 'dst' register
-		fileWriter.format("\tmove Temp_%d,$v0", dst_idx);
+		fileWriter.format("\tmove $t%d,$v0", dst_idx);
 	}
 
 	public void str_add(TEMP dst, TEMP oprnd1, TEMP oprnd2)
@@ -212,12 +212,12 @@ public class MIPSGenerator
 		int dst_idx = dst.getSerialNumber();
 
 		// moving the 'arguments' throght the registers $s0 and $s1
-		fileWriter.format("\tmove $s0,Temp_%d\n", i1);
-		fileWriter.format("\tmove $s1,Temp_%d\n", i2);
+		fileWriter.format("\tmove $s0,$t%d\n", i1);
+		fileWriter.format("\tmove $s1,$t%d\n", i2);
 		jal("_stradd_");
 
 		// result is stored at the register $v0. moving it to the 'dst' register
-		fileWriter.format("\tmove Temp_%d,$v0", dst_idx);
+		fileWriter.format("\tmove $t%d,$v0", dst_idx);
 	}
 
 	public void str_cpy(TEMP dst, TEMP src)
@@ -226,8 +226,8 @@ public class MIPSGenerator
 		int src_idx = src.getSerialNumber();
 
 		// moving the 'arguments' throght the registers $s0 and $s1
-		fileWriter.format("\tmove $s0,Temp_%d\n", dst_idx);
-		fileWriter.format("\tmove $s1,Temp_%d\n", src_idx);
+		fileWriter.format("\tmove $s0,$t%d\n", dst_idx);
+		fileWriter.format("\tmove $s1,$t%d\n", src_idx);
 
 		// jumping into the copy section (which then jumps back here)
 		jal("_strcpy_");
@@ -262,40 +262,40 @@ public class MIPSGenerator
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tblt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		fileWriter.format("\tblt $t%d,$t%d,%s\n",i1,i2,label);				
 	}
 	public void bge(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbge Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		fileWriter.format("\tbge $t%d,$t%d,%s\n",i1,i2,label);				
 	}
 	public void bne(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbne Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		fileWriter.format("\tbne $t%d,$t%d,%s\n",i1,i2,label);				
 	}
 	public void beq(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbeq Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		fileWriter.format("\tbeq $t%d,$t%d,%s\n",i1,i2,label);				
 	}
 	public void beqz(TEMP oprnd1,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 				
-		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
+		fileWriter.format("\tbeq $t%d,$zero,%s\n",i1,label);				
 	}
 	public void bltz(TEMP oprnd1,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 				
-		fileWriter.format("\tbltz Temp_%d,$zero,%s\n",i1,label);				
+		fileWriter.format("\tbltz $t%d,$zero,%s\n",i1,label);				
 	}
 
 	public void array_access(TEMP dst, TEMP arr, TEMP idx)
@@ -305,18 +305,18 @@ public class MIPSGenerator
 		// if (idx < 0) : abort
 		bltz(idx, "index_out_of_range_abort"); 
 		// size = arr[0] (we store the array size at the 0 offset)
-		fileWriter.format("\tlw $s0,0(Temp_%d)\n", arr.getSerialNumber());
+		fileWriter.format("\tlw $s0,0($t%d)\n", arr.getSerialNumber());
 		// if (idx >= size) : abort
-		fileWriter.format("\tbge Temp_%d,$s0,%s\n", idx.getSerialNumber(), "index_out_of_range_abort");
+		fileWriter.format("\tbge $t%d,$s0,%s\n", idx.getSerialNumber(), "index_out_of_range_abort");
 
 		// ACCESSING AND STORING THE RESULTS : --------------------
 
-		fileWriter.format("\tmove $s0,Temp_%d\n", idx.getSerialNumber());
+		fileWriter.format("\tmove $s0,$t%d\n", idx.getSerialNumber());
 		fileWriter.format("\tadd $s0,$s0,1\n");
 		fileWriter.format("\tmul $s0,$s0,4\n");
-		fileWriter.format("\tadd $s0,$s0,Temp_%d\n", arr.getSerialNumber());
+		fileWriter.format("\tadd $s0,$s0,$t%d\n", arr.getSerialNumber());
 
-		fileWriter.format("\tlw Temp_%d,0($s0)\n", dst.getSerialNumber());
+		fileWriter.format("\tlw $t%d,0($s0)\n", dst.getSerialNumber());
 	}
 
 	public void array_set(TEMP arr, TEMP idx, TEMP value)
@@ -326,33 +326,33 @@ public class MIPSGenerator
 		// if (idx < 0) : abort
 		bltz(idx, "index_out_of_range_abort"); 
 		// size = arr[0] (we store the array size at the 0 offset)
-		fileWriter.format("\tlw $s0,0(Temp_%d)\n", arr.getSerialNumber());
+		fileWriter.format("\tlw $s0,0($t%d)\n", arr.getSerialNumber());
 		// if (idx >= size) : abort
-		fileWriter.format("\tbge Temp_%d,$s0,%s\n", idx.getSerialNumber(), "index_out_of_range_abort");
+		fileWriter.format("\tbge $t%d,$s0,%s\n", idx.getSerialNumber(), "index_out_of_range_abort");
 
 		// ACCESSING THE INDEX AND STORING THE VALUE : --------------------
 
-		fileWriter.format("\tmove $s0,Temp_%d\n", idx.getSerialNumber());
+		fileWriter.format("\tmove $s0,$t%d\n", idx.getSerialNumber());
 		fileWriter.format("\tadd $s0,$s0,1\n");
 		fileWriter.format("\tmul $s0,$s0,4\n");
-		fileWriter.format("\tadd $s0,$s0,Temp_%d\n", arr.getSerialNumber());
+		fileWriter.format("\tadd $s0,$s0,$t%d\n", arr.getSerialNumber());
 
-		fileWriter.format("\tsw Temp_%d,0($s0)\n", value.getSerialNumber());
+		fileWriter.format("\tsw $t%d,0($s0)\n", value.getSerialNumber());
 	}
 
 	public void move_rv(TEMP dst)
 	{
-		fileWriter.format("\tmove Temp_%d,$v0\n", dst.getSerialNumber());
+		fileWriter.format("\tmove $t%d,$v0\n", dst.getSerialNumber());
 	}
 
 	public void set_rv(TEMP src)
 	{
-		fileWriter.format("\tmove $v0,Temp_%d\n", src.getSerialNumber());
+		fileWriter.format("\tmove $v0,$t%d\n", src.getSerialNumber());
 	}
 
 	public void load_immediate(TEMP dst, int value)
 	{
-		fileWriter.format("\tli Temp_%d,%d\n", dst.getSerialNumber(), value);
+		fileWriter.format("\tli $t%d,%d\n", dst.getSerialNumber(), value);
 	}
 
 	public void add_prologue(int function_max_local_var_offset)
@@ -378,7 +378,7 @@ public class MIPSGenerator
 		// CHANGE CURRENT STACK POINTER IN ORDER TO LEAVE A PLACE FOR ALL
 		// THE LOCAL VARIABLELS WE'LL DEFINE AT THE FUNCTION
 
-		fileWriter.format("\tsubu $sp,$sp,%d\n", function_max_local_var_offset);
+		fileWriter.format("\tsubu $sp,$sp,%d\n", function_max_local_var_offset + 40);
 
 		/*
 
@@ -449,11 +449,11 @@ public class MIPSGenerator
 		fileWriter.format("\tsyscall\n");
 
 		// Putting it at the dst register :
-		fileWriter.format("\tmove Temp_%d,$v0\n", dst.getSerialNumber());
+		fileWriter.format("\tmove $t%d,$v0\n", dst.getSerialNumber());
 
 		// Storing for it its vtable :
 		fileWriter.format("\tla $s0,vt_%s\n", cls.name);
-		fileWriter.format("\tsw $s0,0(Temp_%d)\n", dst.getSerialNumber());
+		fileWriter.format("\tsw $s0,0($t%d)\n", dst.getSerialNumber());
 
 		int off = 4;
 
@@ -470,14 +470,14 @@ public class MIPSGenerator
 				if (f.initial_value instanceof Integer)
 				{
 					fileWriter.format("\tli $s0,%d\n", (int) f.initial_value);
-					fileWriter.format("\tsw $s0,%d(Temp_%d)\n", off,
+					fileWriter.format("\tsw $s0,%d($t%d)\n", off,
 																dst.getSerialNumber());
 				}
 			}
 			else
 			{
 				fileWriter.format("\tli %s0,0\n");
-				fileWriter.format("\tsw $s0,%d(Temp_%d)\n", off,
+				fileWriter.format("\tsw $s0,%d($t%d)\n", off,
 															dst.getSerialNumber());
 			}
 
@@ -494,7 +494,7 @@ public class MIPSGenerator
 
 		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
 
-		fileWriter.format("\tla Temp_%d,%s\n", t.getSerialNumber(), 
+		fileWriter.format("\tla $t%d,%s\n", t.getSerialNumber(), 
 												label_name);
 
 		// copy the content t is pointing on to the address of the field
@@ -504,7 +504,7 @@ public class MIPSGenerator
 
 		TEMP f_address = TEMP_FACTORY.getInstance().getFreshTEMP();
 
-		fileWriter.format("\taddu Temp_%d,Temp_%d,%d\n", f_address.getSerialNumber(),
+		fileWriter.format("\taddu $t%d,$t%d,%d\n", f_address.getSerialNumber(),
 														 dst.getSerialNumber(),
 														 f_offset);
 
@@ -516,21 +516,21 @@ public class MIPSGenerator
 	public void allocate_array(TEMP size, TEMP dst)
 	{
 		// Find the number of bytes needed :
-		fileWriter.format("\tmove $a0,Temp_%d\n", size.getSerialNumber());
+		fileWriter.format("\tmove $a0,$t%d\n", size.getSerialNumber());
 		fileWriter.format("\taddu $a0, $a0, 1\n");
 		fileWriter.format("\tmul $a0,$a0,%d\n", WORD_SIZE);
 
 		// Allocate the memory :
 		fileWriter.format("\tli $v0,9\n");
 		fileWriter.format("\tsyscall\n");
-		fileWriter.format("\tmove Temp_%d,$v0\n", dst.getSerialNumber());
+		fileWriter.format("\tmove $t%d,$v0\n", dst.getSerialNumber());
 
 		// Initialize array's size :
-		fileWriter.format("\tsw Temp_%d,0(Temp_%d)\n", size.getSerialNumber(),
+		fileWriter.format("\tsw $t%d,0($t%d)\n", size.getSerialNumber(),
 														dst.getSerialNumber());
 	}
 
-	public void push_args(TEMP_LIST args)
+	public void push_args(TEMP_LIST args, boolean leave_hole)
 	{
 		int amount = args.length();
 
@@ -538,11 +538,17 @@ public class MIPSGenerator
 		
 		for (TEMP t : args)
 		{
-			fileWriter.format("\tsw Temp_%d,0($sp)\n", t.getSerialNumber());
+			fileWriter.format("\tsw $t%d,0($sp)\n", t.getSerialNumber());
 			fileWriter.format("\taddu $sp,$sp,4\n");
 		}
 
 		fileWriter.format("\tsubu $sp,$sp,%d\n", WORD_SIZE * amount);
+
+		if (leave_hole)
+		{
+			// we leave a hole for uniformity among virtual and regular function calls
+			fileWriter.format("\tsubu $sp,$sp,4\n");
+		}
 	}
 
 	// A class method call : 
@@ -550,7 +556,7 @@ public class MIPSGenerator
 	{
 		TEMP_LIST final_args = new TEMP_LIST(src, args);
 
-		push_args(final_args);
+		push_args(final_args, false);
 
 		// loads the vtable address
 		fileWriter.format("\tlw $s0,0($src)\n");  
@@ -567,11 +573,7 @@ public class MIPSGenerator
 	// A regular function call : 
 	public void call(TEMP_LIST args, String func_name)
 	{
-		push_args(args);
-
-		fileWriter.format("\tsubu $sp,$sp,4\n");  
-		// ^ : leaving a hole for an object instance (no object instance will be 
-		// 	   really places there), for uniformity.
+		push_args(args, true);
 
 		fileWriter.format("\tjal %s\n", func_name);
 	}
@@ -581,14 +583,23 @@ public class MIPSGenerator
 	public void allocate_string(TEMP dst, String str)
 	{
 		fileWriter.format(".data\n");
-		fileWriter.format("\tconst_str_%d: .asciiz \"%s\"\n", const_str_cnt, str);
+		fileWriter.format("\tconst_str_%d: .asciiz %s\n", const_str_cnt, str);
 		fileWriter.format(".text\n");
-		fileWriter.format("\tla Temp_%d,const_str_%d\n", dst.getSerialNumber(),
+		fileWriter.format("\tla $t%d,const_str_%d\n", dst.getSerialNumber(),
 														 const_str_cnt);
 
 
 		const_str_cnt += 1;
 	}
+
+	public void init_global_var(String var_name)
+	{
+		fileWriter.print(".data\n");
+		fileWriter.format("\tglobal_%s: .word 0\n", var_name);  // pointer's initialized to null
+
+		fileWriter.print(".text\n");
+ 	}
+
 
 	public void init_class_vtable(TYPE_CLASS cls)
 	{
@@ -682,7 +693,7 @@ public class MIPSGenerator
 	{
 		int field_offset = cls.getFieldIndex(field_name) * WORD_SIZE;
 
-		fileWriter.format("\tsw Temp_%d,%d(Temp_%d)\n", value.getSerialNumber(),
+		fileWriter.format("\tsw $t%d,%d($t%d)\n", value.getSerialNumber(),
 														field_offset,
 														obj.getSerialNumber());
 	}
@@ -691,7 +702,7 @@ public class MIPSGenerator
 	{
 		int field_offset = cls.getFieldIndex(field_name) * WORD_SIZE;
 
-		fileWriter.format("\tlw Temp_%d,%d(Temp_%d)\n", dst.getSerialNumber(),
+		fileWriter.format("\tlw $t%d,%d($t%d)\n", dst.getSerialNumber(),
 														field_offset,
 														obj.getSerialNumber());
 	}
@@ -763,16 +774,17 @@ public class MIPSGenerator
 		init_strsize();
 		init_strcpy();
 		init_stradd();
+		init_print_int();
 	}
 
 	public void init_main()
 	{
 		label("main");
-		fileWriter.print("jal user_main\n");
+		fileWriter.print("\tjal user_main\n");
 		
 		label("exit");
-		fileWriter.print("li $v0,10");
-		fileWriter.print("syscall");
+		fileWriter.print("\tli $v0,10\n");
+		fileWriter.print("\tsyscall\n");
 	}
 
 	public void init_aborts()
@@ -805,22 +817,22 @@ public class MIPSGenerator
 
 		add_backup_save_registers();
 
-		fileWriter.print("li $v0,1\n");
+		fileWriter.print("\tli $v0,1\n");
 		label("_strcmp_loop_");
-		fileWriter.print("lb $s2,0($s0)\n");
-		fileWriter.print("lb $s3,0($s1)\n");
-		fileWriter.print("bne $s2,$s3,_strcmp_noteq_\n");
-		fileWriter.print("beq $s2,0,_strcmp_end_\n");
-		fileWriter.print("addu $s0,$s0,1\n");
-		fileWriter.print("addu $s1,$s1,1\n");
+		fileWriter.print("\tlb $s2,0($s0)\n");
+		fileWriter.print("\tlb $s3,0($s1)\n");
+		fileWriter.print("\tbne $s2,$s3,_strcmp_noteq_\n");
+		fileWriter.print("\tbeq $s2,0,_strcmp_end_\n");
+		fileWriter.print("\taddu $s0,$s0,1\n");
+		fileWriter.print("\taddu $s1,$s1,1\n");
 		jump("_strcmp_loop_");
 		label("_strcmp_noteq_");
-		fileWriter.print("li $v0,0\n");
+		fileWriter.print("\tli $v0,0\n");
 
 		label("_strcmp_end_");
 
 		add_restore_save_registers();
-		fileWriter.print("jr $ra\n");
+		fileWriter.print("\tjr $ra\n");
 	}
 
 	public void init_strsize()
@@ -829,16 +841,19 @@ public class MIPSGenerator
 		// $s0 = oprnd
 		// result is stored at $v0
 
-		fileWriter.print("li $v0,0\n");
+		add_backup_save_registers();
+
+		fileWriter.print("\tli $v0,0\n");
 		label("_strsize_loop_");
-		fileWriter.print("lb $s2,0($s0)\n");
-		fileWriter.print("beq $s2,0,_strsize_end_\n");
-		fileWriter.print("addu $s0,$s0,1\n");
-		fileWriter.print("addu $v0,$v0,1\n"); // increment the counted size
+		fileWriter.print("\tlb $s2,0($s0)\n");
+		fileWriter.print("\tbeq $s2,0,_strsize_end_\n");
+		fileWriter.print("\taddu $s0,$s0,1\n");
+		fileWriter.print("\taddu $v0,$v0,1\n"); // increment the counted size
 	
 		label("_strsize_end_");
 
-		fileWriter.print("jr $ra\n");
+		add_restore_save_registers();
+		fileWriter.print("\tjr $ra\n");
 	}
 
 	public void init_stradd()
@@ -851,45 +866,45 @@ public class MIPSGenerator
 		add_backup_save_registers();
 
 		// calculate $s0's size :
-		fileWriter.format("move $s0,$s0\n");
+		fileWriter.format("\tmove $s0,$s0\n");
 		jal("_strsize_");
-		fileWriter.format("move $s2, $v0\n"); 
+		fileWriter.format("\tmove $s2, $v0\n");
 		// ^ : store the result at $s2
 
 		// calculate $s1's size :
-		fileWriter.format("move $s0,$s1\n");
+		fileWriter.format("\tmove $s0,$s1\n");
 		jal("_strsize_");
-		fileWriter.format("addu $s2,$s2,$v0\n"); 
+		fileWriter.format("\taddu $s2,$s2,$v0\n");
 		// ^ : $s2 contains the total size of the strings
 
 		// allocate memory for the new string
-		fileWriter.print("move $a0,$s2\n");
-		fileWriter.print("addu $a0,$a0,1\n");
-		fileWriter.print("li $v0,9\n");
-		fileWriter.print("syscall\n");
+		fileWriter.print("\tmove $a0,$s2\n");
+		fileWriter.print("\taddu $a0,$a0,1\n");
+		fileWriter.print("\tli $v0,9\n");
+		fileWriter.print("\tsyscall\n");
 
-		fileWriter.print("move $s3,$v0\n"); // move to $s3 the allocated memory address
+		fileWriter.print("\tmove $s3,$v0\n"); // move to $s3 the allocated memory address
 
 		// copy the new strings to the newly allocated place
 		label("_stradd_loop_1_");
 
-		fileWriter.print("lb $s2,0($s0)\n");
-		fileWriter.print("beqz $s2,_stradd_loop_2_\n");
-		fileWriter.print("sw $s2,0($s3)\n");
-		fileWriter.print("addu $s3,$s3,1\n");
+		fileWriter.print("\tlb $s2,0($s0)\n");
+		fileWriter.print("\tbeqz $s2,_stradd_loop_2_\n");
+		fileWriter.print("\tsw $s2,0($s3)\n");
+		fileWriter.print("\taddu $s3,$s3,1\n");
 
 		label("_stradd_loop_2_");
 
-		fileWriter.print("lb $s2,0($s1)\n");
-		fileWriter.print("beqz $s2,_stradd_end_\n");
-		fileWriter.print("sw $s2,0($s3)\n");
-		fileWriter.print("addu $s3,$s3,1\n");
+		fileWriter.print("\tlb $s2,0($s1)\n");
+		fileWriter.print("\tbeqz $s2,_stradd_end_\n");
+		fileWriter.print("\tsw $s2,0($s3)\n");
+		fileWriter.print("\taddu $s3,$s3,1\n");
 
 		label("_stradd_end_");
 
-		fileWriter.print("sw $s2,0($s3)\n");
+		fileWriter.print("\tsw $s2,0($s3)\n");
 		add_restore_save_registers();
-		fileWriter.print("jr $ra\n");
+		fileWriter.print("\tjr $ra\n");
 	}
 
 	public void init_strcpy()
@@ -901,18 +916,41 @@ public class MIPSGenerator
 		add_backup_save_registers();
 		
 		label("_strcpy_loop_");
-		fileWriter.print("lb $s2,0($s0)\n");
-		fileWriter.print("beqz $s2,_strcpy_end_\n");
-		fileWriter.print("sb $s2,0($s1)\n");
-		fileWriter.print("addu $s0,$s0,1\n");
-		fileWriter.print("addu $s1,$s1,1\n");
+		fileWriter.print("\tlb $s2,0($s0)\n");
+		fileWriter.print("\tbeqz $s2,_strcpy_end_\n");
+		fileWriter.print("\tsb $s2,0($s1)\n");
+		fileWriter.print("\taddu $s0,$s0,1\n");
+		fileWriter.print("\taddu $s1,$s1,1\n");
 	
 		label("_strcpy_end_");
-		fileWriter.print("$s2,0($s1)\n");
+		fileWriter.print("\tlb $s2,0($s1)\n");
 
 		add_restore_save_registers();
 
-		fileWriter.print("jr $ra\n");
+		fileWriter.print("\tjr $ra\n");
+	}
+
+	public void init_print_int()
+	{
+		label("PrintInt");
+
+		add_prologue(0);
+
+		// backup $a0
+		fileWriter.print("\tsubu $sp,$sp,4\n");
+		fileWriter.print("\tsw $a0,0($sp)\n");
+
+		// print
+		fileWriter.print("\tlw $a0, 12($fp)\n"); // first argument is at offset 12
+		fileWriter.print("\tli $v0, 1\n");
+		fileWriter.print("\tsyscall\n");
+
+		// restore $a0
+		fileWriter.print("\tlw $a0, 0($sp)\n");
+		fileWriter.print("\taddu $sp,$sp,4\n");
+
+		// return
+		add_epilogue();
 	}
 
 	// adds a section of code for backuping the save registers
@@ -920,8 +958,8 @@ public class MIPSGenerator
 	{
 		for(int i=7; i>=0; i--)
 		{
-			fileWriter.print("subu $sp,$sp,4\n");
-			fileWriter.format("sw $s%d,0($sp)\n", i);
+			fileWriter.print("\tsubu $sp,$sp,4\n");
+			fileWriter.format("\tsw $s%d,0($sp)\n", i);
 		}
 	}
 
@@ -930,8 +968,8 @@ public class MIPSGenerator
 	{
 		for(int i=0; i<=7; i++)
 		{
-			fileWriter.format("lw $s%d,0($sp)\n", i);
-			fileWriter.print("addu $sp,$sp,4\n");
+			fileWriter.format("\tlw $s%d,0($sp)\n", i);
+			fileWriter.print("\taddu $sp,$sp,4\n");
 		}
 	}
 }

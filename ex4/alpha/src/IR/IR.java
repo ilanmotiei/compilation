@@ -66,6 +66,8 @@ public class IR
 		{
 			cmd.MIPSme();
 		}
+
+		MIPSGenerator.getInstance().finalizeFile();
 	}
 
 	/**************************************/

@@ -144,10 +144,20 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			this._cls_ = cls;
 		}
 		else{
-			// it is a local variable
+			if (SYMBOL_TABLE.getInstance().find_curr_scope_function() != null)
+			{
+				// it is a local variable
 
-			isLocalVar = true;
-			isClassField = false;
+				isLocalVar = true;
+				isClassField = false;
+			}
+			else
+			{
+				// it is a global variable
+
+				isLocalVar = false;
+				isClassField = false;
+			}
 		}
 
 		SYMBOL_TABLE.getInstance().enter(this.name, var_type, 
@@ -189,6 +199,13 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 		if (exp != null)
 		{
+			if ((! this.isLocalVar) && (! this.isClassField))
+			{
+				// it is a global variable and we need to initialize for it a label
+
+				IR.getInstance().Add_IRcommand(new IRcommand_Init_Global_Var(this.name));
+			}
+
 			TEMP initial_value = exp.IRme();
 
 			IR.

@@ -11,15 +11,15 @@ int foo(int d, int k)
 {
     int left := 50;
     int right := 40;
-	
+
     if (d+k = 17)
     {
         Person left;
         Person right;
-		
+
         return left.left;
     }
-	
+
     return left;
 }
 

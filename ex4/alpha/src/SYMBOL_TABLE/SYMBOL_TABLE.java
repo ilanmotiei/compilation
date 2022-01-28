@@ -266,7 +266,7 @@ public class SYMBOL_TABLE
 			top = top.prevtop;
 		}
 
-		int function_max_local_var_offset = SYMBOL_TABLE_ENTRY.localVarOffset;
+		int function_max_local_var_offset = SYMBOL_TABLE_ENTRY.localVarOffset + 4;
 
 		/**************************************/
 		/* Pop the SCOPE-BOUNDARY sign itself */		
@@ -428,27 +428,6 @@ public class SYMBOL_TABLE
 					if (dec.name.equals(name))
 					{
 						return dec.type;
-					}
-				}
-			}
-
-			cls = cls.father;
-		}
-
-		return null;
-	}
-
-	public TYPE_CLASS find_which_class(TYPE_CLASS cls, String name)
-	{
-		while (cls != null)
-		{
-			if (cls.data_members != null)
-			{
-				for (TYPE_CLASS_FIELD dec : cls.data_members)
-				{
-					if (dec.name.equals(name))
-					{
-						return cls;
 					}
 				}
 			}
