@@ -2,6 +2,7 @@ package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_EXP_VAR extends AST_EXP
 {
