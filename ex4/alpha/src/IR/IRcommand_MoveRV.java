@@ -12,7 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 
-import java.util.LinkedList;
+import java.util.*;
 
 import MIPS.*;
 
@@ -21,7 +21,7 @@ public class IRcommand_MoveRV extends IRcommand
 {
 	TEMP dst;
 	
-	public IRcommand_Load(TEMP dst)
+	public IRcommand_MoveRV(TEMP dst)
 	{
 		this.dst = dst;
 	}

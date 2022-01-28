@@ -69,7 +69,7 @@ public class TEMP
 
 	// removes this node from the inference graph by deleting the edges
 	// between him and its neighbors
-	public remove_from_inference_graph()
+	public void remove_from_inference_graph()
 	{
 		for (TEMP neighbor : neighbors)
 		{
@@ -78,7 +78,7 @@ public class TEMP
 	}
 
 	// called when node (temp) is gonna get a color at the coloring algorihtm
-	public return_to_inference_graph_n_color()
+	public void return_to_inference_graph_n_color()
 	{
 		this.in_the_inference_graph = true; // this node backs to the graph
 
@@ -94,7 +94,7 @@ public class TEMP
 
 		boolean succeed;
 
-		for (c=0; c<=9; c++)
+		for (int c=0; c<=9; c++)
 		{
 			if (! neighbors_at_the_graph_colors.contains(c))
 			{

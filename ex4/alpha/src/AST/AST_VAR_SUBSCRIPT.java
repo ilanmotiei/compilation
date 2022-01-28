@@ -1,9 +1,9 @@
 package AST;
 
-import TEMP.TEMP_FACTORY;
-import TEMP.TEMP;
-import TYPES.*;
 import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {

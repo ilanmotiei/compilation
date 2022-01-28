@@ -18,7 +18,10 @@ JFlex_GENERATED_FILE      = ${SRC_DIR}/Lexer.java
 CUP_GENERATED_FILES       = ${SRC_DIR}/Parser.java ${SRC_DIR}/TokenNames.java
 JFlex_CUP_GENERATED_FILES = ${JFlex_GENERATED_FILE} ${CUP_GENERATED_FILES}
 SRC_FILES                 = ${SRC_DIR}/*.java              \
+                            ${SRC_DIR}/IR/*.java           \
                             ${SRC_DIR}/AST/*.java          \
+                            ${SRC_DIR}/TEMP/*.java         \
+                            ${SRC_DIR}/MIPS/*.java         \
                             ${SRC_DIR}/TYPES/*.java        \
                             ${SRC_DIR}/SYMBOL_TABLE/*.java
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar
@@ -51,7 +54,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_05_Classes.txt
+INPUT    = ${INPUT_DIR}/Input.txt
 OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
 
 ##########
@@ -116,15 +119,15 @@ compile:
 	@echo "***********************************************************"
 	jar cfm COMPILER ${MANIFEST_FILE} -C ${BIN_DIR} .
 	
-debug:
+everything:
 	clear
-	@echo "*****************************"
-	@echo "*                           *"
-	@echo "*                           *"
-	@echo "* [0] Remove PARSER program *"
-	@echo "*                           *"
-	@echo "*                           *"
-	@echo "*****************************"
+	@echo "******************************"
+	@echo "*                            *"
+	@echo "*                            *"
+	@echo "* [0] Remove COMPIER program *"
+	@echo "*                            *"
+	@echo "*                            *"
+	@echo "******************************"
 	rm -rf COMPILER
 	@echo "\n"
 	@echo "************************************************************"
@@ -182,73 +185,15 @@ debug:
 	@echo "*                           *"
 	@echo "*                           *"
 	@echo "*****************************"
-
-	# for f in $(shell ls ${INPUT_DIR}); do java -jar COMPILER ${INPUT_DIR}/$${f} ${OUTPUT_DIR}/$${f}; done
-
 	java -jar COMPILER ${INPUT} ${OUTPUT}
-
 	@echo "\n"
-	@echo "***************************************"
-	@echo "*                                     *"
-	@echo "*                                     *"
-	@echo "* [7] Create a jpeg AST visualization *"
-	@echo "*                                     *"
-	@echo "*                                     *"
-	@echo "***************************************"
-	dot -Tjpeg -o${OUTPUT_DIR}/AST.jpeg ${OUTPUT_DIR}/AST_IN_GRAPHVIZ_DOT_FORMAT.txt
+	@echo "***********************************************************"
+	@echo "*                                                         *"
+	@echo "*                                                         *"
+	@echo "* [10] Allocate registers (just for this running example) *"
+	@echo "*                                                         *"
+	@echo "*                                                         *"
+	@echo "***********************************************************"
 	@echo "\n"
-	@echo "************************************************"
-	@echo "*                                              *"
-	@echo "*                                              *"
-	@echo "* [8] Open the jpeg AST visualization with eog *"
-	@echo "*                                              *"
-	@echo "*                                              *"
-	@echo "************************************************"
-	eog ${OUTPUT_DIR}/AST.jpeg &
-	@echo "*********************************************************"
-	@echo "*                                                       *"
-	@echo "*                                                       *"
-	@echo "* [9] Create a jpeg SYMBOL TABLE visualization in steps *"
-	@echo "*                                                       *"
-	@echo "*                                                       *"
-	@echo "*********************************************************"
-	dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_0_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_1.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_1_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_2.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_2_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_3.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_3_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_4.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_4_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_5.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_5_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_6.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_6_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_7.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_7_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_8.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_8_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_9.jpeg  ${OUTPUT_DIR}/SYMBOL_TABLE_9_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_10.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_10_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_11.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_11_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_12.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_12_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_13.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_13_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_14.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_14_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_15.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_15_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_16.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_16_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_17.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_17_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_18.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_18_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_19.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_19_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_20.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_20_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_21.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_21_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_22.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_22_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_23.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_23_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_24.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_24_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_25.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_25_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_26.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_26_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_27.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_27_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_28.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_28_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_29.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_29_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@dot -Tjpeg -o${OUTPUT_DIR}/SYMBOL_TABLE_30.jpeg ${OUTPUT_DIR}/SYMBOL_TABLE_30_IN_GRAPHVIZ_DOT_FORMAT.txt
-	@echo "******************************************************************"
-	@echo "*                                                                *"
-	@echo "*                                                                *"
-	@echo "* [10] Open the (first) jpeg SYMBOL TABLE visualization with eog *"
-	@echo "*                                                                *"
-	@echo "*                                                                *"
-	@echo "******************************************************************"
-	eog ${OUTPUT_DIR}/SYMBOL_TABLE_0.jpeg &
-	
+	# [11] Run spim and redirect its output (un-comment after codegen + register allocation is implemented)
+	#spim -f ${OUTPUT_DIR}/MIPS.txt #> ${OUTPUT_DIR}/MIPS_OUTPUT.txt

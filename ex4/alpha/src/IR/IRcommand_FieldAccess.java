@@ -13,6 +13,7 @@ package IR;
 import TEMP.*;
 import MIPS.*;
 import TYPES.*;
+import java.util.*;
 
 public class IRcommand_FieldAccess extends IRcommand
 {

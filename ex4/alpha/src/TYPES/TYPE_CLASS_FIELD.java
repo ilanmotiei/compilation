@@ -6,7 +6,7 @@ public class TYPE_CLASS_FIELD extends TYPE
 	public String name; // The name of the FIELD
 
 	public Object initial_value = null; // optional - an initial value for the field
-	
+
 	public TYPE_CLASS_FIELD(TYPE type, String name, Object initial_value)
 	{
 		this.type = type;
@@ -23,7 +23,12 @@ public class TYPE_CLASS_FIELD extends TYPE
 
 		this.type_name = "class_field";
 	}
-	
+
+	public boolean hasInitialValue()
+	{
+		return (initial_value != null);
+	}
+
 	// Is this a variable FIELD
 	public boolean is_var()
 	{

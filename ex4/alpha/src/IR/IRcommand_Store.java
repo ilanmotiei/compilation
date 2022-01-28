@@ -12,6 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
+import java.util.*;
 
 public class IRcommand_Store extends IRcommand
 {

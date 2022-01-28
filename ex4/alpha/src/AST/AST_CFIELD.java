@@ -1,6 +1,9 @@
 package AST;
 
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 public abstract class AST_CFIELD extends AST_Node {
 	

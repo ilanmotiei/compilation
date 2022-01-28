@@ -13,6 +13,7 @@ import java.util.*;
 /*******************/
 import IR.*;
 import TEMP.*;
+import java.util.*;
 
 public class RegisterAllocator
 {
@@ -23,12 +24,12 @@ public class RegisterAllocator
         cmd_list = new LinkedList<>();
     }
 
-    public add_cmd(IRcommand cmd)
+    public void add_cmd(IRcommand cmd)
     {
         cmd_list.add(cmd);
     }
 
-    public AllocateRegisters()
+    public void AllocateRegisters()
     {
         BuildCFG();
         Perform_Liveness_Analysis();
@@ -52,7 +53,7 @@ public class RegisterAllocator
 
             // Treating jump commands : 
 
-            String searched_label_name
+            String searched_label_name;
             boolean does_command_is_a_jump_cmd = false;
 
             if (cmd instanceof IRcommand_Jump_Label)

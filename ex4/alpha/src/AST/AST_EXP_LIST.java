@@ -1,7 +1,9 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_EXP_LIST extends AST_Node {
     // DATA MEMBERS

@@ -13,6 +13,7 @@ package IR;
 import TEMP.*;
 import TYPES.TYPE_FUNCTION;
 import MIPS.*;
+import java.util.*;
 
 public class IRcommand_Return extends IRcommand
 {
@@ -21,7 +22,7 @@ public class IRcommand_Return extends IRcommand
 
     // return <rv>;
 
-    public IRcommand_Store(TEMP return_value, 
+    public IRcommand_Return(TEMP return_value,
                             String func_fullname)
 	{
         this.rv = return_value;

@@ -1,5 +1,10 @@
 package AST;
 
+import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
+
 public class AST_Node_Serial_Number
 {
 	/*******************************************/

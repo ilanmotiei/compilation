@@ -1,8 +1,9 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.*;
 import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 
 public class AST_CFIELD_FUNDEC extends AST_CFIELD 
 {

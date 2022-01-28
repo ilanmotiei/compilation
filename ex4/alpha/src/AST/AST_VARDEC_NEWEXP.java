@@ -1,7 +1,9 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_VARDEC_NEWEXP extends AST_VARDEC {
     // DATA MEMBERS
@@ -186,7 +188,7 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 		this.isClassField = entry.isClassField;
 	}
 
-	public void IRme()
+	public void IRme(TEMP exp)
 	{
 		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLERATION IS NOT OF A CLASS FIELD
 

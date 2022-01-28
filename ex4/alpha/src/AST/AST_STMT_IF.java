@@ -1,7 +1,9 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 //this class was given in the skeleton of ex2, and we add few functionalities
 public class AST_STMT_IF extends AST_STMT

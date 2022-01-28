@@ -1,7 +1,9 @@
 package AST;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_ARRAYTYPEDEF extends AST_Node {
     public String name;

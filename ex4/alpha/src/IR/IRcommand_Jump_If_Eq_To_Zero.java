@@ -12,6 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
+import java.util.*;
 
 public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
 {

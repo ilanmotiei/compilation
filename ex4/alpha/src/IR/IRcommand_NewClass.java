@@ -11,6 +11,7 @@ package IR;
 import TEMP.*;
 import MIPS.*;
 import TYPE.*;
+import java.util.*;
 
 public class IRcommand_NewClass extends IRcommand
 {

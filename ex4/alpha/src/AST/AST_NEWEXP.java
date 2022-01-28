@@ -1,7 +1,7 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
-import TEMP.TEMP_FACTORY;
+import TEMP.*;
 import TYPES.*;
 import TYPE.*;
 import IR.*;

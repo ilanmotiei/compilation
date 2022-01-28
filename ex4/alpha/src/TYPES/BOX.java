@@ -39,6 +39,12 @@ public class BOX
         this.initial_value = initial_value;
     }
 
+    public BOX(TYPE type, String name)
+    {
+        this.type = type;
+        this.name = name;
+    }
+
     public BOX(TYPE type, boolean is_const)
     {
         this.type = type;

@@ -1,8 +1,9 @@
 package AST;
 
-import TYPES.*;
 import IR.*;
-import TEMP.TEMP_FACTORY;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 
 public class AST_EXP_STRING extends AST_EXP {
 	public String s;

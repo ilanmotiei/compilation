@@ -1,6 +1,9 @@
 package AST;
 
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_STMT_VARDEC extends AST_STMT {
 

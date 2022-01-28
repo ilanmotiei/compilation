@@ -1,10 +1,9 @@
 package AST;
 
-import IR.IRcommand;
-import SYMBOL_TABLE.SYMBOL_TABLE;
+import IR.*;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 import TEMP.*;
-import IR.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {

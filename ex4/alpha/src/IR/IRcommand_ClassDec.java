@@ -12,12 +12,13 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
+import java.util.*;
 
 public class IRcommand_ClassDec extends IRcommand
 {
 	TYPE_CLASS cls;
 	
-	public IRcommand_Call(TYPE_CLASS cls)
+	public IRcommand_ClassDec(TYPE_CLASS cls)
 	{
 		this.cls = cls;
 	}

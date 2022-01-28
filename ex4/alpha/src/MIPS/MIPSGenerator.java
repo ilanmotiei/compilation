@@ -8,7 +8,10 @@ package MIPS;
 /*******************/
 import java.io.PrintWriter;
 import java.util.*;
-
+import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
@@ -366,7 +369,7 @@ public class MIPSGenerator
 
 		// STORE TEMPORAL REGISTERS ---------------------------------------
 
-		for(i=0; i<=9; i++)
+		for(int i=0; i<=9; i++)
 		{
 			fileWriter.format("\tsubu $sp,$sp,4\n");
 			fileWriter.format("\tsw $t%d,0($sp)\n", i);
@@ -437,7 +440,7 @@ public class MIPSGenerator
 	}
 
 	// Allocates a class object instance
-	public allocate_class_obj(TYPE_CLASS cls, TEMP dst)
+	public void allocate_class_obj(TYPE_CLASS cls, TEMP dst)
 	{
 		// Allocate the memory :
 		fileWriter.format("\tli $v0,9\n");
@@ -452,7 +455,7 @@ public class MIPSGenerator
 		fileWriter.format("\tla $s0,vt_%s\n", cls.name);
 		fileWriter.format("\tsw $s0,0(Temp_%d)\n", dst.getSerialNumber());
 
-		off = 4;
+		int off = 4;
 
 		// Initializing it :
 		for (TYPE_CLASS_FIELD f : cls.getClassFields())
@@ -578,7 +581,7 @@ public class MIPSGenerator
 	public void allocate_string(TEMP dst, String str)
 	{
 		fileWriter.format(".data\n");
-		fileWriter.format("\tconst_str_%d: .asciiz \"%s\"\n", const_str_cnt, String);
+		fileWriter.format("\tconst_str_%d: .asciiz \"%s\"\n", const_str_cnt, str);
 		fileWriter.format(".text\n");
 		fileWriter.format("\tla Temp_%d,const_str_%d\n", dst.getSerialNumber(),
 														 const_str_cnt);
@@ -639,7 +642,7 @@ public class MIPSGenerator
 		
 		for (TYPE_CLASS_FIELD f : cls_non_inherited_fields)
 		{
-			if ((f.hasInitialValue()) && (f.initial_value instanceof string))
+			if ((f.hasInitialValue()) && (f.initial_value instanceof String))
 			{
 				String string_label_name = cls.name + "_" + f.name + "_const_field";
 				fileWriter.format("%s: .asciiz \"%s\"\n", string_label_name, 
@@ -889,7 +892,7 @@ public class MIPSGenerator
 		fileWriter.print("jr $ra\n");
 	}
 
-	public void str_cpy()
+	public void init_strcpy()
 	{
 		label("_strcpy_");
 		// $s0 = dst

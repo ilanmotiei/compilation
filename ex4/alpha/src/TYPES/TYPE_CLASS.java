@@ -367,4 +367,30 @@ public class TYPE_CLASS extends TYPE
 	/*************/
 	public boolean isClass() { return true; }
 
+	public LinekedList<TYPE_CLASS_FIELD> getFieldsAmount()
+	{
+
+		TYPE_CLASS curr_cls = this;
+		int count = 0;
+
+		while (curr_cls != null)
+		{
+			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
+
+			while (curr != null)
+			{
+				TYPE_CLASS_FIELD f = curr.head;
+
+				if (f.is_var()){
+					count++;
+				}
+
+				curr = curr.tail;
+			}
+
+			curr_cls = curr_cls.father;
+		}
+
+		return count;
+	}
 }

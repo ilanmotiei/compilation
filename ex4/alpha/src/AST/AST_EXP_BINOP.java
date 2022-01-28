@@ -1,9 +1,9 @@
 package AST;
 
-import TYPES.*;
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TEMP.*;
 import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 
 public class AST_EXP_BINOP extends AST_EXP
 {

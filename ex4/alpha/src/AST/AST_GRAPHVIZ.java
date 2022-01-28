@@ -2,6 +2,10 @@ package AST;
 
 import java.io.*;
 import java.io.PrintWriter;
+import IR.*;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
 
 public class AST_GRAPHVIZ
 {

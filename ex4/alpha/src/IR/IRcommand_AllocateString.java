@@ -12,7 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 
-import java.util.LinkedList;
+import java.util.*;
 
 import MIPS.*;
 
