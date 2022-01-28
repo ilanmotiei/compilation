@@ -38,9 +38,13 @@ public class IRcommand_Call extends IRcommand
 	public LinkedList<TEMP> getUsedTemps()
 	{
 		LinkedList<TEMP> res = new LinkedList<>();
-		for (TEMP a : args)
+
+		if (args != null)
 		{
-			res.add(a);
+			for (TEMP a : args)
+			{
+				res.add(a);
+			}
 		}
 
 		return res;

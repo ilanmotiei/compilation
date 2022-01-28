@@ -30,7 +30,6 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		this.line = line;
 	}
 
-	
 	// The printing message for an assign statement AST node
 	public void PrintMe()
 	{

@@ -36,8 +36,8 @@ public class IRcommandConstInt extends IRcommand
 		return null;
 	}
 
-	// get the temps whome values are changed after applying the command
-	// (which are the temps whome previous values are no more used)
+	// get the temps whom values are changed after applying the command
+	// (which are the temps whom previous values are no more used)
 	public LinkedList<TEMP> getChangedTemps()
 	{
 		LinkedList<TEMP> res = new LinkedList<TEMP>();

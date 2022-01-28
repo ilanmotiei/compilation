@@ -24,8 +24,8 @@ public class TEMP
 	public boolean in_the_inference_graph = false; 
 
 	// the temporary's neighbors at the inference graph
-	public LinkedList<TEMP> neighbors = new LinkedList<>();
-	public LinkedList<TEMP> neighbors_copy = new LinkedList<>();
+	public LinkedList<TEMP> neighbors;
+	public LinkedList<TEMP> neighbors_copy;
 	
 	public TEMP(int serial)
 	{
@@ -34,6 +34,7 @@ public class TEMP
 	
 	public int getSerialNumber()
 	{
+
 		if (color != -1)
 		{
 			return color;
@@ -42,23 +43,18 @@ public class TEMP
 		// shouldn't get here; all temps should be mapped to a machine register
 		// when this method is called
 
-		return serial;
+		return -1;
+
+
 	}
 
-	public void initalize_neighbors_backup()
+	public void initialize()
 	{
-		for (TEMP t : neighbors)
-		{
-			neighbors_copy.add(t);
-		}
-	}
+		color = -1;
+		in_the_inference_graph = false;
 
-	public void delete_neightbor(TEMP t)
-	{
-		if (neighbors.contains(t))
-		{
-			neighbors.remove(t);
-		}
+		neighbors = new LinkedList<TEMP>();
+		neighbors_copy = new LinkedList<TEMP>();
 	}
 
 	// Get the degree of the temporal at the inference graph
@@ -78,7 +74,7 @@ public class TEMP
 	}
 
 	// called when node (temp) is gonna get a color at the coloring algorihtm
-	public void return_to_inference_graph_n_color()
+	public void return_to_inference_graph_n_color(int num_of_colors)
 	{
 		this.in_the_inference_graph = true; // this node backs to the graph
 
@@ -92,9 +88,7 @@ public class TEMP
 			}
 		}
 
-		boolean succeed;
-
-		for (int c=0; c<=9; c++)
+		for (int c = 0; c < num_of_colors; c ++)
 		{
 			if (! neighbors_at_the_graph_colors.contains(c))
 			{

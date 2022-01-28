@@ -4,15 +4,16 @@ import java.util.Iterator;
 
 public class TEMP_LIST implements Iterable<TEMP> {
 	
-	public TEMP head;
-	public TEMP_LIST tail;
+	public TEMP head = null;
+	public TEMP_LIST tail = null;
 	
 	public TEMP_LIST(TEMP head, TEMP_LIST tail) {
 		this.head = head;
 		this.tail = tail;
 	}
 	
-	public Iterator<TEMP> iterator(){
+	public Iterator<TEMP> iterator()
+	{
 		return new TEMP_LIST_ITER();
 	}
 
@@ -20,7 +21,7 @@ public class TEMP_LIST implements Iterable<TEMP> {
 	{
 		private TEMP curr = head;
 		private TEMP_LIST curr_list_tail = tail;
-		private boolean end = false;
+		private boolean end = (head == null);
 
 		public boolean hasNext(){
 			return (!end);
@@ -51,5 +52,4 @@ public class TEMP_LIST implements Iterable<TEMP> {
 		
 		return len;
 	}
-
 }

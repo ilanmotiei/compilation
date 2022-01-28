@@ -132,15 +132,13 @@ public class RegisterAllocator
 
         for (IRcommand cmd : cmd_list)
         {
-            parse_command_temps(cmd);
-
             LinkedList<TEMP> cmd_temps = cmd.getCMDTemps();
 
             if (cmd_temps != null)
             {
                 for (TEMP t : cmd_temps)
                 {
-                    if (!all_func_temps.contains(t)) {
+                    if (! all_func_temps.contains(t)) {
                         all_func_temps.add(t);
                     }
                 }
@@ -149,8 +147,13 @@ public class RegisterAllocator
 
         for (TEMP t : all_func_temps)
         {
-            t.initalize_neighbors_backup();
-        }   
+            t.initialize();
+        }
+
+        for (IRcommand cmd : cmd_list)
+        {
+            parse_command_temps(cmd);
+        }
 
         return all_func_temps;
     }
@@ -167,6 +170,7 @@ public class RegisterAllocator
                 if ((t1 != t) && (! t.neighbors.contains(t1)))
                 {
                     t.neighbors.add(t1);
+                    t.neighbors_copy.add(t1);
                 }
             }
         }
@@ -184,7 +188,7 @@ public class RegisterAllocator
             {
                 if (t.getDegree() < num_colors)
                 {
-                    // remove t from the graph (and all the edges he's connected to)
+                    // remove 't' from the graph (and all the edges he's connected to)
                     // and push it to the stack
                     
                     t.remove_from_inference_graph();
@@ -198,9 +202,14 @@ public class RegisterAllocator
         for (TEMP top : stack)
         {
             // color it legally with respect to the coloring of the neighbors
-            // of it that we've allready returned to the inference graph
+            // of it that we've already returned to the inference graph
 
-            top.return_to_inference_graph_n_color();
+            top.return_to_inference_graph_n_color(num_colors);
         }
+    }
+
+    public LinkedList<IRcommand> getAllCMDs()
+    {
+        return this.cmd_list;
     }
 }

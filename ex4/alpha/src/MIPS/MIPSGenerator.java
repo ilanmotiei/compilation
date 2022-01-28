@@ -295,7 +295,7 @@ public class MIPSGenerator
 	{
 		int i1 =oprnd1.getSerialNumber();
 				
-		fileWriter.format("\tbltz $t%d,$zero,%s\n",i1,label);				
+		fileWriter.format("\tbltz $t%d,%s\n",i1,label);
 	}
 
 	public void array_access(TEMP dst, TEMP arr, TEMP idx)
@@ -357,6 +357,7 @@ public class MIPSGenerator
 
 	public void add_prologue(int function_max_local_var_offset)
 	{
+
 		// STORE RETURN ADDRESS AND FRAME POINTER --------------------------
 
 		fileWriter.format("\tsubu $sp,$sp,4\n");
@@ -364,21 +365,12 @@ public class MIPSGenerator
 		fileWriter.format("\tsubu $sp,$sp,4\n");
 		fileWriter.format("\tsw $fp,0($sp)\n"); // store previous frame pointer
 
-		// MOVE CURRENT STACK POINTER TO BE CURRENT FRAME POINTER ----------
-		fileWriter.format("\tmove $fp,$sp\n");
-
-		// STORE TEMPORAL REGISTERS ---------------------------------------
-
-		for(int i=0; i<=9; i++)
-		{
-			fileWriter.format("\tsubu $sp,$sp,4\n");
-			fileWriter.format("\tsw $t%d,0($sp)\n", i);
-		}
+		jal("__prologue__");
 
 		// CHANGE CURRENT STACK POINTER IN ORDER TO LEAVE A PLACE FOR ALL
-		// THE LOCAL VARIABLELS WE'LL DEFINE AT THE FUNCTION
+		// THE LOCAL VARIABLES WE'LL DEFINE AT THE FUNCTION
 
-		fileWriter.format("\tsubu $sp,$sp,%d\n", function_max_local_var_offset + 40);
+		fileWriter.format("\tsubu $sp,$sp,%d\n", -(function_max_local_var_offset + 40));
 
 		/*
 
@@ -400,43 +392,7 @@ public class MIPSGenerator
 
 	public void add_epilogue()
 	{
-		/*
-
-		stack's image right now : 
-
-		|  return_add  |
-		|  previous fp |  <---  fp
-		|  backuped t0 |
-		|     ....     |
-		|  backuped t8 |
-		|  backuped t9 |
-		|  local var 1 |
-		|  local var 2 |
-		| ............ |
-		|last local var| <--- sp
-
-		*/
-
-		// RESTORE TEMPORAL REGISTERS :
-
-		for(int i=0; i <= 9; i++)
-		{
-			fileWriter.format("\tsubu $fp,$fp,4\n");
-			fileWriter.format("\tlw $t%d,0($fp)\n", i);
-		}
-
-		// move frame pointer to its previous location :
-		fileWriter.format("\taddu $fp,$fp,40\n");
-
-		// load the previous fp and the return address :
-		fileWriter.format("\tlw $s0,0($fp)\n"); // $s0 = previous_fp
-		fileWriter.format("\tlw $ra,4($fp)\n"); // $ra = return_address
-
-		fileWriter.format("\tmove $fp,$s0\n");  // $fp = $s0 = previous_fp
-
-		fileWriter.format("\taddu $sp,$fp,8\n"); // $sp = $ fp + 8 = previous_sp
-
-		fileWriter.format("\tjr $ra\n");        // jump to the return_address
+		jump("__epilogue__");
 	}
 
 	// Allocates a class object instance
@@ -532,17 +488,25 @@ public class MIPSGenerator
 
 	public void push_args(TEMP_LIST args, boolean leave_hole)
 	{
-		int amount = args.length();
+		int args_amount = 0;
 
-		fileWriter.format("\tsubu $sp,$sp,%d\n", WORD_SIZE * amount);
-		
-		for (TEMP t : args)
+		if (args != null)
 		{
-			fileWriter.format("\tsw $t%d,0($sp)\n", t.getSerialNumber());
-			fileWriter.format("\taddu $sp,$sp,4\n");
+			args_amount = args.length();
 		}
 
-		fileWriter.format("\tsubu $sp,$sp,%d\n", WORD_SIZE * amount);
+		fileWriter.format("\tsubu $sp,$sp,%d\n", WORD_SIZE * args_amount);
+
+		if (args != null)
+		{
+			for (TEMP t : args)
+			{
+				fileWriter.format("\tsw $t%d,0($sp)\n", t.getSerialNumber());
+				fileWriter.format("\taddu $sp,$sp,4\n");
+			}
+		}
+
+		fileWriter.format("\tsubu $sp,$sp,%d\n", WORD_SIZE * args_amount);
 
 		if (leave_hole)
 		{
@@ -646,7 +610,7 @@ public class MIPSGenerator
 
 		// initializing classe's string fields : 
 
-		fileWriter.print("class_non_inherited_fields_initalization:\n");
+		fileWriter.format("non_inherited_fields_initialization_%s:\n", cls.name);
 
 		LinkedList<TYPE_CLASS_FIELD> cls_non_inherited_fields = 
 													cls.getClassNonInheritedFields();
@@ -769,12 +733,15 @@ public class MIPSGenerator
 
 		init_main();
 
+		init_prologue();
+		init_epilogue();
 		init_aborts();
 		init_strcmp();
 		init_strsize();
 		init_strcpy();
 		init_stradd();
 		init_print_int();
+		init_print_string();
 	}
 
 	public void init_main()
@@ -934,7 +901,7 @@ public class MIPSGenerator
 	{
 		label("PrintInt");
 
-		add_prologue(0);
+		add_prologue(-40);
 
 		// backup $a0
 		fileWriter.print("\tsubu $sp,$sp,4\n");
@@ -952,6 +919,91 @@ public class MIPSGenerator
 		// return
 		add_epilogue();
 	}
+
+	public void init_print_string()
+	{
+		label("PrintString");
+
+		add_prologue(-40);
+
+		// backup $a0
+		fileWriter.print("\tsubu $sp,$sp,4\n");
+		fileWriter.print("\tsw $a0,0($sp)\n");
+
+		// print
+		fileWriter.print("\tlw $a0, 12($fp)\n"); // first argument is at offset 12
+		fileWriter.print("\tli $v0, 4\n");
+		fileWriter.print("\tsyscall\n");
+
+		// restore $a0
+		fileWriter.print("\tlw $a0, 0($sp)\n");
+		fileWriter.print("\taddu $sp,$sp,4\n");
+
+		// return
+		add_epilogue();
+	}
+
+	public void init_prologue()
+	{
+		label("__prologue__");
+
+		// MOVE CURRENT STACK POINTER TO BE CURRENT FRAME POINTER ----------
+		fileWriter.format("\tmove $fp,$sp\n");
+
+		// STORE TEMPORAL REGISTERS ----------------------------------------
+
+		for(int i=0; i<=9; i++)
+		{
+			fileWriter.format("\tsubu $sp,$sp,4\n");
+			fileWriter.format("\tsw $t%d,0($sp)\n", i);
+		}
+
+		fileWriter.print("\tjr $ra\n");
+	}
+
+	public void init_epilogue()
+	{
+		label("__epilogue__");
+
+		/*
+
+		stack's image right now :
+
+		|  return_add  |
+		|  previous fp |  <---  fp
+		|  backuped t0 |
+		|     ....     |
+		|  backuped t8 |
+		|  backuped t9 |
+		|  local var 1 |
+		|  local var 2 |
+		| ............ |
+		|last local var| <--- sp
+
+		*/
+
+		// RESTORE TEMPORAL REGISTERS :
+
+		for(int i=0; i <= 9; i++)
+		{
+			fileWriter.format("\tsubu $fp,$fp,4\n");
+			fileWriter.format("\tlw $t%d,0($fp)\n", i);
+		}
+
+		// move frame pointer to its previous location :
+		fileWriter.format("\taddu $fp,$fp,40\n");
+
+		// load the previous fp and the return address :
+		fileWriter.format("\tlw $s0,0($fp)\n"); // $s0 = previous_fp
+		fileWriter.format("\tlw $ra,4($fp)\n"); // $ra = return_address
+
+		fileWriter.format("\taddu $sp,$fp,8\n"); // $sp = $fp + 8
+
+		fileWriter.format("\tmove $fp,$s0\n");  // $fp = $s0 = previous_fp
+
+		fileWriter.format("\tjr $ra\n");        // jump to the return_address
+	}
+
 
 	// adds a section of code for backuping the save registers
 	public void add_backup_save_registers()

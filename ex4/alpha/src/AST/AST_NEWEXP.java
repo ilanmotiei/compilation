@@ -99,7 +99,7 @@ public class AST_NEWEXP extends AST_Node {
 	public TEMP IRme()
 	{
 		// The result that this method will return
-		TEMP res = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 
 		if (exp != null)
 		{
@@ -109,9 +109,9 @@ public class AST_NEWEXP extends AST_Node {
 
 			IR.
 			getInstance().
-			Add_IRcommand(new IRcommand_NewArray(res, 
+			Add_IRcommand(new IRcommand_NewArray(dst,
 												 arr_size, 
-												 ((TYPE_ARRAY) _type_).elems_type));
+												 this._type_));
 		}
 		else
 		{
@@ -119,11 +119,11 @@ public class AST_NEWEXP extends AST_Node {
 
 			IR.
 			getInstance().
-			Add_IRcommand(new IRcommand_NewClass(res, 
-												 (TYPE_CLASS) _type_));
+			Add_IRcommand(new IRcommand_NewClass(dst,
+												 (TYPE_CLASS) this._type_));
 
 		}
 
-		return res;
+		return dst;
 	}
 }

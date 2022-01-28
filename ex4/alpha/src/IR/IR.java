@@ -30,7 +30,7 @@ public class IR
 		cmd_list.add(cmd);
 	}
 
-	public void AllocateRegisters()
+	public void MIPSme()
 	{
 		RegisterAllocator allocator = new RegisterAllocator();
 		boolean in_function = false;
@@ -43,31 +43,38 @@ public class IR
 				allocator = new RegisterAllocator();
 				in_function = true;
 			}
-			
+
 			if (cmd instanceof IRcommand_AddEpilogue)
 			{
+				allocator.add_cmd(cmd);
+
 				// we've finished to parse a function :
 				in_function = false;
 
 				// allocate the machine registers :
 				allocator.AllocateRegisters();
+
+				LinkedList<IRcommand> all_func_cmds = allocator.getAllCMDs();
+
+				for (IRcommand cmd1 : all_func_cmds)
+				{
+					cmd1.MIPSme();
+				}
+
+				continue;
 			}
 
 			if (in_function)
 			{
+				// we are in a function and will MIPS the command after we'll allocate suitable registers
 				allocator.add_cmd(cmd);
 			}
+			else
+			{
+				// we are not in a function and will MIPS the command now
+				cmd.MIPSme();
+			}
 		}
-	}
-
-	public void MIPSme()
-	{
-		for (IRcommand cmd : cmd_list)
-		{
-			cmd.MIPSme();
-		}
-
-		MIPSGenerator.getInstance().finalizeFile();
 	}
 
 	/**************************************/

@@ -89,10 +89,7 @@ public abstract class IRcommand
 	{
 		for (TEMP t : tmp_list)
 		{
-			if (IN.contains(t))
-			{
-				IN.remove(t);
-			}
+			IN.remove(t);
 		}
 	}
 
@@ -104,9 +101,9 @@ public abstract class IRcommand
 		{
 			for (TEMP tmp : cmd.IN)
 			{
-				if (!cmd.IN.contains(tmp))
+				if (! this.IN.contains(tmp))
 				{
-					cmd.IN.add(tmp);
+					this.IN.add(tmp);
 				}
 			}
 		}

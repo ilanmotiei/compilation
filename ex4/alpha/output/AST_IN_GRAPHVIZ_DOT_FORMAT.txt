@@ -1,273 +1,220 @@
 digraph
 {
 graph [ordering = "out"]
-v0 [label = "TYPE_STRING"];
-v1 [label = "STRING( ' 'LEFT) ' "];
-v2 [label = "EXP ASSIGN
-type ID(left) := right
+v0 [label = "TYPE_INT"];
+v1 [label = "ARRAYTYPEDEF
+ARRAY ID(IntArray) = type[] 
 "];
-v2 -> v0;
+v1 -> v0;
+v2 [label = "arrayTypedef
+"];
 v2 -> v1;
-v3 [label = "varDec
+v3 [label = "TYPE_VOID"];
+v4 [label = "ID(IntArray)"];
+v5 [label = "TYPE_INT"];
+v6 [label = "INT(7)"];
+v7 [label = "newExp
+ NEW type[exp] 
 "];
-v3 -> v2;
-v4 [label = "TYPE_STRING"];
-v5 [label = "STRING( ' 'RIGHT) ' "];
-v6 [label = "EXP ASSIGN
-type ID(right) := right
-"];
-v6 -> v4;
-v6 -> v5;
-v7 [label = "varDec
-"];
+v7 -> v5;
 v7 -> v6;
-v8 [label = "TYPE_INT"];
-v9 [label = "EXP ASSIGN
-type ID(left)
+v8 [label = "NEWEXP ASSIGN
+type ID(arr) := right
 "];
-v9 -> v8;
-v10 [label = "CFIELD
- varDec;
-"];
-v10 -> v9;
-v11 [label = "TYPE_INT"];
-v12 [label = "EXP ASSIGN
-type ID(right)
-"];
-v12 -> v11;
-v13 [label = "CFIELD
- varDec;
-"];
-v13 -> v12;
-v14 [label = "CFIELD
-LIST
-"];
-v14 -> v13;
-v15 [label = "CFIELD
-LIST
-"];
-v15 -> v10;
-v15 -> v14;
-v16 [label = "CLASSDEC
-CLASS ID(Person) {cFields} 
-"];
-v16 -> v15;
-v17 [label = "classDec
-"];
-v17 -> v16;
-v18 [label = "TYPE_INT"];
-v19 [label = "TYPE_INT"];
-v20 [label = "TYPE_INT"];
-v21 [label = "TYPE LIST
- type ID(k) 
-"];
-v21 -> v20;
-v22 [label = "TYPE LIST
- type ID(d), tpyeList 
-"];
-v22 -> v19;
-v22 -> v21;
-v23 [label = "TYPE_INT"];
-v24 [label = "INT(50)"];
-v25 [label = "EXP ASSIGN
-type ID(left) := right
-"];
-v25 -> v23;
-v25 -> v24;
-v26 [label = "VARDEC
+v8 -> v4;
+v8 -> v7;
+v9 [label = "VARDEC
  var declaration
 "];
-v26 -> v25;
-v27 [label = "TYPE_INT"];
-v28 [label = "INT(40)"];
-v29 [label = "EXP ASSIGN
-type ID(right) := right
+v9 -> v8;
+v10 [label = "SIMPLE
+VAR
+(arr)"];
+v11 [label = "INT(0)"];
+v12 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v12 -> v10;
+v12 -> v11;
+v13 [label = "INT(34)"];
+v14 [label = "ASSIGN
+left := right
+"];
+v14 -> v12;
+v14 -> v13;
+v15 [label = "SIMPLE
+VAR
+(arr)"];
+v16 [label = "INT(1)"];
+v17 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v17 -> v15;
+v17 -> v16;
+v18 [label = "INT(12)"];
+v19 [label = "ASSIGN
+left := right
+"];
+v19 -> v17;
+v19 -> v18;
+v20 [label = "SIMPLE
+VAR
+(arr)"];
+v21 [label = "INT(2)"];
+v22 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v22 -> v20;
+v22 -> v21;
+v23 [label = "-INT(600)"];
+v24 [label = "ASSIGN
+left := right
+"];
+v24 -> v22;
+v24 -> v23;
+v25 [label = "SIMPLE
+VAR
+(arr)"];
+v26 [label = "INT(3)"];
+v27 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v27 -> v25;
+v27 -> v26;
+v28 [label = "-INT(400)"];
+v29 [label = "ASSIGN
+left := right
 "];
 v29 -> v27;
 v29 -> v28;
-v30 [label = "VARDEC
- var declaration
-"];
-v30 -> v29;
-v31 [label = "SIMPLE
+v30 [label = "SIMPLE
 VAR
-(d)"];
-v32 [label = "EXP
-VAR"];
+(arr)"];
+v31 [label = "INT(4)"];
+v32 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v32 -> v30;
 v32 -> v31;
-v33 [label = "SIMPLE
-VAR
-(k)"];
-v34 [label = "EXP
-VAR"];
+v33 [label = "INT(70)"];
+v34 [label = "ASSIGN
+left := right
+"];
+v34 -> v32;
 v34 -> v33;
-v35 [label = "BINOP(+)"];
-v35 -> v32;
-v35 -> v34;
-v36 [label = "INT(17)"];
-v37 [label = "BINOP(=)"];
+v35 [label = "SIMPLE
+VAR
+(arr)"];
+v36 [label = "INT(5)"];
+v37 [label = "SUBSCRIPT
+VAR
+...[...]"];
 v37 -> v35;
 v37 -> v36;
-v38 [label = "ID(Person)"];
-v39 [label = "EXP ASSIGN
-type ID(left)
+v38 [label = "INT(30)"];
+v39 [label = "ASSIGN
+left := right
 "];
+v39 -> v37;
 v39 -> v38;
-v40 [label = "VARDEC
- var declaration
-"];
-v40 -> v39;
-v41 [label = "ID(Person)"];
-v42 [label = "EXP ASSIGN
-type ID(right)
-"];
+v40 [label = "SIMPLE
+VAR
+(arr)"];
+v41 [label = "INT(6)"];
+v42 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v42 -> v40;
 v42 -> v41;
-v43 [label = "VARDEC
- var declaration
+v43 [label = "-INT(580)"];
+v44 [label = "ASSIGN
+left := right
 "];
-v43 -> v42;
-v44 [label = "SIMPLE
+v44 -> v42;
+v44 -> v43;
+v45 [label = "SIMPLE
 VAR
-(left)"];
-v45 [label = "FIELD
+(arr)"];
+v46 [label = "INT(4)"];
+v47 [label = "SUBSCRIPT
 VAR
-...->left"];
-v45 -> v44;
-v46 [label = "EXP
-VAR"];
-v46 -> v45;
-v47 [label = "RETURN
- RETURN exp;
-"];
+...[...]"];
+v47 -> v45;
 v47 -> v46;
-v48 [label = "STMT
-LIST
-"];
-v48 -> v47;
-v49 [label = "STMT
-LIST
-"];
-v49 -> v43;
-v49 -> v48;
-v50 [label = "STMT
-LIST
-"];
-v50 -> v40;
-v50 -> v49;
-v51 [label = "IF
- if(cond){body} 
-"];
-v51 -> v37;
-v51 -> v50;
-v52 [label = "SIMPLE
-VAR
-(left)"];
-v53 [label = "EXP
+v48 [label = "EXP
 VAR"];
-v53 -> v52;
-v54 [label = "RETURN
- RETURN exp;
+v48 -> v47;
+v49 [label = "EXP
+LIST
 "];
+v49 -> v48;
+v50 [label = "ID stmt
+ ID(PrintInt)(expList);
+"];
+v50 -> v49;
+v51 [label = "STMT
+LIST
+"];
+v51 -> v50;
+v52 [label = "STMT
+LIST
+"];
+v52 -> v44;
+v52 -> v51;
+v53 [label = "STMT
+LIST
+"];
+v53 -> v39;
+v53 -> v52;
+v54 [label = "STMT
+LIST
+"];
+v54 -> v34;
 v54 -> v53;
 v55 [label = "STMT
 LIST
 "];
+v55 -> v29;
 v55 -> v54;
 v56 [label = "STMT
 LIST
 "];
-v56 -> v51;
+v56 -> v24;
 v56 -> v55;
 v57 [label = "STMT
 LIST
 "];
-v57 -> v30;
+v57 -> v19;
 v57 -> v56;
 v58 [label = "STMT
 LIST
 "];
-v58 -> v26;
+v58 -> v14;
 v58 -> v57;
-v59 [label = "FUNCDEC
-type ID(foo)(arg1,...argn) { body }
+v59 [label = "STMT
+LIST
 "];
-v59 -> v18;
-v59 -> v22;
+v59 -> v9;
 v59 -> v58;
-v60 [label = "funcDec
-"];
-v60 -> v59;
-v61 [label = "TYPE_VOID"];
-v62 [label = "INT(2)"];
-v63 [label = "INT(4)"];
-v64 [label = "EXP
-LIST
-"];
-v64 -> v63;
-v65 [label = "EXP
-LIST
-"];
-v65 -> v62;
-v65 -> v64;
-v66 [label = "EXP
-[var.]ID(foo) (exps)"];
-v66 -> v65;
-v67 [label = "INT(800)"];
-v68 [label = "EXP
-LIST
-"];
-v68 -> v67;
-v69 [label = "ID stmt
- ID(PrintInt)(expList);
-"];
-v69 -> v68;
-v70 [label = "STMT
-LIST
-"];
-v70 -> v69;
-v71 [label = "IF
- if(cond){body} 
-"];
-v71 -> v66;
-v71 -> v70;
-v72 [label = "STMT
-LIST
-"];
-v72 -> v71;
-v73 [label = "FUNCDEC
+v60 [label = "FUNCDEC
 type ID(main)(arg1,...argn) { body }
 "];
-v73 -> v61;
-v73 -> v72;
-v74 [label = "funcDec
+v60 -> v3;
+v60 -> v59;
+v61 [label = "funcDec
 "];
-v74 -> v73;
-v75 [label = "DEC
+v61 -> v60;
+v62 [label = "DEC
 LIST
 "];
-v75 -> v74;
-v76 [label = "DEC
+v62 -> v61;
+v63 [label = "DEC
 LIST
 "];
-v76 -> v60;
-v76 -> v75;
-v77 [label = "DEC
-LIST
-"];
-v77 -> v17;
-v77 -> v76;
-v78 [label = "DEC
-LIST
-"];
-v78 -> v7;
-v78 -> v77;
-v79 [label = "DEC
-LIST
-"];
-v79 -> v3;
-v79 -> v78;
-v80 [label = "PROGRAM
+v63 -> v2;
+v63 -> v62;
+v64 [label = "PROGRAM
 DECLIST
 "];
-v80 -> v79;
+v64 -> v63;
 }

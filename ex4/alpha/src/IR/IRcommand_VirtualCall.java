@@ -45,9 +45,12 @@ public class IRcommand_VirtualCall extends IRcommand
 
 		res.add(src);
 
-		for (TEMP t : args)
+		if (args != null)
 		{
-			res.add(t);
+			for (TEMP t : args)
+			{
+				res.add(t);
+			}
 		}
 
 		return res;

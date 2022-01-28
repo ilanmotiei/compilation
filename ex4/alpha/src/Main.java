@@ -1,6 +1,8 @@
    
 import java.io.*;
 import java.io.PrintWriter;
+
+import MIPS.MIPSGenerator;
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
@@ -41,8 +43,7 @@ public class Main
 
 			/* Semant the AST ... */
 			
-			try
-			{
+			try {
 				AST.SemantMe();
 
 				/* 
@@ -52,9 +53,7 @@ public class Main
 
 				// WE DON'T NEED THIS ANYMORE :
 				// file_writer.print("OK");
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				// A semantic error have been occured.
 
 				System.out.println(e.getMessage());
@@ -65,13 +64,15 @@ public class Main
 			}
 
 			/***********************************/
+
 			AST.IRme();
 
-			IR.getInstance().AllocateRegisters();
-			IR.getInstance().MIPSme();
+			IR.getInstance().MIPSme();  // also allocates machine registers
+
+			System.out.println("HERE");
 
 			/* Close output file */
-			file_writer.close();
+			MIPSGenerator.getInstance().finalizeFile();
     	}
 			     
 		catch (Exception e)
