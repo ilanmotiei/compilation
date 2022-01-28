@@ -44,8 +44,6 @@ public class TEMP
 		// when this method is called
 
 		return -1;
-
-
 	}
 
 	public void initialize()

@@ -50,16 +50,6 @@ public class MIPSGenerator
 		fileWriter.format("\tli $v0,11\n");
 		fileWriter.format("\tsyscall\n");
 	}
-
-	//public TEMP addressLocalVar(int serialLocalVarNum)
-	//{
-	//	TEMP t  = $tFACTORY.getInstance().getFreshTEMP();
-	//	int idx = t.getSerialNumber();
-	//
-	//	fileWriter.format("\taddi $t%d,$fp,%d\n",idx,-serialLocalVarNum*WORD_SIZE);
-	//	
-	//	return t;
-	//}
 	
 	// cls is the class we were in when this loading was called. may be null;
 	public void load(TEMP dst, String var_name, TYPE_CLASS cls, boolean isLocalVar, boolean isArg, boolean isClassField, int offset)
@@ -469,7 +459,7 @@ public class MIPSGenerator
 
 	// Allocates an array from the specified type and size and puts it at the
 	// 'dst' register
-	public void allocate_array(TEMP size, TEMP dst)
+	public void allocate_array(TEMP dst, TEMP size)
 	{
 		// Find the number of bytes needed :
 		fileWriter.format("\tmove $a0,$t%d\n", size.getSerialNumber());
@@ -665,6 +655,8 @@ public class MIPSGenerator
 	public void field_access(TEMP dst, TEMP obj, TYPE_CLASS cls, String field_name)
 	{
 		int field_offset = cls.getFieldIndex(field_name) * WORD_SIZE;
+
+		fileWriter.format("\tbeqz $t%d,invalid_ptr_dref_abort\n", obj.getSerialNumber()); // null pointer check
 
 		fileWriter.format("\tlw $t%d,%d($t%d)\n", dst.getSerialNumber(),
 														field_offset,

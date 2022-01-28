@@ -112,6 +112,32 @@ public class AST_NEWEXP extends AST_Node {
 			Add_IRcommand(new IRcommand_NewArray(dst,
 												 arr_size, 
 												 this._type_));
+
+			// Initializing the array :
+
+			TEMP zero = TEMP_FACTORY.getInstance().getFreshTEMP();
+			IR.getInstance().Add_IRcommand(new IRcommand_LoadImmediate(zero, 0));
+
+			TEMP one = TEMP_FACTORY.getInstance().getFreshTEMP();
+			IR.getInstance().Add_IRcommand(new IRcommand_LoadImmediate(one, 1));
+
+			TEMP idx = TEMP_FACTORY.getInstance().getFreshTEMP();
+			IR.getInstance().Add_IRcommand(new IRcommand_LoadImmediate(idx, 0));
+
+			TEMP subtraction = TEMP_FACTORY.getInstance().getFreshTEMP();
+
+			String start_label = IRcommand.getFreshLabel("start_label");
+			String end_label = IRcommand.getFreshLabel("end_label");
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Label(start_label));
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Binop_Sub_Integers(subtraction, arr_size, idx));
+			IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(subtraction, end_label));
+			IR.getInstance().Add_IRcommand(new IRcommand_ArraySet(dst, idx, zero));
+			IR.getInstance().Add_IRcommand(new IRcommand_Binop_Add_Integers(idx, idx, one));
+			IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label(start_label));
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Label(end_label));
 		}
 		else
 		{

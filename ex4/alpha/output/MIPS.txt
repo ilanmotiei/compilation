@@ -297,15 +297,32 @@ user_main:
 	sw $fp,0($sp)
 	jal __prologue__
 	subu $sp,$sp,4
-	li $t0,7
-	move $a0,$t0
+	li $t5,7
+	move $a0,$t5
 	addu $a0, $a0, 1
 	mul $a0,$a0,4
 	li $v0,9
 	syscall
-	move $t0,$v0
-	sw $t0,0($t0)
-	sw $t0,-44($fp)
+	move $t4,$v0
+	sw $t5,0($t4)
+	li $t3,0
+	li $t2,1
+	li $t1,0
+Label_0_start_label:
+	sub $t0,$t5,$t1
+	beq $t0,$zero,Label_1_end_label
+	bltz $t1,index_out_of_range_abort
+	lw $s0,0($t4)
+	bge $t1,$s0,index_out_of_range_abort
+	move $s0,$t1
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t4
+	sw $t3,0($s0)
+	add $t1,$t1,$t2
+	j Label_0_start_label
+Label_1_end_label:
+	sw $t4,-44($fp)
 	li $t2,34
 	lw $t1,-44($fp)
 	li $t0,0
