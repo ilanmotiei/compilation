@@ -61,12 +61,12 @@ public abstract class IRcommand
 		// the temps that their values were used at the command
 		LinkedList<TEMP> new_living_temps = getUsedTemps();
 
-		// the temps whome values were changed at the command
+		// the temps whom values were changed at the command
 		LinkedList<TEMP> nonliving_temps = getChangedTemps();  
 
-		if (living_temps != null)
+		if (new_living_temps != null)
 		{
-			addLivingTemps(living_temps);
+			addLivingTemps(new_living_temps);
 		}
 		if (nonliving_temps != null)
 		{

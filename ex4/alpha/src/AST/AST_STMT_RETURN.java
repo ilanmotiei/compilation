@@ -95,7 +95,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 			}
 		}
 
-		this.func_name = func.func_name;
+		this.func_name = func.name;
 
 		// VALID;
 	}

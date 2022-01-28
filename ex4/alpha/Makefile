@@ -55,7 +55,7 @@ CUP_FLAGS =                                \
 # DEFINITIONS :: PARSER #
 #########################
 INPUT    = ${INPUT_DIR}/Input.txt
-OUTPUT   = ${OUTPUT_DIR}/SemanticStatus.txt
+OUTPUT   = ${OUTPUT_DIR}/MIPS.txt
 
 ##########
 # TARGET #
@@ -196,4 +196,4 @@ everything:
 	@echo "***********************************************************"
 	@echo "\n"
 	# [11] Run spim and redirect its output (un-comment after codegen + register allocation is implemented)
-	#spim -f ${OUTPUT_DIR}/MIPS.txt #> ${OUTPUT_DIR}/MIPS_OUTPUT.txt
+	spim -f ${OUTPUT_DIR}/MIPS.txt #> ${OUTPUT_DIR}/MIPS_OUTPUT.txt

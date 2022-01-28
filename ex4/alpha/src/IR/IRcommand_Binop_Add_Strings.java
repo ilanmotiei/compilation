@@ -29,10 +29,10 @@ public class IRcommand_Binop_Add_Strings extends IRcommand
 	
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().str_add(dst, t1, t2);
+		MIPSGenerator.getInstance().str_add(dst, src1, src2);
 	}
 
-	// get the temps whome values are used when applying the command
+	// get the temps whom values are used when applying the command
 	public LinkedList<TEMP> getUsedTemps()
 	{
 		LinkedList<TEMP> res = new LinkedList<TEMP>();
@@ -42,7 +42,7 @@ public class IRcommand_Binop_Add_Strings extends IRcommand
 		return res;
 	}
 
-	// get the temps whome values are changed after applying the command
+	// get the temps whom values are changed after applying the command
 	// (which are the temps whome previous values are no more used)
 	public LinkedList<TEMP> getChangedTemps()
 	{

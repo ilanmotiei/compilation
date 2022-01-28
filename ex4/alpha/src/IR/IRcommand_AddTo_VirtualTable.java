@@ -12,6 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
+import TYPES.*;
 import java.util.*;
 
 public class IRcommand_AddTo_VirtualTable extends IRcommand
@@ -22,12 +23,12 @@ public class IRcommand_AddTo_VirtualTable extends IRcommand
 	public IRcommand_AddTo_VirtualTable(TYPE_CLASS cls, String method_name)
     {
         this.cls = cls;
-        this.method_name = name;
+        this.method_name = method_name;
 	}
 	
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().add_to_vt(cls, cls, method_name);
+		MIPSGenerator.getInstance().add_to_vtable(cls, method_name);
 	}
 
 	// get the temps whome values are used when applying the command

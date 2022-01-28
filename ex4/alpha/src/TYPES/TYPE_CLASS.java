@@ -1,8 +1,6 @@
 package TYPES;
 import java.util.*;
 
-import sun.net.www.content.text.plain;
-
 public class TYPE_CLASS extends TYPE
 {
 
@@ -14,7 +12,7 @@ public class TYPE_CLASS extends TYPE
 	/*********************************************************************/
 	public TYPE_CLASS father;
 
-	public Linkedlist<TYPE_CLASS> sons = null;
+	public LinkedList<TYPE_CLASS> sons = null;
 
 	/**************************************************/
 	/* Gather up all data members in one place        */
@@ -259,7 +257,7 @@ public class TYPE_CLASS extends TYPE
 	}
 
 	// get class fields (without methods), including those inherited.
-	public LinekedList<TYPE_CLASS_FIELD> getClassFields()
+	public LinkedList<TYPE_CLASS_FIELD> getClassFields()
 	{
 		LinkedList<TYPE_CLASS_FIELD> class_fields = new LinkedList<>();
 
@@ -367,7 +365,7 @@ public class TYPE_CLASS extends TYPE
 	/*************/
 	public boolean isClass() { return true; }
 
-	public LinekedList<TYPE_CLASS_FIELD> getFieldsAmount()
+	public int getFieldsAmount()
 	{
 
 		TYPE_CLASS curr_cls = this;

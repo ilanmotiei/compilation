@@ -36,7 +36,7 @@ public class MIPSGenerator
 	{
 		fileWriter.print("\tli $v0,10\n");
 		fileWriter.print("\tsyscall\n");
-		fileWriter.close();
+		// fileWriter.close();
 	}
 
 	public void print_int(TEMP t)
@@ -422,7 +422,7 @@ public class MIPSGenerator
 		for(int i=0; i <= 9; i++)
 		{
 			fileWriter.format("\tsubu $fp,$fp,4\n");
-			fileWriter.format("\tlw $t%d,0($fp)\n");
+			fileWriter.format("\tlw $t%d,0($fp)\n", i);
 		}
 
 		// move frame pointer to its previous location :

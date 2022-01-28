@@ -130,7 +130,7 @@ public class AST_EXP_BINOP extends AST_EXP
 			
 			}
 
-			if (left_type.is_string() && right_type().is_string())
+			if (left_type.is_string() && right_type.is_string())
 			{
 				this.is_between_strings = true;
 			}

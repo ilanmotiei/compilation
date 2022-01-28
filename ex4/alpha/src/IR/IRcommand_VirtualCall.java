@@ -11,10 +11,10 @@ package IR;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
+import TYPES.*;
+import MIPS.*;
 
 import java.util.*;
-
-import MIPS.*;
 
 public class IRcommand_VirtualCall extends IRcommand
 {

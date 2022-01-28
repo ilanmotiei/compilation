@@ -53,6 +53,7 @@ public class AST_VAR_FIELD extends AST_VAR
 	{
 
 		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
 		TYPE field_type;
 
 		if (var == null)
@@ -70,6 +71,8 @@ public class AST_VAR_FIELD extends AST_VAR
 				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 			}
 
+			this.cls = (TYPE_CLASS) var_type;
+
 			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(((TYPE_CLASS) var_type), this.fieldName);
 		}
 
@@ -83,7 +86,7 @@ public class AST_VAR_FIELD extends AST_VAR
 
 		// ELSE :
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.fieldName);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.fieldName);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(field_type, fieldName);
@@ -122,6 +125,6 @@ public class AST_VAR_FIELD extends AST_VAR
 	{
 		TEMP src = var.IRme();
 		
-		IR.getInstance().Add_IRcommand(new IRcommand_FieldSet(src, this.cls, name, value));
+		IR.getInstance().Add_IRcommand(new IRcommand_FieldSet(src, this.cls, this.fieldName, value));
 	}
 }

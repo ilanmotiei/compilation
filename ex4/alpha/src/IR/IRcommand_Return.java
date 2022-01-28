@@ -40,7 +40,7 @@ public class IRcommand_Return extends IRcommand
     public LinkedList<TEMP> getUsedTemps()
     {
         LinkedList<TEMP> res = new LinkedList<TEMP>();
-        res.append(rv);
+        res.add(rv);
 
         return res;
     }

@@ -49,8 +49,9 @@ public class Main
 				Getting here means no semantic errors have been occured.
 				In particular no lexical and syntactic errors have been occured.
 				*/
-					
-				file_writer.print("OK");
+
+				// WE DON'T NEED THIS ANYMORE :
+				// file_writer.print("OK");
 			}
 			catch (Exception e)
 			{
@@ -64,6 +65,8 @@ public class Main
 			}
 
 			/***********************************/
+			AST.IRme();
+
 			IR.getInstance().AllocateRegisters();
 			IR.getInstance().MIPSme();
 

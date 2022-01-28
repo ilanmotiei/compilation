@@ -3,7 +3,6 @@ package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TEMP.*;
 import TYPES.*;
-import TYPE.*;
 import IR.*;
 
 public class AST_NEWEXP extends AST_Node {

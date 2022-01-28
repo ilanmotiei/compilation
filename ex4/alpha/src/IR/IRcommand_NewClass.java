@@ -10,7 +10,7 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
-import TYPE.*;
+import TYPES.*;
 import java.util.*;
 
 public class IRcommand_NewClass extends IRcommand
@@ -19,7 +19,7 @@ public class IRcommand_NewClass extends IRcommand
     TYPE_CLASS type;
     
     // defines a new class element of
-	public IRcommand_NewClass(TEMP dst, TYPE type)
+	public IRcommand_NewClass(TEMP dst, TYPE_CLASS type)
 	{
 		this.dst = dst;
         this.type = type;

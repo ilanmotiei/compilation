@@ -50,7 +50,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		// ELSE : 
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.name);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(var_type);
@@ -77,7 +77,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		IR.getInstance().Add_IRcommand(new IRcommand_Load(var_val_tmp, 
 														this.name,
+														null,
 														this.isLocalVar,
+														this.isArg,
+														this.isClassField,
 														this.offset));
 		
 		return var_val_tmp;
@@ -85,10 +88,12 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 	public void set(TEMP value)
 	{
-		IR.getInstance().Add_IRcommand(new IRcommand_Store(name,
+		IR.getInstance().Add_IRcommand(new IRcommand_Store(this.name,
+														   null,
 														   value,
 														   this.isLocalVar,
 														   this.isArg,
+														   this.isClassField,
 														   this.offset));
 	}
 }

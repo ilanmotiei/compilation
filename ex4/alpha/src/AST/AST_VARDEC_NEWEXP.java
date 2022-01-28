@@ -12,6 +12,9 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 	public AST_NEWEXP newExp;
 	public int line;
 
+	// metadata for code generation :
+	public TYPE_CLASS _cls_ = null;
+
 	// Class Constructor
 	public AST_VARDEC_NEWEXP(AST_TYPE type, String name, AST_NEWEXP newExp, int line)
 	{
@@ -142,10 +145,11 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 		if (cls != null)
 		{
-			// it is a class field
+			// it is a class field decleration :
 
 			isLocalVar = false;
 			isClassField = true;
+			this._cls_ = cls;
 		}
 		else{
 			// it is a local variable
@@ -154,27 +158,29 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			isClassField = false;
 		}
 
-		SYMBOL_TABLE.getInstance().enter(this.name, var_type, 
-														false, 
-														isLocalVar,
-														isClassField);
+		SYMBOL_TABLE.getInstance().enter(this.name,
+										var_type,
+									false,
+										isLocalVar,
+										isClassField);
 		
 
 		if (cls != null)
 		{
-			// MAKE A CLASS FIELD OBJECT OUT OF THIS DECLERATION (WRAP IT WITH A NAME)
+			// MAKE A CLASS FIELD OBJECT OUT OF THIS DECLARATION (WRAP IT WITH A NAME)
 			if (exp_box != null)
 			{
 				// class field has a CONSTANT initial value
-				var_type = new TYPE_CLASS_FIELD(var_type, this.name, exp_box.value);
+				var_type = new TYPE_CLASS_FIELD(var_type, this.name, exp_box.initial_value, cls);
 			}
-			else{
+			else
+			{
 				// class field doesn't have an initial value
-				var_type = new TYPE_CLASS_FIELD(var_type, this.name);
+				var_type = new TYPE_CLASS_FIELD(var_type, this.name, cls);
 			}
 		}
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.name);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(var_type);
@@ -188,20 +194,22 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 		this.isClassField = entry.isClassField;
 	}
 
-	public void IRme(TEMP exp)
+	public void IRme()
 	{
-		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLERATION IS NOT OF A CLASS FIELD
+		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLARATION IS NOT OF A CLASS FIELD
 
-		if (exp != null)
+		if (newExp != null)
 		{
 			TEMP initial_value = newExp.IRme();
 
 			IR.
 			getInstance().
-			Add_IRcommand(new IRcommand_Store(name, 
+			Add_IRcommand(new IRcommand_Store(name,
+											  this._cls_, // if its null then isClassField is False and no error occures
 											  initial_value, 
 											  this.isLocalVar,
 											  this.isArg,
+											  this.isClassField,
 											  this.offset));
 		}
 	}

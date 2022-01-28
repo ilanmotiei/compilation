@@ -33,8 +33,8 @@ public class RegisterAllocator
     {
         BuildCFG();
         Perform_Liveness_Analysis();
-        Build_Inference_Graph();
-        ColorInferenceGraph();
+        LinkedList<TEMP> all_func_temps = Build_Inference_Graph();
+        ColorInferenceGraph(all_func_temps, 10);
     }
 
     // updates all of the 'jumps_to' lists of all the commands at the list.
@@ -53,7 +53,7 @@ public class RegisterAllocator
 
             // Treating jump commands : 
 
-            String searched_label_name;
+            String searched_label_name = null;
             boolean does_command_is_a_jump_cmd = false;
 
             if (cmd instanceof IRcommand_Jump_Label)
@@ -107,12 +107,12 @@ public class RegisterAllocator
     {
         LinkedList<IRcommand> reveresed_list = new LinkedList<>();
 
-        for (TEMP t : cmd_list)
+        for (IRcommand cmd : cmd_list)
         {
-            reveresed_list.addFirst(t);
+            reveresed_list.addFirst(cmd);
         }
 
-        for (i=0; i <= 4; i++)
+        for (int i=0; i <= 4; i++)
         {
             // perform the transform function of the commands in a reverse order
             for (IRcommand cmd : reveresed_list)
@@ -122,7 +122,7 @@ public class RegisterAllocator
         }
     }
 
-    // Updates the neighbors of every TEMP according to the liveness analysis
+    // Updates the neighbors of every TEMP according to the liveliness analysis
     // performed earlier and returns the list of all the TEMPs used at
     // the function defined by the given list of IRcommands
     // (The inference graph is represented as a adjacency *LIST*)
@@ -136,11 +136,13 @@ public class RegisterAllocator
 
             LinkedList<TEMP> cmd_temps = cmd.getCMDTemps();
 
-            for (TEMP t : cmd_temps)
+            if (cmd_temps != null)
             {
-                if (! all_func_temps.contains(t))
+                for (TEMP t : cmd_temps)
                 {
-                    all_func_temps.add(t);
+                    if (!all_func_temps.contains(t)) {
+                        all_func_temps.add(t);
+                    }
                 }
             }
         }
@@ -154,7 +156,7 @@ public class RegisterAllocator
     }
 
     // initializes the neighbors of all the temps at the command
-    public LinkedList<TEMP> parse_command_temps(IRcommand cmd)
+    public void parse_command_temps(IRcommand cmd)
     {
         LinkedList<TEMP> adj_temps = cmd.IN;
 
@@ -174,7 +176,7 @@ public class RegisterAllocator
     {
         // find the correct mapping and update the serialNumbers of the TEMPs
 
-        Linked_List<TEMP> stack = new LinkedList<>();
+        LinkedList<TEMP> stack = new LinkedList<>();
 
         while (adj_list.size() != 0)
         {

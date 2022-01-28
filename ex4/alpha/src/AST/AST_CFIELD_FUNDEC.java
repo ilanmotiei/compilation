@@ -59,7 +59,7 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD
 
 		func.cls = cls; // setting function's class
 
-		cls.appendField(new TYPE_CLASS_FIELD(func, func.name));
+		cls.appendField(new TYPE_CLASS_FIELD(func, func.name, cls));
 
 		this._cls_ = cls;
 	}

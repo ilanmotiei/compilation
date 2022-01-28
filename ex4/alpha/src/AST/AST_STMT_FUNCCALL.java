@@ -151,7 +151,7 @@ public class AST_STMT_FUNCCALL extends AST_STMT{
 		// CALL IS VALID;
 	}
 
-	public TEMP IRme()
+	public void IRme()
 	{
 		TEMP_LIST args = null;
 		

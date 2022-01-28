@@ -65,7 +65,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		// else - the assignment statement is valid.
 	}
 
-	public TEMP IRme()
+	public void IRme()
 	{
 		TEMP exp_tmp = exp.IRme();
 

@@ -33,7 +33,7 @@ public class IRcommand_ArraySet extends IRcommand
 	
 	public void MIPSme()
 	{
-		MIPSGenerator.getInstance().array_set(dst, src, idx);
+		MIPSGenerator.getInstance().array_set(arr, idx, value);
 	}
 
 	// get the temps whome values are used when applying the command

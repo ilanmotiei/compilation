@@ -4,22 +4,25 @@ public class TYPE_CLASS_FIELD extends TYPE
 {
 	public TYPE type; // The type of the FIELD
 	public String name; // The name of the FIELD
+	public TYPE_CLASS initialClass; // The first class that this field is declared at
 
 	public Object initial_value = null; // optional - an initial value for the field
 
-	public TYPE_CLASS_FIELD(TYPE type, String name, Object initial_value)
+	public TYPE_CLASS_FIELD(TYPE type, String name, Object initial_value, TYPE_CLASS initialClass)
 	{
 		this.type = type;
 		this.name = name;
 		this.initial_value = initial_value;
+		this.initialClass = initialClass;
 
 		this.type_name = "class_field";
 	}
 
-	public TYPE_CLASS_FIELD(TYPE type, String name)
+	public TYPE_CLASS_FIELD(TYPE type, String name, TYPE_CLASS initialClass)
 	{
 		this.type = type;
 		this.name = name;
+		this.initialClass = initialClass;
 
 		this.type_name = "class_field";
 	}
@@ -39,6 +42,12 @@ public class TYPE_CLASS_FIELD extends TYPE
 	public boolean is_function()
 	{
 		return this.type.is_function();
+	}
+
+	// The first class at the hierarchy that this field is declared at
+	public TYPE_CLASS getInitialClass()
+	{
+		return initialClass;
 	}
 
 }

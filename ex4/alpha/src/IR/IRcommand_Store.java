@@ -12,6 +12,7 @@ package IR;
 /*******************/
 import TEMP.*;
 import MIPS.*;
+import TYPES.*;
 import java.util.*;
 
 public class IRcommand_Store extends IRcommand
@@ -55,7 +56,7 @@ public class IRcommand_Store extends IRcommand
 	}
 
 	// get the temps whome values are used when applying the command
-	public abstract LinkedList<TEMP> getUsedTemps()
+	public LinkedList<TEMP> getUsedTemps()
 	{
 		LinkedList<TEMP> res = new LinkedList<>();
 		res.add(src);

@@ -11,11 +11,10 @@ package IR;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
+import MIPS.*;
+import TYPES.*;
 
 import java.util.*;
-
-import MIPS.*;
-import TYPE.*;
 
 public class IRcommand_NewArray extends IRcommand
 {

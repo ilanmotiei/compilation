@@ -12,6 +12,9 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 	public AST_EXP exp;
 	public int line;
 
+	// metadata for code generation :
+	TYPE_CLASS _cls_ = null;
+
 	// Class Constructor
 	public AST_VARDEC_EXP(AST_TYPE type, String name, AST_EXP exp, int line)
 	{
@@ -138,6 +141,7 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 			isLocalVar = false;
 			isClassField = true;
+			this._cls_ = cls;
 		}
 		else{
 			// it is a local variable
@@ -157,15 +161,15 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			if (exp_box != null)
 			{
 				// class field has a CONSTANT initial value
-				var_type = new TYPE_CLASS_FIELD(var_type, this.name, exp_box.value);
+				var_type = new TYPE_CLASS_FIELD(var_type, this.name, exp_box.initial_value, cls);
 			}
 			else{
 				// class field doesn't have an initial value
-				var_type = new TYPE_CLASS_FIELD(var_type, this.name);
+				var_type = new TYPE_CLASS_FIELD(var_type, this.name, cls);
 			}
 		}
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find(this.name);
+		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
 		return new BOX(var_type);
@@ -176,11 +180,12 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 		this.offset = entry.offset;
 		this.isArg = entry.isArg;
 		this.isLocalVar = entry.isLocalVar;
+		this.isClassField = entry.isClassField;
 	}
 
 	public void IRme()
 	{
-		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLERATION IS NOT OF A CLASS FIELD
+		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLARATION IS NOT OF A CLASS FIELD
 
 		if (exp != null)
 		{
@@ -188,10 +193,12 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 			IR.
 			getInstance().
-			Add_IRcommand(new IRcommand_Store(name, 
+			Add_IRcommand(new IRcommand_Store(name,
+											  this._cls_,
 											  initial_value, 
 											  this.isLocalVar,
 											  this.isArg,
+											  this.isClassField,
 											  this.offset));
 		}
 	}

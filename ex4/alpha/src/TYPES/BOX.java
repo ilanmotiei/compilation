@@ -31,11 +31,17 @@ public class BOX
         this.is_const = is_const;
     }
 
+    public BOX(TYPE type, boolean is_const, Object initial_value)
+    {
+        this.type = type;
+        this.is_const = is_const;
+        this.initial_value = initial_value;
+    }
+
     public BOX(TYPE type, String name, Object initial_value)
     {
         this.type = type;
         this.name = name;
-
         this.initial_value = initial_value;
     }
 

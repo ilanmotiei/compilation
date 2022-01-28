@@ -78,7 +78,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		/********************/
 		/* [3] cond.IRme(); */
 		/********************/
-		TEMP cond_temp = cond.IRMe();
+		TEMP cond_temp = cond.IRme();
 
 		/******************************************/
 		/* [4] Jump conditionally to the loop end */
@@ -91,7 +91,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		/*******************/
 		/* [5] body.IRme() */
 		/*******************/
-		body.IRMe();
+		body.IRme();
 
 		/******************************/
 		/* [6] Jump to the loop entry */

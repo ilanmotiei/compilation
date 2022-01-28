@@ -55,7 +55,7 @@ public class IR
 
 			if (in_function)
 			{
-				RegisterAllocator.add_cmd(cmd);
+				allocator.add_cmd(cmd);
 			}
 		}
 	}

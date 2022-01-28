@@ -61,7 +61,7 @@ public class AST_CFIELD_VARDEC extends AST_CFIELD {
 		}
 		*/
 
-		cls.appendField(new TYPE_CLASS_FIELD(var.type, var.name));
+		cls.appendField(new TYPE_CLASS_FIELD(var.type, var.name, cls));
 
 		this._cls_ = cls;
 	}

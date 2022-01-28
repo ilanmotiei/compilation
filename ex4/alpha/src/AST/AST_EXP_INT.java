@@ -54,7 +54,7 @@ public class AST_EXP_INT extends AST_EXP
 
 		rv.is_negative = (this.hasMinus == 1);
 
-		rv.value = (1-2*hasMinus) * value;
+		rv.initial_value = (Object) ((1-2*hasMinus) * this.value);
 
 		return rv;
 	}

@@ -103,6 +103,68 @@ public class SYMBOL_TABLE
 		return find_by_hierarchy((TYPE_CLASS) e.getScopeWrapper(), name);
 	}
 
+	// only for finding addresses of variables at the memory
+	public SYMBOL_TABLE_ENTRY find_entry(String name)
+	{
+		SYMBOL_TABLE_ENTRY e = top;
+
+		while (e != null)
+		{
+			if (e.isClassBoundary())
+			{
+				break;
+			}
+
+			// else:
+
+			if (e.name.equals(name))
+			{
+				return e;
+			}
+
+			e = e.prevtop;
+		}
+
+		if (e == null) { return null; }
+
+		// else : we are inside some class
+
+		TYPE_CLASS cls = (TYPE_CLASS) e.getScopeWrapper();
+		TYPE fieldType = find_at_class(cls, name);
+
+		if (fieldType != null)
+		{
+			// we are working with a field of a class object
+			return new SYMBOL_TABLE_ENTRY(null,
+					fieldType,
+					0,
+					null,
+					null,
+					0,
+					false,
+					false,
+					true);
+		}
+
+		// else : it is not a class field. it might be a global variable
+
+		if (find_by_hierarchy(cls, name) != null)
+		{
+			// it is a global variable :
+			return new SYMBOL_TABLE_ENTRY(null,
+					null,
+					0,
+					null,
+					null,
+					0,
+					false,
+					false,
+					true);
+		}
+
+		return null;
+	}
+
 	/*
 	Finds the given name at the current scope. Returns null if wasn't found.
 	*/
@@ -376,6 +438,27 @@ public class SYMBOL_TABLE
 		return null;
 	}
 
+	public TYPE_CLASS find_which_class(TYPE_CLASS cls, String name)
+	{
+		while (cls != null)
+		{
+			if (cls.data_members != null)
+			{
+				for (TYPE_CLASS_FIELD dec : cls.data_members)
+				{
+					if (dec.name.equals(name))
+					{
+						return cls;
+					}
+				}
+			}
+
+			cls = cls.father;
+		}
+
+		return null;
+	}
+
 	/*****************************************************************************************************/
 	/* 						 Tells us if wer'e currently at the global scope or not 					*/
 	/*****************************************************************************************************/
@@ -502,8 +585,8 @@ public class SYMBOL_TABLE
 			/*****************************************/
 			/* [1] Enter primitive types int, string */
 			/*****************************************/
-			instance.enter("int",   TYPE_INT.getInstance());
-			instance.enter("string",TYPE_STRING.getInstance());
+			instance.enter("int",   TYPE_INT.getInstance(), false, false, false);
+			instance.enter("string",TYPE_STRING.getInstance(), false, false, false);
 
 			/*************************************/
 			/* [2] How should we handle void ??? */
@@ -519,7 +602,10 @@ public class SYMBOL_TABLE
 					"PrintInt",
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
-						null)));
+						null)),
+						false,
+						false,
+					false);
 
 			instance.enter("PrintString", 
 						new TYPE_FUNCTION(
@@ -527,13 +613,19 @@ public class SYMBOL_TABLE
 							"PrintString", 
 							new TYPE_LIST(
 								TYPE_STRING.getInstance(), 
-								null)));
+								null)),
+								false,
+								false,
+								false);
 
 			instance.enter("PrintTrace", 
 						new TYPE_FUNCTION(
 							TYPE_VOID.getInstance(), 
 							"PrintTrace", 
-							null));	
+							null),
+							false,
+						false,
+						false);
 		}
 		return instance;
 	}
