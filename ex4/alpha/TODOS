@@ -1,6 +1,4 @@
 
-1. Add limitations on the operations  *,+,/,- of the L language.
-
 -- fixed - check ! ! ! -- Make the method calling be according to the dynamic type of the object -- fixed -- ! ! !
 
 -- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS.
