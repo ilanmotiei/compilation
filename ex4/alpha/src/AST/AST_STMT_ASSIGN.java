@@ -14,6 +14,10 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	public AST_EXP exp;
 	public int line;
 
+	// metadata for code generation
+	public TYPE var_type;
+	public TYPE exp_type;
+
 	//  Class Constructor
 	public AST_STMT_ASSIGN(AST_VAR var, AST_EXP exp, int line)
 	{
@@ -53,7 +57,10 @@ public class AST_STMT_ASSIGN extends AST_STMT
 
 	public void SemantMe() throws Exception
 	{
-		if (!(this.var.SemantMe().type.semantically_equals(this.exp.SemantMe().type)))
+		this.var_type = this.var.SemantMe().type;
+		this.exp_type = this.exp.SemantMe().type;
+
+		if (!(this.var_type.semantically_equals(exp_type)))
 		{
 			// TYPES OF LHS AND RHS ARE INEQUAL : THROW AN EXCEPTION
 
@@ -68,6 +75,6 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	{
 		TEMP exp_tmp = exp.IRme();
 
-		var.set(exp_tmp);  // assigns the variable the value stored at exp_tmp
+		var.set(exp_tmp, exp_type);  // assigns the variable the value stored at exp_tmp
 	}
 }

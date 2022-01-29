@@ -11,6 +11,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 	public AST_EXP subscript;
 	public int line;
 
+	// metadata for code generation :
+	public TYPE elems_type;
+
 	// Class Constructor
 	public AST_VAR_SUBSCRIPT(AST_VAR var,AST_EXP subscript, int line)
 	{
@@ -66,7 +69,9 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		return new BOX(((TYPE_ARRAY) var_type).elems_type);
+		this.elems_type = ((TYPE_ARRAY) var_type).elems_type;
+
+		return new BOX(this.elems_type);
 	}
 
 	public BOX SemantMe(TYPE_CLASS cls) throws Exception
@@ -89,7 +94,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		return dst_tmp;
 	}
 
-	public void set(TEMP value)
+	public void set(TEMP value, TYPE value_type)
 	{
 		TEMP arr_tmp = this.var.IRme();  // loads the variable from the memory
 		TEMP idx = this.subscript.IRme();  // loads the index from the memory

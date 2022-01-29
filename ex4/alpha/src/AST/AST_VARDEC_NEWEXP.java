@@ -14,6 +14,8 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 	// metadata for code generation :
 	public TYPE_CLASS _cls_ = null;
+	public TYPE var_type;
+	public TYPE exp_type = null;
 
 	// Class Constructor
 	public AST_VARDEC_NEWEXP(AST_TYPE type, String name, AST_NEWEXP newExp, int line)
@@ -190,10 +192,23 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			}
 		}
 
+		this.var_type = var_type;
+		if (exp_box != null)
+		{
+			this.exp_type = exp_box.type;
+		}
+
 		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
-		return new BOX(var_type);
+		BOX rv = new BOX(var_type);
+
+		if (exp_box != null)
+		{
+			rv.initial_value = exp_box.initial_value;
+		}
+
+		return rv;
 	}
 
 	public void setCodeGenMetaData(SYMBOL_TABLE_ENTRY entry)
@@ -214,7 +229,7 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 			getInstance().
 			Add_IRcommand(new IRcommand_Store(name,
 											  this._cls_, // if its null then isClassField is False and no error occures
-											  initial_value, 
+											  initial_value,
 											  this.isLocalVar,
 											  this.isArg,
 											  this.isClassField,

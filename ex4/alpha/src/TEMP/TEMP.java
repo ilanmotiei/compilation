@@ -39,10 +39,11 @@ public class TEMP
 			return color;
 		}
 
+
 		// shouldn't get here; all temps should be mapped to a machine register
 		// when this method is called
 
-		return -1;
+		return serial;
 	}
 
 	public void initialize()

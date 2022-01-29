@@ -3,6 +3,7 @@
 
 3. Check if class fields initializations work. -------------- DOESN'T WORK FOR INT --------------------
                                                --------------   CHECK FOR NIL !!!  --------------------
+
 4. Make the method calling be according to the dynamic type of the object.
 
 -- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS.
@@ -27,9 +28,5 @@
    a.age  // --- Illegal --- a is a pointer of type Person. It has no field called 'age' and that command will cause
           // a semantic error.
 
-
-5. Add a space printing after Integer Printing.
-6. Take care of initializations and settings of vtables.
-7. Take care of initializations of global variables initialized to NIL.
 8. Make more checks. Check also on nova.
 9. Submit.

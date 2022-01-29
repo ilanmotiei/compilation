@@ -20,5 +20,5 @@ public abstract class AST_VAR extends AST_Node
     public abstract TEMP IRme();
 
     // sets the variable value to that stored at the given temporary
-    public abstract void set(TEMP value);
+    public abstract void set(TEMP value, TYPE value_type);
 }

@@ -14,6 +14,8 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 	// metadata for code generation :
 	TYPE_CLASS _cls_ = null;
+	TYPE var_type;
+	TYPE exp_type = null;
 
 	// Class Constructor
 	public AST_VARDEC_EXP(AST_TYPE type, String name, AST_EXP exp, int line)
@@ -95,7 +97,7 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
-		BOX exp_box = null;		
+		BOX exp_box = null;
 
 		if (this.exp != null)
 		{
@@ -179,10 +181,24 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 			}
 		}
 
+		if (exp_box != null)
+		{
+			this.exp_type = exp_box.type;
+		}
+
+		this.var_type = var_type;
+
 		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
-		return new BOX(var_type);
+		BOX rv = new BOX(var_type);
+
+		if (exp_box != null)
+		{
+			rv.initial_value = exp_box.initial_value;
+		}
+
+		return rv;
 	}
 
 	public void setCodeGenMetaData(SYMBOL_TABLE_ENTRY entry)

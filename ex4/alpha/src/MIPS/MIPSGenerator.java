@@ -25,7 +25,7 @@ import IR.*;
 
 public class MIPSGenerator
 {
-	private int WORD_SIZE=4;
+	public int WORD_SIZE=4;
 	/***********************/
 	/* The file writer ... */
 	/***********************/
@@ -49,6 +49,11 @@ public class MIPSGenerator
 		fileWriter.format("\tli $a0,32\n");
 		fileWriter.format("\tli $v0,11\n");
 		fileWriter.format("\tsyscall\n");
+	}
+
+	public void move(TEMP dst, TEMP src)
+	{
+		fileWriter.format("\tmove $t%d,$t%d\n", dst.getSerialNumber(), src.getSerialNumber());
 	}
 	
 	// cls is the class we were in when this loading was called. may be null;
@@ -147,6 +152,22 @@ public class MIPSGenerator
 		int dstidx=dst.getSerialNumber();
 
 		fileWriter.format("\tadd $t%d,$t%d,$t%d\n",dstidx,i1,i2);
+	}
+
+	public void addu(TEMP dst,TEMP oprnd1,int offset)
+	{
+		int i1 =oprnd1.getSerialNumber();
+		int dstidx=dst.getSerialNumber();
+
+		fileWriter.format("\taddu $t%d,$t%d,%d\n",dstidx,i1,offset);
+	}
+
+	public void subu(TEMP dst,TEMP oprnd1,int offset)
+	{
+		int i1 =oprnd1.getSerialNumber();
+		int dstidx=dst.getSerialNumber();
+
+		fileWriter.format("\tsubu $t%d,$t%d,%d\n",dstidx,i1,offset);
 	}
 
 	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
@@ -411,7 +432,7 @@ public class MIPSGenerator
 		// Initializing it :
 		for (TYPE_CLASS_FIELD f : cls.getClassFields())
 		{
-			if (f.hasInitialValue())
+			if ((f.hasInitialValue()) && (f.initial_value != null))
 			{
 				if (f.initial_value instanceof String)
 				{
@@ -427,6 +448,7 @@ public class MIPSGenerator
 			}
 			else
 			{
+				// it has not initial value (or it's null and will be initialized to 0)
 				fileWriter.format("\tli $s0,0\n");
 				fileWriter.format("\tsw $s0,%d($t%d)\n", off,
 															dst.getSerialNumber());
@@ -438,28 +460,31 @@ public class MIPSGenerator
 
 	// an auxiliary function for the above one
 	public void init_string_field(TYPE_CLASS cls, TEMP dst, TYPE_CLASS_FIELD f)
-	{	
+	{
+		int f_offset = (cls.getFieldIndex(f.name) + 1) * WORD_SIZE;
+
 		String label_name = f.getInitialClass().name + "_" + 
 										f.name + "_const_field";
 		// ^ : the name of the label that this field is stored in at the data section
 
-		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		// allocate size for the new string field
 
-		fileWriter.format("\tla $t%d,%s\n", t.getSerialNumber(), 
-												label_name);
+		fileWriter.format("\tla $s0,%s\n", label_name);
+		jal("_strsize_");
+		fileWriter.format("\tmove $a0,$v0\n");
+		fileWriter.format("\tadd $a0,$a0,1\n");
+		fileWriter.format("\tli $v0,9\n");
+		fileWriter.format("\tsyscall\n");
+		fileWriter.format("\tmove $s0,$v0\n");
+
+		fileWriter.format("\tsw $s0,%d($t%d)\n", f_offset, dst.getSerialNumber());
 
 		// copy the content t is pointing on to the address of the field
 		// of the newly allocated class object
 
-		int f_offset = (cls.getFieldIndex(f.name) + 1) * WORD_SIZE;
+		fileWriter.format("\tla $s1,%s\n", label_name);
 
-		TEMP f_address = TEMP_FACTORY.getInstance().getFreshTEMP();
-
-		fileWriter.format("\taddu $t%d,$t%d,%d\n", f_address.getSerialNumber(),
-														 dst.getSerialNumber(),
-														 f_offset);
-
-		str_cpy(f_address, t); // copy's t's content into the address at 'f_address'
+		jal("_strcpy_"); // copy's t's content into the address at 'f_address'. $s0 == destination, $s1 == source
 	}
 
 	// Allocates an array from the specified type and size and puts it at the
@@ -547,8 +572,7 @@ public class MIPSGenerator
 		fileWriter.format("\tla $t%d,const_str_%d\n", dst.getSerialNumber(),
 														 const_str_cnt);
 
-
-		const_str_cnt += 1;
+		const_str_cnt ++;
 	}
 
 	public void init_global_var(String var_name)
@@ -580,7 +604,7 @@ public class MIPSGenerator
 			fileWriter.format("\t.word %s\n", method_implementor_cls.name + "_" + method_name);
 		}
 
-		// initializing classe's string fields : 
+		// initializing class' string fields :
 
 		fileWriter.format("non_inherited_fields_initialization_%s:\n", cls.name);
 
@@ -846,14 +870,14 @@ public class MIPSGenerator
 		add_backup_save_registers();
 		
 		label("_strcpy_loop_");
-		fileWriter.print("\tlb $s2,0($s0)\n");
+		fileWriter.print("\tlb $s2,0($s1)\n");
 		fileWriter.print("\tbeqz $s2,_strcpy_end_\n");
-		fileWriter.print("\tsb $s2,0($s1)\n");
+		fileWriter.print("\tsb $s2,0($s0)\n");
 		fileWriter.print("\taddu $s0,$s0,1\n");
 		fileWriter.print("\taddu $s1,$s1,1\n");
 	
 		label("_strcpy_end_");
-		fileWriter.print("\tlb $s2,0($s1)\n");
+		fileWriter.print("\tlb $s2,0($s0)\n");
 
 		add_restore_save_registers();
 

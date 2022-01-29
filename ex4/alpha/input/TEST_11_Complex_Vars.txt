@@ -4,11 +4,13 @@ class Person
 {
 	int ID;
 	int age := 18;
+	int a1 := 5;
+	string a := "A";
 
 	IntArray lastYearSalaries;
 
 	int getAge()  { return age;   }
-	int birthday(){ age := age+1; }
+	int birthday(){ return age; }
 }
 
 class Student extends Person
@@ -43,16 +45,14 @@ void main()
 		// mysterious raise pattern ... 
 		moish.lastYearSalaries[moish.age] := moish.lastYearSalaries[moish.birthday()] + 1000;
 	}
-	
+
 	University TAU := new Student[37];
-	
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()]    := nil;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
-	TAU[39+moish.age+moish.birthday()].ID := 777;
+
+	PrintInt(moish.age);
+
+	TAU[0] := new Student;
+
+	PrintInt(TAU[0].ID);
+	PrintInt(TAU[0].a1);
+    PrintString(TAU[0].a);
 }

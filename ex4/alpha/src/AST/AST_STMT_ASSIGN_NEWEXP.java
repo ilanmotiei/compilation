@@ -5,13 +5,18 @@ import SYMBOL_TABLE.*;
 import TYPES.*;
 import TEMP.*;
 
-public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
+public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT
+{
     /********************/
 	/*  var := new exp  */
 	/********************/
 	public AST_VAR var;
 	public AST_NEWEXP newExp;
 	public int line;
+
+	// metadata for code generation :
+	TYPE var_type;
+	TYPE exp_type;
 
 	//  Class Constructor
 	public AST_STMT_ASSIGN_NEWEXP(AST_VAR var,AST_NEWEXP newExp, int line)
@@ -55,6 +60,9 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 		BOX var_box = this.var.SemantMe();
 		BOX exp_box = this.newExp.SemantMe();
 
+		this.var_type = var_box.type;
+		this.exp_type = exp_box.type;
+
 		if (var_box.type.is_array())
 		{
 			if ( ! exp_box.is_array)
@@ -67,7 +75,7 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 			{
 				if ( ! ((TYPE_ARRAY) var_box.type).elems_type.semantically_equals(exp_box.type))
 				{
-					// TRYED TO ASSIGN ARRAY FROM A NON-ACCEPTABLE TYPE TO THIS ARRAY (VAR)
+					// TRIED TO ASSIGN ARRAY FROM A NON-ACCEPTABLE TYPE TO THIS ARRAY (VAR)
 					String cls_name = this.getClass().getName();
 					throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 				}
@@ -90,6 +98,6 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT {
 	{
 		TEMP exp_tmp = this.newExp.IRme();
 
-		this.var.set(exp_tmp);  // assigns the variable the value stored at exp_tmp
+		this.var.set(exp_tmp, exp_type);  // assigns the variable the value stored at exp_tmp
 	}
 }

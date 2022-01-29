@@ -101,15 +101,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 	public void set(TEMP value, TYPE value_type)
 	{
-		TEMP casted_ptr = value;
-
-		if (value_type.is_class())
-		{
-			// we may need to make an up-casting (i.e. moving the pointer backwards)
-			casted_ptr = TEMP_FACTORY.getInstance().getFreshTEMP();
-			IR.getInstance().Add_IRcommand(new IRcommand_Cast(casted_ptr, this.type, value, value_type));
-		}
-
 		IR.getInstance().Add_IRcommand(new IRcommand_Store(this.name,
 														   this.curr_scope_class,
 														   value,

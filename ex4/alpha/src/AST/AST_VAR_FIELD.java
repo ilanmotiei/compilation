@@ -12,8 +12,8 @@ public class AST_VAR_FIELD extends AST_VAR
 	public int line;
 
 	// metadata for code generation
-
 	TYPE_CLASS cls; // the type of the object we're setting/accessing its field
+	TYPE field_type;
 
 	// Class Constructor
 	public AST_VAR_FIELD(AST_VAR var,String fieldName, int line)
@@ -73,6 +73,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		}
 
 		this.cls = (TYPE_CLASS) var_type;
+		this.field_type = field_type;
 
 		// ELSE :
 
@@ -81,8 +82,7 @@ public class AST_VAR_FIELD extends AST_VAR
 
 	public BOX SemantMe(TYPE_CLASS cls) throws Exception
 	{
-		this.cls = cls;
-
+ 		// For compilation reasons. won't use it.
 		return null;
 	}
 
@@ -100,10 +100,10 @@ public class AST_VAR_FIELD extends AST_VAR
 		return dst_tmp;
 	}
 
-	public void set(TEMP value)
+	public void set(TEMP value, TYPE value_type)
 	{
 		TEMP src = var.IRme();
-		
+
 		IR.getInstance().Add_IRcommand(new IRcommand_FieldSet(src, this.cls, this.fieldName, value));
 	}
 }
