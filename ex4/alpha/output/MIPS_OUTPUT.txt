@@ -1,2 +1,8 @@
 Loaded: /usr/local/Cellar/spim/9.1.23/share/exceptions.s
-HEREb5HERE
+The following symbols are undefined:
+epilogue_birthday
+epilogue_getAverage
+epilogue_getAge
+
+  Exception 7  [Bad data address]  occurred and ignored
+Invalid Pointer Dereference

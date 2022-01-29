@@ -64,8 +64,8 @@ public class AST_CFIELD_FUNDEC extends AST_CFIELD
 		this._cls_ = cls;
 	}
 
-	public void IRme()
+	public void IRme(TYPE_CLASS cls)
 	{
-		this.funcDec.IRme(_cls_);
+		this.funcDec.IRme(cls);
 	}
 }

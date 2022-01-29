@@ -14,5 +14,5 @@ public abstract class AST_CFIELD extends AST_Node {
 
 	public abstract void SemantMe(TYPE_CLASS cls) throws Exception;
 	
-	public abstract void IRme();
+	public abstract void IRme(TYPE_CLASS cls);
 }

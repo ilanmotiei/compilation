@@ -63,10 +63,10 @@ public class AST_CFIELD_LIST extends AST_Node {
 		this._cls_ = cls;
 	}
 
-	public void IRme()
+	public void IRme(TYPE_CLASS cls)
 	{
-		this.head.IRme();
+		this.head.IRme(cls);
 
-		if (this.tail != null) this.tail.IRme();
+		if (this.tail != null) this.tail.IRme(cls);
 	}
 }

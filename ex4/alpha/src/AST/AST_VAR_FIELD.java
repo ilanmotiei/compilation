@@ -51,30 +51,18 @@ public class AST_VAR_FIELD extends AST_VAR
 
 	public BOX SemantMe() throws Exception
 	{
+		TYPE var_type = this.var.SemantMe().type;
 
-		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
-
-		TYPE field_type;
-
-		if (var == null)
+		if ( ! var_type.is_class())
 		{
-			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(curr_scope_class, this.fieldName);
+			// VAR's TYPE IS NOT A CLASS AND THUS 'VAR' HAVE NO FIELDS : THROW EXCEPTION :
+			String cls_name = this.getClass().getName();
+			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
-		else
-		{
-			TYPE var_type = this.var.SemantMe().type;
 
-			if ( ! var_type.is_class())
-			{
-				// VAR's TYPE IS NOT A CLASS AND THUS 'VAR' HAVE NO FIELDS : THROW EXCEPTION :
-				String cls_name = this.getClass().getName();
-				throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
-			}
+		this.cls = (TYPE_CLASS) var_type;
 
-			this.cls = (TYPE_CLASS) var_type;
-
-			field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(((TYPE_CLASS) var_type), this.fieldName);
-		}
+		TYPE field_type = SYMBOL_TABLE.getInstance().find_by_hierarchy(((TYPE_CLASS) var_type), this.fieldName);
 
 		if (field_type == null) 
 		{ 
@@ -84,20 +72,11 @@ public class AST_VAR_FIELD extends AST_VAR
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
+		this.cls = (TYPE_CLASS) var_type;
+
 		// ELSE :
 
-		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.fieldName);
-		this.setCodeGenMetaData(entry);
-
 		return new BOX(field_type, fieldName);
-	}
-
-	public void setCodeGenMetaData(SYMBOL_TABLE_ENTRY entry)
-	{
-		this.offset = entry.offset;
-		this.isArg = entry.isArg;
-		this.isLocalVar = entry.isLocalVar;
-		this.isClassField = entry.isClassField;
 	}
 
 	public BOX SemantMe(TYPE_CLASS cls) throws Exception

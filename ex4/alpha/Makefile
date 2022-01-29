@@ -54,7 +54,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_02_Bubble_Sort.txt
+INPUT    = ${INPUT_DIR}/TEST_05_Classes.txt
 OUTPUT   = ${OUTPUT_DIR}/MIPS.txt
 
 ##########

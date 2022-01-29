@@ -226,7 +226,7 @@ public class TYPE_CLASS extends TYPE
 					if (! methods_names.contains(f.name))
 					{
 						// add it to the methods names in a reverse order
-						methods_names.addFirst(f.name);
+						methods_names.addLast(f.name);
 					}
 				}
 

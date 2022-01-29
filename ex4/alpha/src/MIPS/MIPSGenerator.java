@@ -293,6 +293,8 @@ public class MIPSGenerator
 	{
 		// RUNNING-TIME CHECKS : ----------------------------------
 
+		beqz(dst, "invalid_ptr_dref_abort"); // checking the array is initialized (i.e. not null)
+
 		// if (idx < 0) : abort
 		bltz(idx, "index_out_of_range_abort"); 
 		// size = arr[0] (we store the array size at the 0 offset)
@@ -423,7 +425,7 @@ public class MIPSGenerator
 			}
 			else
 			{
-				fileWriter.format("\tli %s0,0\n");
+				fileWriter.format("\tli $s0,0\n");
 				fileWriter.format("\tsw $s0,%d($t%d)\n", off,
 															dst.getSerialNumber());
 			}
@@ -514,7 +516,7 @@ public class MIPSGenerator
 		push_args(final_args, false);
 
 		// loads the vtable address
-		fileWriter.format("\tlw $s0,0($src)\n");  
+		fileWriter.format("\tlw $s0,0($t%d)\n", src.getSerialNumber());
 
 		// finds the function offset at the vtable
 		int off = cls.getMethodNumber(func_name) * WORD_SIZE;  
@@ -581,21 +583,20 @@ public class MIPSGenerator
 			{
 				// method was allready defined at some higher class at the hierarchy
 				
-				// loading its previous defenition's address :
+				// loading its previous definition's address :
 				fileWriter.format(".text\n");
-				fileWriter.format("la $s0,vt_%s", method_implementor_cls.name);
-				int imp_off = method_implementor_cls.getMethodNumber(method_name);
-				fileWriter.format("lw $s0,%d($s0)", imp_off);
+				fileWriter.format("\tla $s0,vt_%s\n", method_implementor_cls.name);
+				int imp_off = method_implementor_cls.getMethodNumber(method_name) * 4;
+				fileWriter.format("\tlw $s0,%d($s0)\n", imp_off);
 
 				// storing it at the current class' vtable
-				fileWriter.format("la $s1,vt_%s", cls.name);
-				fileWriter.format("sw $s0,%d($s1)", curr_off);
+				fileWriter.format("\tla $s1,vt_%s\n", cls.name);
+				int curr_cls_off = cls.getMethodNumber(method_name) * 4;
+				fileWriter.format("\tsw $s0,%d($s1)\n", curr_cls_off);
 
 				// changing mode back to data
 				fileWriter.format(".data\n");
-			}			
-
-			curr_off += 4;
+			}
 		}
 
 		// initializing classe's string fields : 
@@ -610,7 +611,7 @@ public class MIPSGenerator
 			if ((f.hasInitialValue()) && (f.initial_value instanceof String))
 			{
 				String string_label_name = cls.name + "_" + f.name + "_const_field";
-				fileWriter.format("%s: .asciiz \"%s\"\n", string_label_name, 
+				fileWriter.format("%s: .asciiz %s\n", string_label_name,
 															f.initial_value);
 			}
 		}
@@ -637,7 +638,7 @@ public class MIPSGenerator
 		int offset = cls.getMethodNumber(method_name) * WORD_SIZE;
 
 		// finding the address of the method :
-		fileWriter.format("\tla $s1,method_name\n");
+		fileWriter.format("\tla $s1,%s\n", cls.name + "_" + method_name);
 
 		// updating the suitable line at the vtable of the class :
 		fileWriter.format("\tsw $s1,%d($s0)\n", offset);
@@ -905,9 +906,14 @@ public class MIPSGenerator
 		fileWriter.print("\tsubu $sp,$sp,4\n");
 		fileWriter.print("\tsw $a0,0($sp)\n");
 
-		// print
+		// print the int
 		fileWriter.print("\tlw $a0, 12($fp)\n"); // first argument is at offset 12
 		fileWriter.print("\tli $v0, 1\n");
+		fileWriter.print("\tsyscall\n");
+
+		// print " " (space)
+		fileWriter.print("\tli $a0, 32\n"); // 32 == code for SPACE
+		fileWriter.print("\tli $v0, 11\n"); // system call for printing a character
 		fileWriter.print("\tsyscall\n");
 
 		// restore $a0

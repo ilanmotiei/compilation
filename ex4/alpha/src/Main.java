@@ -42,7 +42,7 @@ public class Main
 			/***********************************/
 
 			/* Semant the AST ... */
-			
+
 			try {
 				AST.SemantMe();
 
@@ -68,8 +68,6 @@ public class Main
 			AST.IRme();
 
 			IR.getInstance().MIPSme();  // also allocates machine registers
-
-			System.out.println("HERE");
 
 			/* Close output file */
 			MIPSGenerator.getInstance().finalizeFile();

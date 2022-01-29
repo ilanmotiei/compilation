@@ -273,6 +273,9 @@ PrintInt:
 	lw $a0, 12($fp)
 	li $v0, 1
 	syscall
+	li $a0, 32
+	li $v0, 11
+	syscall
 	lw $a0, 0($sp)
 	addu $sp,$sp,4
 	j __epilogue__
@@ -293,35 +296,118 @@ PrintString:
 	j __epilogue__
 global_initializations:
 .data
-	global_a: .word 0
+vt_Person:
+	.word 0
 .text
-	li $t0,5
-	sw $t0,global_a
+	la $s0,vt_Person
+	lw $s0,0($s0)
+	la $s1,vt_Person
+	sw $s0,0($s1)
 .data
-	global_b: .word 0
+	.word 0
 .text
+	la $s0,vt_Person
+	lw $s0,4($s0)
+	la $s1,vt_Person
+	sw $s0,4($s1)
 .data
-	const_str_0: .asciiz "b"
+non_inherited_fields_initialization_Person:
 .text
-	la $t0,const_str_0
-	sw $t0,global_b
+	la $s0,vt_Person
+	la $s1,Person_getAge
+	sw $s1,0($s0)
+	la $s0,vt_Person
+	la $s1,Person_birthday
+	sw $s1,4($s0)
+.data
+vt_Student:
+	.word 0
+.text
+	la $s0,vt_Student
+	lw $s0,0($s0)
+	la $s1,vt_Student
+	sw $s0,0($s1)
+.data
+	.word 0
+.text
+	la $s0,vt_Person
+	lw $s0,0($s0)
+	la $s1,vt_Student
+	sw $s0,4($s1)
+.data
+	.word 0
+.text
+	la $s0,vt_Person
+	lw $s0,4($s0)
+	la $s1,vt_Student
+	sw $s0,8($s1)
+.data
+non_inherited_fields_initialization_Student:
+.text
+	la $s0,vt_Student
+	la $s1,Student_getAverage
+	sw $s1,0($s0)
 	jr $ra
-BubbleSort:
+monthJuly:
 	subu $sp,$sp,4
 	sw $ra,0($sp)
 	subu $sp,$sp,4
 	sw $fp,0($sp)
 	jal __prologue__
-	subu $sp,$sp,20
+	subu $sp,$sp,4
+	li $t0,7
+	sw $t0,-44($fp)
+	lw $t0,-44($fp)
+	move $v0,$t0
+	j epilogue_monthJuly
+epilogue_monthJuly:
+	j __epilogue__
+Person_getAge:
+	subu $sp,$sp,4
+	sw $ra,0($sp)
+	subu $sp,$sp,4
+	sw $fp,0($sp)
+	jal __prologue__
+	subu $sp,$sp,0
+	lw $s0,8($sp)
+	lw $t0,4($s0)
+	move $v0,$t0
+	j epilogue_getAge
+epilogue_Person_getAge:
+	j __epilogue__
+Person_birthday:
+	subu $sp,$sp,4
+	sw $ra,0($sp)
+	subu $sp,$sp,4
+	sw $fp,0($sp)
+	jal __prologue__
+	subu $sp,$sp,0
+	lw $s0,8($sp)
+	lw $t1,4($s0)
+	li $t0,1
+	add $t0,$t1,$t0
+	lw $s0,8($sp)
+	sw $t0,4($s0)
+	lw $s0,8($sp)
+	lw $t0,4($s0)
+	move $v0,$t0
+	j epilogue_birthday
+epilogue_Person_birthday:
+	j __epilogue__
+Student_getAverage:
+	subu $sp,$sp,4
+	sw $ra,0($sp)
+	subu $sp,$sp,4
+	sw $fp,0($sp)
+	jal __prologue__
+	subu $sp,$sp,8
 	li $t0,0
 	sw $t0,-44($fp)
-	li $t0,-32767
+	li $t0,0
 	sw $t0,-48($fp)
-	li $t0,-1
-	sw $t0,-52($fp)
 Label_1_start:
 	lw $t1,-44($fp)
-	lw $t0,16($fp)
+	li $t0,10
 	blt $t1,$t0,Label_9_AssignOne
 	bge $t1,$t0,Label_10_AssignZero
 Label_9_AssignOne:
@@ -332,61 +418,11 @@ Label_10_AssignZero:
 	j Label_8_end
 Label_8_end:
 	beqz $t0,Label_0_end
-	lw $t1,-44($fp)
-	li $t0,1
-	add $t0,$t1,$t0
-	sw $t0,-56($fp)
-Label_3_start:
-	lw $t1,-56($fp)
-	lw $t0,16($fp)
-	blt $t1,$t0,Label_12_AssignOne
-	bge $t1,$t0,Label_13_AssignZero
-Label_12_AssignOne:
-	li $t0,1
-	j Label_11_end
-Label_13_AssignZero:
-	li $t0,0
-	j Label_11_end
-Label_11_end:
-	beqz $t0,Label_2_end
+	lw $t2,-48($fp)
+	lw $s0,8($sp)
+	lw $t1,12($s0)
 	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	lw $t0,-56($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-Label_4_start:
-	lw $t1,12($fp)
-	lw $t0,-56($fp)
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t1,0($s0)
-	lw $t0,-48($fp)
-	blt $t1,$t0,Label_15_AssignOne
-	bge $t1,$t0,Label_16_AssignZero
-Label_15_AssignOne:
-	li $t0,1
-	j Label_14_end
-Label_16_AssignZero:
-	li $t0,0
-	j Label_14_end
-Label_14_end:
-	beqz $t0,Label_5_end
-	lw $t1,12($fp)
-	lw $t0,-52($fp)
+	beqz $t0,invalid_ptr_dref_abort
 	bltz $t0,index_out_of_range_abort
 	lw $s0,0($t1)
 	bge $t0,$s0,index_out_of_range_abort
@@ -395,44 +431,23 @@ Label_14_end:
 	mul $s0,$s0,4
 	add $s0,$s0,$t1
 	lw $t0,0($s0)
-	sw $t0,-60($fp)
-	lw $t1,12($fp)
-	lw $t0,-56($fp)
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t2,0($s0)
-	lw $t1,12($fp)
-	lw $t0,-52($fp)
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	lw $t2,-60($fp)
-	lw $t1,12($fp)
-	lw $t0,-56($fp)
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-Label_5_end:
-	j Label_3_start
-Label_2_end:
+	add $t0,$t2,$t0
+	sw $t0,-48($fp)
+	lw $t1,-44($fp)
+	li $t0,1
+	add $t0,$t1,$t0
+	sw $t0,-44($fp)
 	j Label_1_start
 Label_0_end:
-epilogue_BubbleSort:
+	lw $t1,-48($fp)
+	li $t0,10
+	beqz $t0,division_by_zero_abort
+	beqz $t0,division_by_zero_abort
+	div $t1,$t0
+	mflo $t0
+	move $v0,$t0
+	j epilogue_getAverage
+epilogue_Student_getAverage:
 	j __epilogue__
 user_main:
 	subu $sp,$sp,4
@@ -440,8 +455,23 @@ user_main:
 	subu $sp,$sp,4
 	sw $fp,0($sp)
 	jal __prologue__
-	subu $sp,$sp,4
-	li $t5,7
+	subu $sp,$sp,12
+	li $v0,9
+	li $a0,20
+	syscall
+	move $t0,$v0
+	la $s0,vt_Student
+	sw $s0,0($t0)
+	li $s0,0
+	sw $s0,4($t0)
+	li $s0,0
+	sw $s0,8($t0)
+	li $s0,0
+	sw $s0,12($t0)
+	li $s0,0
+	sw $s0,16($t0)
+	sw $t0,-44($fp)
+	li $t5,10
 	move $a0,$t5
 	addu $a0, $a0, 1
 	mul $a0,$a0,4
@@ -452,9 +482,9 @@ user_main:
 	li $t3,0
 	li $t2,1
 	li $t1,0
-Label_6_start_label:
+Label_2_start_label:
 	sub $t0,$t5,$t1
-	beqz $t0,Label_7_end_label
+	beqz $t0,Label_3_end_label
 	bltz $t1,index_out_of_range_abort
 	lw $s0,0($t4)
 	bge $t1,$s0,index_out_of_range_abort
@@ -464,112 +494,44 @@ Label_6_start_label:
 	add $s0,$s0,$t4
 	sw $t3,0($s0)
 	add $t1,$t1,$t2
-	j Label_6_start_label
-Label_7_end_label:
-	sw $t4,-44($fp)
-.data
-	const_str_1: .asciiz "HERE"
-.text
-	la $t0,const_str_1
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,global_b
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,global_a
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-.data
-	const_str_2: .asciiz "HERE"
-.text
-	la $t0,const_str_2
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	li $t2,34
-	lw $t1,-44($fp)
-	li $t0,0
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
+	j Label_2_start_label
+Label_3_end_label:
+	lw $t0,-44($fp)
+	sw $t4,12($t0)
+	li $t5,12
+	move $a0,$t5
+	addu $a0, $a0, 1
+	mul $a0,$a0,4
+	li $v0,9
+	syscall
+	move $t4,$v0
+	sw $t5,0($t4)
+	li $t3,0
+	li $t2,1
+	li $t1,0
+Label_4_start_label:
+	sub $t0,$t5,$t1
+	beqz $t0,Label_5_end_label
+	bltz $t1,index_out_of_range_abort
+	lw $s0,0($t4)
+	bge $t1,$s0,index_out_of_range_abort
+	move $s0,$t1
 	add $s0,$s0,1
 	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,12
-	lw $t1,-44($fp)
-	li $t0,1
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,-600
-	lw $t1,-44($fp)
-	li $t0,2
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,-400
-	lw $t1,-44($fp)
-	li $t0,3
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,70
-	lw $t1,-44($fp)
-	li $t0,4
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,30
-	lw $t1,-44($fp)
-	li $t0,5
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	li $t2,-580
-	lw $t1,-44($fp)
+	add $s0,$s0,$t4
+	sw $t3,0($s0)
+	add $t1,$t1,$t2
+	j Label_4_start_label
+Label_5_end_label:
+	lw $t0,-44($fp)
+	sw $t4,-4($t0)
 	li $t0,6
+	sw $t0,-48($fp)
+	li $t2,99
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,12($t0)
+	lw $t0,-48($fp)
 	bltz $t0,index_out_of_range_abort
 	lw $s0,0($t1)
 	bge $t0,$s0,index_out_of_range_abort
@@ -578,5 +540,79 @@ Label_7_end_label:
 	mul $s0,$s0,4
 	add $s0,$s0,$t1
 	sw $t2,0($s0)
+Label_6_start:
+	lw $t0,-44($fp)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	lw $s0,0($t0)
+	lw $s1, 0($s0)
+	jalr $s1
+	move $t1,$v0
+	li $t0,90
+	blt $t0,$t1,Label_12_AssignOne
+	bge $t0,$t1,Label_13_AssignZero
+Label_12_AssignOne:
+	li $t0,1
+	j Label_11_end
+Label_13_AssignZero:
+	li $t0,0
+	j Label_11_end
+Label_11_end:
+	beqz $t0,Label_7_end
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,-4($t0)
+	lw $t0,-44($fp)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	lw $s0,0($t0)
+	lw $s1, 8($s0)
+	jalr $s1
+	move $t0,$v0
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	lw $t1,0($s0)
+	li $t0,1000
+	add $t2,$t1,$t0
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,-4($t0)
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t0,0($t0)
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	sw $t2,0($s0)
+Label_7_end:
+	li $v0,9
+	li $a0,20
+	syscall
+	move $t0,$v0
+	la $s0,vt_Student
+	sw $s0,0($t0)
+	li $s0,0
+	sw $s0,4($t0)
+	li $s0,0
+	sw $s0,8($t0)
+	li $s0,0
+	sw $s0,12($t0)
+	li $s0,0
+	sw $s0,16($t0)
+	sw $t0,-52($fp)
 epilogue_user_main:
 	j __epilogue__

@@ -14,7 +14,7 @@ public class AST_FUNCDEC extends AST_Node {
 	public int line;
 
 	// metadata for code generation
-	public TYPE_FUNCTION func_dec; // the decleration inferred at the semantic analysis
+	public int max_local_var_offset;
 
 	// Class Constructor
 	public AST_FUNCDEC(AST_TYPE type, String name, AST_TYPE_LIST typeList, AST_STMT_LIST body, int line)
@@ -120,13 +120,9 @@ public class AST_FUNCDEC extends AST_Node {
 		
 		// Makes semantic checks for the body (checks also the validity of the types of the return stmts in it)
 		this.body.SemantMe();
-		
-		int func_max_local_var_offset = SYMBOL_TABLE.getInstance().endScope();
+
+		this.max_local_var_offset = SYMBOL_TABLE.getInstance().endScope();
 		// ------------------------------------
-
-		func_type.max_local_var_offset = func_max_local_var_offset;
-
-		this.func_dec = func_type;
 
 		return new BOX(func_type, func_type.name);
 	}
@@ -142,7 +138,7 @@ public class AST_FUNCDEC extends AST_Node {
 
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(name));
 		IR.getInstance().Add_IRcommand(new IRcommand_AddPrologue(
-												this.func_dec.max_local_var_offset));
+												this.max_local_var_offset));
 
 		if (this.body != null) this.body.IRme();
 
@@ -153,11 +149,11 @@ public class AST_FUNCDEC extends AST_Node {
 	// FUNCTION WAS DEFINED AS A CLASS METHOD
 	public void IRme(TYPE_CLASS cls)
 	{
-		String full_name = cls.name + "_" + name;
+		String full_name = cls.name + "_" + this.name;
 
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(full_name));
 		IR.getInstance().Add_IRcommand(new IRcommand_AddPrologue(
-												this.func_dec.max_local_var_offset));
+												this.max_local_var_offset));
 
 		if (this.body != null) this.body.IRme();
 
@@ -165,7 +161,7 @@ public class AST_FUNCDEC extends AST_Node {
 		IR.getInstance().Add_IRcommand(new IRcommand_AddEpilogue());
 
 		IR.getInstance().change_to_global_mode();
-		IR.getInstance().Add_IRcommand(new IRcommand_AddTo_VirtualTable(cls, name));
+		IR.getInstance().Add_IRcommand(new IRcommand_AddTo_VirtualTable(cls, this.name));
 		IR.getInstance().change_to_local_mode();
 	}
 }

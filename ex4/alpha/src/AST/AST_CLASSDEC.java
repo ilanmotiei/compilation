@@ -103,6 +103,7 @@ public class AST_CLASSDEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginScope(cls_dec);
 		SYMBOL_TABLE.getInstance().enter(this.class_name, cls_dec, false, false, false);
 		this.cFieldList.SemantMe(cls_dec); // Adds methods to the class
+
 		SYMBOL_TABLE.getInstance().endScope();
 
 		this.cls = cls_dec;
@@ -124,6 +125,6 @@ public class AST_CLASSDEC extends AST_Node {
 		// all the class fields and methods identifiers and initial values
 		// were inferred at the semantic analysis.
 
-		this.cFieldList.IRme();
+		this.cFieldList.IRme(this.cls);
 	}   
 }

@@ -9,6 +9,25 @@
 
 -- WHAT WE SHOULD REALLY CARE ABOUT IS THE CASTING PROCESS WHEN PASSING AN INSTANCE TO A CLASS METHOD.
 
+-- WHEN ALLOCATING MEMORY TO AN INSTANCE OF CLASS, WE NEED TO KNOW ITS DYNAMIC TYPE FOR ALLOCATION,
+-- WHEN RECEIVING AN INSTANCE OF SOME INHERITING CLASS TO A POINTER OF SOME INHERITED CLASS WE NEED TO DO A CASTING
+
+-- WHEN PASSING INSTANCES OF OBJECTS TO FUNCTIONS WE NEED TO MAKE A CASTING, FOR EXAMPLE:
+
+    if the class hierarchy is Animal --> Person --> Student, and the class Animal has the field 'age' and the method 'getAge()',
+    and we define the following code :
+
+   Person a = new Student; // here a casting Student --> Person occures (we move the pointer backwards to include all
+                           // the fields of the inherited class 'Person'.
+
+   a.getAge() // a casting of Student --> Person occures (we move the pointer backwards to include all the fields
+               // of the inherited class 'Animal'. Note that the pointer is already in 'Person' form
+               // so the casting needs to be from 'Person' to 'Animal' form.
+
+   a.age // --- Illegal --- a is a pointer of type Person. It has no field called 'age' and that command will cause
+          // a semantic error.
+
+
 5. Add a space printing after Integer Printing.
 6. Take care of initializations and settings of vtables.
 7. Take care of initializations of global variables initialized to NIL.

@@ -10,7 +10,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	// simple variable name
 	public String name;
 	public int line;
-	
+
+	// metadata for code generation
+	TYPE_CLASS curr_scope_class = null;
+
 	// Class Constructor
 	public AST_VAR_SIMPLE(String name, int line)
 	{
@@ -53,6 +56,9 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
+		// in case it is a class field:
+		this.curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
 		return new BOX(var_type);
 	}
 
@@ -77,7 +83,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		IR.getInstance().Add_IRcommand(new IRcommand_Load(var_val_tmp, 
 														this.name,
-														null,
+														this.curr_scope_class,
 														this.isLocalVar,
 														this.isArg,
 														this.isClassField,
@@ -89,7 +95,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	public void set(TEMP value)
 	{
 		IR.getInstance().Add_IRcommand(new IRcommand_Store(this.name,
-														   null,
+														   this.curr_scope_class,
 														   value,
 														   this.isLocalVar,
 														   this.isArg,
