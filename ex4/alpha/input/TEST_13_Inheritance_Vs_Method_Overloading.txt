@@ -28,5 +28,5 @@ void main()
 	Son s := new Son;
 	
 	s.WALK();
-	g2.RUN();
+	g3.RUN();
 }

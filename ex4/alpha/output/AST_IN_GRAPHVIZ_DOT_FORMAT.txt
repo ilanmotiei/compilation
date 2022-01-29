@@ -2,724 +2,202 @@ digraph
 {
 graph [ordering = "out"]
 v0 [label = "TYPE_INT"];
-v1 [label = "ARRAYTYPEDEF
-ARRAY ID(IntArray) = type[] 
+v1 [label = "INT(8)"];
+v2 [label = "EXP ASSIGN
+type ID(WALK) := right
 "];
-v1 -> v0;
-v2 [label = "arrayTypedef
-"];
+v2 -> v0;
 v2 -> v1;
-v3 [label = "TYPE_INT"];
-v4 [label = "EXP ASSIGN
-type ID(ID)
-"];
-v4 -> v3;
-v5 [label = "CFIELD
+v3 [label = "CFIELD
  varDec;
 "];
-v5 -> v4;
-v6 [label = "TYPE_INT"];
-v7 [label = "INT(18)"];
-v8 [label = "EXP ASSIGN
-type ID(age) := right
+v3 -> v2;
+v4 [label = "TYPE_STRING"];
+v5 [label = "STRING( ' 'RUN) ' "];
+v6 [label = "EXP ASSIGN
+type ID(RUN) := right
 "];
-v8 -> v6;
+v6 -> v4;
+v6 -> v5;
+v7 [label = "CFIELD
+ varDec;
+"];
+v7 -> v6;
+v8 [label = "CFIELD
+LIST
+"];
 v8 -> v7;
 v9 [label = "CFIELD
- varDec;
+LIST
 "];
+v9 -> v3;
 v9 -> v8;
-v10 [label = "TYPE_INT"];
-v11 [label = "INT(5)"];
-v12 [label = "EXP ASSIGN
-type ID(a1) := right
+v10 [label = "CLASSDEC
+CLASS ID(Grandfather) {cFields} 
 "];
-v12 -> v10;
-v12 -> v11;
-v13 [label = "CFIELD
+v10 -> v9;
+v11 [label = "classDec
+"];
+v11 -> v10;
+v12 [label = "ID(Father)"];
+v13 [label = "NIL"];
+v14 [label = "EXP ASSIGN
+type ID(g) := right
+"];
+v14 -> v12;
+v14 -> v13;
+v15 [label = "CFIELD
  varDec;
 "];
-v13 -> v12;
-v14 [label = "TYPE_STRING"];
-v15 [label = "STRING( ' 'A) ' "];
-v16 [label = "EXP ASSIGN
-type ID(a) := right
+v15 -> v14;
+v16 [label = "CFIELD
+LIST
 "];
-v16 -> v14;
 v16 -> v15;
-v17 [label = "CFIELD
- varDec;
+v17 [label = "CLASSDEC
+CLASS ID(Father) EXTENDS ID(Grandfather) {cFields} 
 "];
 v17 -> v16;
-v18 [label = "ID(IntArray)"];
-v19 [label = "EXP ASSIGN
-type ID(lastYearSalaries)
+v18 [label = "classDec
 "];
-v19 -> v18;
-v20 [label = "CFIELD
- varDec;
+v18 -> v17;
+v19 [label = "ID(Son)"];
+v20 [label = "EXP ASSIGN
+type ID(swim)
 "];
 v20 -> v19;
-v21 [label = "TYPE_INT"];
-v22 [label = "SIMPLE
-VAR
-(age)"];
-v23 [label = "EXP
-VAR"];
+v21 [label = "CFIELD
+ varDec;
+"];
+v21 -> v20;
+v22 [label = "TYPE_INT"];
+v23 [label = "EXP ASSIGN
+type ID(iii)
+"];
 v23 -> v22;
-v24 [label = "RETURN
- RETURN exp;
+v24 [label = "CFIELD
+ varDec;
 "];
 v24 -> v23;
-v25 [label = "STMT
+v25 [label = "CFIELD
 LIST
 "];
 v25 -> v24;
-v26 [label = "FUNCDEC
-type ID(getAge)(arg1,...argn) { body }
+v26 [label = "CFIELD
+LIST
 "];
 v26 -> v21;
 v26 -> v25;
-v27 [label = "CFIELD
- funcDec;
+v27 [label = "CLASSDEC
+CLASS ID(Son) EXTENDS ID(Father) {cFields} 
 "];
 v27 -> v26;
-v28 [label = "TYPE_INT"];
-v29 [label = "SIMPLE
-VAR
-(age)"];
-v30 [label = "EXP
-VAR"];
-v30 -> v29;
-v31 [label = "RETURN
- RETURN exp;
+v28 [label = "classDec
 "];
-v31 -> v30;
-v32 [label = "STMT
-LIST
+v28 -> v27;
+v29 [label = "TYPE_VOID"];
+v30 [label = "ID(Grandfather)"];
+v31 [label = "ID(Grandfather)"];
+v32 [label = "newExp
+ NEW type 
 "];
 v32 -> v31;
-v33 [label = "FUNCDEC
-type ID(birthday)(arg1,...argn) { body }
+v33 [label = "NEWEXP ASSIGN
+type ID(g1) := right
 "];
-v33 -> v28;
+v33 -> v30;
 v33 -> v32;
-v34 [label = "CFIELD
- funcDec;
+v34 [label = "VARDEC
+ var declaration
 "];
 v34 -> v33;
-v35 [label = "CFIELD
-LIST
-"];
-v35 -> v34;
-v36 [label = "CFIELD
-LIST
-"];
-v36 -> v27;
+v35 [label = "SIMPLE
+VAR
+(g1)"];
+v36 [label = "FIELD
+VAR
+...->RUN"];
 v36 -> v35;
-v37 [label = "CFIELD
-LIST
-"];
-v37 -> v20;
-v37 -> v36;
-v38 [label = "CFIELD
-LIST
-"];
-v38 -> v17;
+v37 [label = "SIMPLE
+VAR
+(g1)"];
+v38 [label = "FIELD
+VAR
+...->RUN"];
 v38 -> v37;
-v39 [label = "CFIELD
-LIST
-"];
-v39 -> v13;
+v39 [label = "EXP
+VAR"];
 v39 -> v38;
-v40 [label = "CFIELD
-LIST
-"];
-v40 -> v9;
-v40 -> v39;
-v41 [label = "CFIELD
-LIST
-"];
-v41 -> v5;
+v40 [label = "STRING( ' 'FAST) ' "];
+v41 [label = "BINOP(+)"];
+v41 -> v39;
 v41 -> v40;
-v42 [label = "CLASSDEC
-CLASS ID(Person) {cFields} 
+v42 [label = "ASSIGN
+left := right
 "];
+v42 -> v36;
 v42 -> v41;
-v43 [label = "classDec
-"];
-v43 -> v42;
-v44 [label = "ID(IntArray)"];
-v45 [label = "EXP ASSIGN
-type ID(grades)
-"];
+v43 [label = "SIMPLE
+VAR
+(g1)"];
+v44 [label = "FIELD
+VAR
+...->RUN"];
+v44 -> v43;
+v45 [label = "EXP
+VAR"];
 v45 -> v44;
-v46 [label = "CFIELD
- varDec;
+v46 [label = "EXP
+LIST
 "];
 v46 -> v45;
-v47 [label = "TYPE_INT"];
-v48 [label = "TYPE_INT"];
-v49 [label = "INT(0)"];
-v50 [label = "EXP ASSIGN
-type ID(i) := right
-"];
-v50 -> v48;
-v50 -> v49;
-v51 [label = "VARDEC
- var declaration
-"];
-v51 -> v50;
-v52 [label = "TYPE_INT"];
-v53 [label = "INT(0)"];
-v54 [label = "EXP ASSIGN
-type ID(sum) := right
-"];
-v54 -> v52;
-v54 -> v53;
-v55 [label = "VARDEC
- var declaration
-"];
-v55 -> v54;
-v56 [label = "SIMPLE
-VAR
-(i)"];
-v57 [label = "EXP
-VAR"];
-v57 -> v56;
-v58 [label = "INT(10)"];
-v59 [label = "BINOP(<)"];
-v59 -> v57;
-v59 -> v58;
-v60 [label = "SIMPLE
-VAR
-(sum)"];
-v61 [label = "SIMPLE
-VAR
-(sum)"];
-v62 [label = "EXP
-VAR"];
-v62 -> v61;
-v63 [label = "SIMPLE
-VAR
-(grades)"];
-v64 [label = "SIMPLE
-VAR
-(i)"];
-v65 [label = "EXP
-VAR"];
-v65 -> v64;
-v66 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v66 -> v63;
-v66 -> v65;
-v67 [label = "EXP
-VAR"];
-v67 -> v66;
-v68 [label = "BINOP(+)"];
-v68 -> v62;
-v68 -> v67;
-v69 [label = "ASSIGN
-left := right
-"];
-v69 -> v60;
-v69 -> v68;
-v70 [label = "SIMPLE
-VAR
-(i)"];
-v71 [label = "SIMPLE
-VAR
-(i)"];
-v72 [label = "EXP
-VAR"];
-v72 -> v71;
-v73 [label = "INT(1)"];
-v74 [label = "BINOP(+)"];
-v74 -> v72;
-v74 -> v73;
-v75 [label = "ASSIGN
-left := right
-"];
-v75 -> v70;
-v75 -> v74;
-v76 [label = "STMT
-LIST
-"];
-v76 -> v75;
-v77 [label = "STMT
-LIST
-"];
-v77 -> v69;
-v77 -> v76;
-v78 [label = "WHILE
- while(cond){body} 
-"];
-v78 -> v59;
-v78 -> v77;
-v79 [label = "SIMPLE
-VAR
-(sum)"];
-v80 [label = "EXP
-VAR"];
-v80 -> v79;
-v81 [label = "INT(10)"];
-v82 [label = "BINOP(/)"];
-v82 -> v80;
-v82 -> v81;
-v83 [label = "RETURN
- RETURN exp;
-"];
-v83 -> v82;
-v84 [label = "STMT
-LIST
-"];
-v84 -> v83;
-v85 [label = "STMT
-LIST
-"];
-v85 -> v78;
-v85 -> v84;
-v86 [label = "STMT
-LIST
-"];
-v86 -> v55;
-v86 -> v85;
-v87 [label = "STMT
-LIST
-"];
-v87 -> v51;
-v87 -> v86;
-v88 [label = "FUNCDEC
-type ID(getAverage)(arg1,...argn) { body }
-"];
-v88 -> v47;
-v88 -> v87;
-v89 [label = "CFIELD
- funcDec;
-"];
-v89 -> v88;
-v90 [label = "CFIELD
-LIST
-"];
-v90 -> v89;
-v91 [label = "CFIELD
-LIST
-"];
-v91 -> v46;
-v91 -> v90;
-v92 [label = "CLASSDEC
-CLASS ID(Student) EXTENDS ID(Person) {cFields} 
-"];
-v92 -> v91;
-v93 [label = "classDec
-"];
-v93 -> v92;
-v94 [label = "ID(Student)"];
-v95 [label = "ARRAYTYPEDEF
-ARRAY ID(University) = type[] 
-"];
-v95 -> v94;
-v96 [label = "arrayTypedef
-"];
-v96 -> v95;
-v97 [label = "TYPE_VOID"];
-v98 [label = "ID(Student)"];
-v99 [label = "ID(Student)"];
-v100 [label = "newExp
- NEW type 
-"];
-v100 -> v99;
-v101 [label = "NEWEXP ASSIGN
-type ID(moish) := right
-"];
-v101 -> v98;
-v101 -> v100;
-v102 [label = "VARDEC
- var declaration
-"];
-v102 -> v101;
-v103 [label = "SIMPLE
-VAR
-(moish)"];
-v104 [label = "FIELD
-VAR
-...->grades"];
-v104 -> v103;
-v105 [label = "TYPE_INT"];
-v106 [label = "INT(10)"];
-v107 [label = "newExp
- NEW type[exp] 
-"];
-v107 -> v105;
-v107 -> v106;
-v108 [label = "ASSIGN NEWEXP
-left := new right
-"];
-v108 -> v104;
-v108 -> v107;
-v109 [label = "SIMPLE
-VAR
-(moish)"];
-v110 [label = "FIELD
-VAR
-...->lastYearSalaries"];
-v110 -> v109;
-v111 [label = "TYPE_INT"];
-v112 [label = "INT(12)"];
-v113 [label = "newExp
- NEW type[exp] 
-"];
-v113 -> v111;
-v113 -> v112;
-v114 [label = "ASSIGN NEWEXP
-left := new right
-"];
-v114 -> v110;
-v114 -> v113;
-v115 [label = "TYPE_INT"];
-v116 [label = "INT(6)"];
-v117 [label = "EXP ASSIGN
-type ID(COMPILATION) := right
-"];
-v117 -> v115;
-v117 -> v116;
-v118 [label = "VARDEC
- var declaration
-"];
-v118 -> v117;
-v119 [label = "SIMPLE
-VAR
-(moish)"];
-v120 [label = "FIELD
-VAR
-...->grades"];
-v120 -> v119;
-v121 [label = "SIMPLE
-VAR
-(COMPILATION)"];
-v122 [label = "EXP
-VAR"];
-v122 -> v121;
-v123 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v123 -> v120;
-v123 -> v122;
-v124 [label = "INT(99)"];
-v125 [label = "ASSIGN
-left := right
-"];
-v125 -> v123;
-v125 -> v124;
-v126 [label = "SIMPLE
-VAR
-(moish)"];
-v127 [label = "EXP
-[var.]ID(getAverage) (exps)"];
-v127 -> v126;
-v128 [label = "INT(90)"];
-v129 [label = "BINOP(>)"];
-v129 -> v127;
-v129 -> v128;
-v130 [label = "SIMPLE
-VAR
-(moish)"];
-v131 [label = "FIELD
-VAR
-...->lastYearSalaries"];
-v131 -> v130;
-v132 [label = "SIMPLE
-VAR
-(moish)"];
-v133 [label = "FIELD
-VAR
-...->age"];
-v133 -> v132;
-v134 [label = "EXP
-VAR"];
-v134 -> v133;
-v135 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v135 -> v131;
-v135 -> v134;
-v136 [label = "SIMPLE
-VAR
-(moish)"];
-v137 [label = "FIELD
-VAR
-...->lastYearSalaries"];
-v137 -> v136;
-v138 [label = "SIMPLE
-VAR
-(moish)"];
-v139 [label = "EXP
-[var.]ID(birthday) (exps)"];
-v139 -> v138;
-v140 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v140 -> v137;
-v140 -> v139;
-v141 [label = "EXP
-VAR"];
-v141 -> v140;
-v142 [label = "INT(1000)"];
-v143 [label = "BINOP(+)"];
-v143 -> v141;
-v143 -> v142;
-v144 [label = "ASSIGN
-left := right
-"];
-v144 -> v135;
-v144 -> v143;
-v145 [label = "STMT
-LIST
-"];
-v145 -> v144;
-v146 [label = "IF
- if(cond){body} 
-"];
-v146 -> v129;
-v146 -> v145;
-v147 [label = "ID(University)"];
-v148 [label = "ID(Student)"];
-v149 [label = "INT(37)"];
-v150 [label = "newExp
- NEW type[exp] 
-"];
-v150 -> v148;
-v150 -> v149;
-v151 [label = "NEWEXP ASSIGN
-type ID(TAU) := right
-"];
-v151 -> v147;
-v151 -> v150;
-v152 [label = "VARDEC
- var declaration
-"];
-v152 -> v151;
-v153 [label = "SIMPLE
-VAR
-(moish)"];
-v154 [label = "FIELD
-VAR
-...->age"];
-v154 -> v153;
-v155 [label = "EXP
-VAR"];
-v155 -> v154;
-v156 [label = "EXP
-LIST
-"];
-v156 -> v155;
-v157 [label = "ID stmt
- ID(PrintInt)(expList);
-"];
-v157 -> v156;
-v158 [label = "SIMPLE
-VAR
-(TAU)"];
-v159 [label = "INT(0)"];
-v160 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v160 -> v158;
-v160 -> v159;
-v161 [label = "ID(Student)"];
-v162 [label = "newExp
- NEW type 
-"];
-v162 -> v161;
-v163 [label = "ASSIGN NEWEXP
-left := new right
-"];
-v163 -> v160;
-v163 -> v162;
-v164 [label = "SIMPLE
-VAR
-(TAU)"];
-v165 [label = "INT(0)"];
-v166 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v166 -> v164;
-v166 -> v165;
-v167 [label = "FIELD
-VAR
-...->ID"];
-v167 -> v166;
-v168 [label = "EXP
-VAR"];
-v168 -> v167;
-v169 [label = "EXP
-LIST
-"];
-v169 -> v168;
-v170 [label = "ID stmt
- ID(PrintInt)(expList);
-"];
-v170 -> v169;
-v171 [label = "SIMPLE
-VAR
-(TAU)"];
-v172 [label = "INT(0)"];
-v173 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v173 -> v171;
-v173 -> v172;
-v174 [label = "FIELD
-VAR
-...->a1"];
-v174 -> v173;
-v175 [label = "EXP
-VAR"];
-v175 -> v174;
-v176 [label = "EXP
-LIST
-"];
-v176 -> v175;
-v177 [label = "ID stmt
- ID(PrintInt)(expList);
-"];
-v177 -> v176;
-v178 [label = "SIMPLE
-VAR
-(TAU)"];
-v179 [label = "INT(0)"];
-v180 [label = "SUBSCRIPT
-VAR
-...[...]"];
-v180 -> v178;
-v180 -> v179;
-v181 [label = "FIELD
-VAR
-...->a"];
-v181 -> v180;
-v182 [label = "EXP
-VAR"];
-v182 -> v181;
-v183 [label = "EXP
-LIST
-"];
-v183 -> v182;
-v184 [label = "ID stmt
+v47 [label = "ID stmt
  ID(PrintString)(expList);
 "];
-v184 -> v183;
-v185 [label = "-INT(32000)"];
-v186 [label = "INT(5)"];
-v187 [label = "BINOP(*)"];
-v187 -> v185;
-v187 -> v186;
-v188 [label = "EXP
+v47 -> v46;
+v48 [label = "STMT
 LIST
 "];
-v188 -> v187;
-v189 [label = "ID stmt
- ID(PrintInt)(expList);
-"];
-v189 -> v188;
-v190 [label = "STMT
+v48 -> v47;
+v49 [label = "STMT
 LIST
 "];
-v190 -> v189;
-v191 [label = "STMT
+v49 -> v42;
+v49 -> v48;
+v50 [label = "STMT
 LIST
 "];
-v191 -> v184;
-v191 -> v190;
-v192 [label = "STMT
-LIST
-"];
-v192 -> v177;
-v192 -> v191;
-v193 [label = "STMT
-LIST
-"];
-v193 -> v170;
-v193 -> v192;
-v194 [label = "STMT
-LIST
-"];
-v194 -> v163;
-v194 -> v193;
-v195 [label = "STMT
-LIST
-"];
-v195 -> v157;
-v195 -> v194;
-v196 [label = "STMT
-LIST
-"];
-v196 -> v152;
-v196 -> v195;
-v197 [label = "STMT
-LIST
-"];
-v197 -> v146;
-v197 -> v196;
-v198 [label = "STMT
-LIST
-"];
-v198 -> v125;
-v198 -> v197;
-v199 [label = "STMT
-LIST
-"];
-v199 -> v118;
-v199 -> v198;
-v200 [label = "STMT
-LIST
-"];
-v200 -> v114;
-v200 -> v199;
-v201 [label = "STMT
-LIST
-"];
-v201 -> v108;
-v201 -> v200;
-v202 [label = "STMT
-LIST
-"];
-v202 -> v102;
-v202 -> v201;
-v203 [label = "FUNCDEC
+v50 -> v34;
+v50 -> v49;
+v51 [label = "FUNCDEC
 type ID(main)(arg1,...argn) { body }
 "];
-v203 -> v97;
-v203 -> v202;
-v204 [label = "funcDec
+v51 -> v29;
+v51 -> v50;
+v52 [label = "funcDec
 "];
-v204 -> v203;
-v205 [label = "DEC
+v52 -> v51;
+v53 [label = "DEC
 LIST
 "];
-v205 -> v204;
-v206 [label = "DEC
+v53 -> v52;
+v54 [label = "DEC
 LIST
 "];
-v206 -> v96;
-v206 -> v205;
-v207 [label = "DEC
+v54 -> v28;
+v54 -> v53;
+v55 [label = "DEC
 LIST
 "];
-v207 -> v93;
-v207 -> v206;
-v208 [label = "DEC
+v55 -> v18;
+v55 -> v54;
+v56 [label = "DEC
 LIST
 "];
-v208 -> v43;
-v208 -> v207;
-v209 [label = "DEC
-LIST
-"];
-v209 -> v2;
-v209 -> v208;
-v210 [label = "PROGRAM
+v56 -> v11;
+v56 -> v55;
+v57 [label = "PROGRAM
 DECLIST
 "];
-v210 -> v209;
+v57 -> v56;
 }

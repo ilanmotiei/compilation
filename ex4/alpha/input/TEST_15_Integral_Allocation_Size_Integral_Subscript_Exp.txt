@@ -19,7 +19,10 @@ array WisePeople = Grandfather[];
 
 void main()
 {
+    PrintInt(5);
 	Father g      := new Father;
+	PrintInt(4);
 	g.g           := new Son;
+	PrintInt(5);
 	WisePeople wp := new Grandfather[180]; wp[250] := g;
 }

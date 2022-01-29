@@ -18,14 +18,8 @@ class Son extends Father
 void main()
 {
 	Grandfather g1 := new Grandfather;
-	Grandfather g2 := new Father;
-	Grandfather g3 := new Son;
 
-	Father f1 := new Father;
-	Father f2 := new Son;
-
-	Son s := new Son;
-	
 	g1.RUN := g1.RUN + "FAST";
-	s.WALK := 700;
+
+	PrintString(g1.RUN);
 }

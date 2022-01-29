@@ -192,6 +192,8 @@ public class AST_EXP_BINOP extends AST_EXP
 				IR.
 				getInstance().
 				Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+
+				IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 			}
 		}
 		if (OP == 1)
@@ -199,18 +201,24 @@ public class AST_EXP_BINOP extends AST_EXP
 			IR.
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Sub_Integers(dst,t1,t2));
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 		}
 		if (OP == 2)
 		{
 			IR.
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 		}
 		if (OP == 3)
 		{
 			IR.
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Divide_Integers(dst,t1,t2));
+
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 		}
 		if (OP == 4)
 		{
@@ -244,8 +252,6 @@ public class AST_EXP_BINOP extends AST_EXP
 				Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst, t1, t2));
 			}
 		}
-
-		IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 
 		return dst;
 	}

@@ -54,7 +54,7 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/TEST_11_Complex_Vars.txt
+INPUT    = ${INPUT_DIR}/TEST_14_Data_Members_Access.txt
 OUTPUT   = ${OUTPUT_DIR}/MIPS.txt
 
 ##########
