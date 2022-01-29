@@ -1,10 +1,16 @@
 
 1. Add limitations on the operations  *,+,/,- of the L language.
-2. Add register allocation support for the code at the global scope.
+
 3. Check if class fields initializations work.
 4. Make the method calling be according to the dynamic type of the object.
+
+-- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS. WE JUST NEED TO MAKE SURE THAT 'la '  FOR A LABEL
+   AT THE TEXT SECTION REALLY WORKS.
+
+-- WHAT WE SHOULD REALLY CARE ABOUT IS THE CASTING PROCESS WHEN PASSING AN INSTANCE TO A CLASS METHOD.
+
 5. Add a space printing after Integer Printing.
-6. Make initializations of global variables happen before the main function starts.
+6. Take care of initializations and settings of vtables.
 7. Take care of initializations of global variables initialized to NIL.
 8. Make more checks. Check also on nova.
 9. Submit.
