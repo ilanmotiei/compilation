@@ -195,28 +195,45 @@ public class AST_VARDEC_EXP extends AST_VARDEC {
 
 	public void IRme()
 	{
-		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLARATION IS NOT OF A CLASS FIELD
-
 		if (exp != null)
 		{
 			if ((! this.isLocalVar) && (! this.isClassField))
 			{
-				// it is a global variable and we need to initialize for it a label
+				// it is a global variable declaration and we need to initialize for it a label
+				IR.getInstance().change_to_global_mode();
 
 				IR.getInstance().Add_IRcommand(new IRcommand_Init_Global_Var(this.name));
+
+				TEMP initial_value = exp.IRme();
+
+				IR.
+				getInstance().
+				Add_IRcommand(new IRcommand_Store(name,
+								this._cls_,
+								initial_value,
+								this.isLocalVar,
+								this.isArg,
+								this.isClassField,
+								this.offset));
+
+				IR.getInstance().change_to_local_mode();
 			}
+			else
+			{
+				// it is a local declaration
 
-			TEMP initial_value = exp.IRme();
+				TEMP initial_value = exp.IRme();
 
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Store(name,
-											  this._cls_,
-											  initial_value, 
-											  this.isLocalVar,
-											  this.isArg,
-											  this.isClassField,
-											  this.offset));
+				IR.
+				getInstance().
+				Add_IRcommand(new IRcommand_Store(name,
+								this._cls_,
+								initial_value,
+								this.isLocalVar,
+								this.isArg,
+								this.isClassField,
+								this.offset));
+			}
 		}
 	}
 }

@@ -279,8 +279,9 @@ public class MIPSGenerator
 	{
 		int i1 =oprnd1.getSerialNumber();
 				
-		fileWriter.format("\tbeq $t%d,$zero,%s\n",i1,label);				
+		fileWriter.format("\tbeqz $t%d,%s\n",i1,label);
 	}
+
 	public void bltz(TEMP oprnd1,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -554,7 +555,6 @@ public class MIPSGenerator
 		fileWriter.print(".text\n");
  	}
 
-
 	public void init_class_vtable(TYPE_CLASS cls)
 	{
 		// HEADER :
@@ -663,6 +663,11 @@ public class MIPSGenerator
 														obj.getSerialNumber());
 	}
 
+	public void jump_ra()
+	{
+		fileWriter.format("\tjr $ra\n");
+	}
+
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */
 	/**************************************/
@@ -739,6 +744,7 @@ public class MIPSGenerator
 	public void init_main()
 	{
 		label("main");
+		fileWriter.print("\tjal global_initializations\n");
 		fileWriter.print("\tjal user_main\n");
 		
 		label("exit");

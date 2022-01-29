@@ -206,8 +206,6 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 	public void IRme()
 	{
-		// WE ARE ASSUMING THAT IF WE ARE HERE THE DECLARATION IS NOT OF A CLASS FIELD
-
 		if (newExp != null)
 		{
 			TEMP initial_value = newExp.IRme();

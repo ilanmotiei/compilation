@@ -164,6 +164,8 @@ public class AST_FUNCDEC extends AST_Node {
 		IR.getInstance().Add_IRcommand(new IRcommand_Label("epilogue_" + full_name));
 		IR.getInstance().Add_IRcommand(new IRcommand_AddEpilogue());
 
+		IR.getInstance().change_to_global_mode();
 		IR.getInstance().Add_IRcommand(new IRcommand_AddTo_VirtualTable(cls, name));
+		IR.getInstance().change_to_local_mode();
 	}
 }

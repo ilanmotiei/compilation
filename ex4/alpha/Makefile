@@ -197,3 +197,7 @@ everything:
 	@echo "\n"
 	# [11] Run spim and redirect its output (un-comment after codegen + register allocation is implemented)
 	spim -f ${OUTPUT_DIR}/MIPS.txt > ${OUTPUT_DIR}/MIPS_OUTPUT.txt
+
+run_mips:
+	# [11] Run spim and redirect its output (un-comment after codegen + register allocation is implemented)
+	spim -f ${OUTPUT_DIR}/MIPS.txt > ${OUTPUT_DIR}/MIPS_OUTPUT.txt

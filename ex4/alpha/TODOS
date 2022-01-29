@@ -4,5 +4,7 @@
 3. Check if class fields initializations work.
 4. Make the method calling be according to the dynamic type of the object.
 5. Add a space printing after Integer Printing.
-6. Make more checks. Check also on nova.
-7. Submit.
+6. Make initializations of global variables happen before the main function starts.
+7. Take care of initializations of global variables initialized to NIL.
+8. Make more checks. Check also on nova.
+9. Submit.

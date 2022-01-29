@@ -14,11 +14,27 @@ import java.util.*;
 
 import TYPES.*;
 import MIPS.*;
+import TEMP.*;
 import RegisterAllocation.RegisterAllocator;
 
 public class IR
 {
 	private LinkedList<IRcommand> cmd_list = null;
+	private LinkedList<IRcommand> global_decs_list = null;
+
+	private boolean global_mode = false;
+
+	public void change_to_global_mode()
+	{
+		global_mode = true;
+	}
+
+	public void change_to_local_mode()
+	{
+		global_mode = false;
+	}
+
+	// adds a command to the global initializations list
 
 	public void Add_IRcommand(IRcommand cmd)
 	{
@@ -27,11 +43,52 @@ public class IR
 			cmd_list = new LinkedList<>();
 		}
 
-		cmd_list.add(cmd);
+		if (global_decs_list == null)
+		{
+			global_decs_list = new LinkedList<>();
+		}
+
+		if (global_mode)
+		{
+			global_decs_list.add(cmd);
+		}
+		else
+		{
+			cmd_list.add(cmd);
+		}
+	}
+
+	// Moves initializations and declarations of global variables to the start
+	public void Move_Global_Initializations()
+	{
+		// Allocate registers :
+
+		RegisterAllocator ra = new RegisterAllocator();
+
+		for (IRcommand cmd : global_decs_list)
+		{
+			ra.add_cmd(cmd);
+		}
+
+		ra.AllocateRegisters();
+
+		// MIPS the code :
+
+		MIPSGenerator.getInstance().label("global_initializations");
+
+		for (IRcommand cmd : global_decs_list)
+		{
+			cmd.MIPSme();
+		}
+
+		MIPSGenerator.getInstance().jump_ra();
 	}
 
 	public void MIPSme()
 	{
+		Move_Global_Initializations();  // initializes the global information
+
+		// MIPSing the other code
 		RegisterAllocator allocator = new RegisterAllocator();
 		boolean in_function = false;
 
@@ -71,7 +128,28 @@ public class IR
 			}
 			else
 			{
-				// we are not in a function and will MIPS the command now
+				// DEPRECATED : WE SHOULDN'T GET HERE ANYMORE. ALL GLOBAL INITIALIZATIONS SHOULD HAPPEN AT
+				// 				THE 'global_initializations' SECTION.
+
+				// -----------------------------------------------------------------------------------------
+
+				// we are not in a function and will MIPS the command now, we won't use the registers
+				// for many time so we can allocate them arbitrary.
+				// there is no command that uses more than 10 temps and therefore the 'color' won't exceed 9
+
+				int color = 0;
+
+				LinkedList<TEMP> cmd_temps = cmd.getCMDTemps();
+
+				if (cmd_temps != null)
+				{
+					for (TEMP t : cmd_temps)
+					{
+						t.color = color;
+						color ++;
+					}
+				}
+
 				cmd.MIPSme();
 			}
 		}

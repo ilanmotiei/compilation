@@ -112,11 +112,15 @@ public class AST_CLASSDEC extends AST_Node {
 
 	public void IRme()
 	{
+		IR.getInstance().change_to_global_mode();
+
 		IR.
 		getInstance().
 		Add_IRcommand(new IRcommand_ClassDec(cls));
 
-		// ^ : adds a class decleration. 
+		IR.getInstance().change_to_local_mode();
+
+		// ^ : adds a class declaration.
 		// all the class fields and methods identifiers and initial values
 		// were inferred at the semantic analysis.
 
