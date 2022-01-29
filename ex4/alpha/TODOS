@@ -1,0 +1,8 @@
+
+1. Add limitations on the operations  *,+,/,- of the L language.
+2. Add register allocation support for the code at the global scope.
+3. Check if class fields initializations work.
+4. Make the method calling be according to the dynamic type of the object.
+5. Add a space printing after Integer Printing.
+6. Make more checks. Check also on nova.
+7. Submit.
