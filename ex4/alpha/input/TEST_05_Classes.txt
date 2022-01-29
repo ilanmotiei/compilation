@@ -24,11 +24,13 @@ class Student extends Person
 	{
 		int i := 0;
 		int sum := 0;
+
 		while (i<10)
 		{
-			sum := sum+grades[i];
+			sum := sum + grades[i];
 			i := i+1;
 		}
+
 		return sum/10;
 	}
 }
@@ -44,8 +46,9 @@ void main()
 
 	if (moish.getAverage() > 90)
 	{
-		// mysterious raise pattern ... 
+		// mysterious raise pattern ...
 		moish.lastYearSalaries[moish.age] := moish.lastYearSalaries[moish.birthday()] + 1000;
 	}
+
 	Student dave := new Student;
 }

@@ -1,11 +1,11 @@
 
 1. Add limitations on the operations  *,+,/,- of the L language.
 
-3. Check if class fields initializations work.
+3. Check if class fields initializations work. -------------- DOESN'T WORK FOR INT --------------------
+                                               --------------   CHECK FOR NIL !!!  --------------------
 4. Make the method calling be according to the dynamic type of the object.
 
--- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS. WE JUST NEED TO MAKE SURE THAT 'la '  FOR A LABEL
-   AT THE TEXT SECTION REALLY WORKS.
+-- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS.
 
 -- WHAT WE SHOULD REALLY CARE ABOUT IS THE CASTING PROCESS WHEN PASSING AN INSTANCE TO A CLASS METHOD.
 
@@ -18,13 +18,13 @@
     and we define the following code :
 
    Person a = new Student; // here a casting Student --> Person occures (we move the pointer backwards to include all
-                           // the fields of the inherited class 'Person'.
+                           // the fields of the inherited class 'Person').
 
-   a.getAge() // a casting of Student --> Person occures (we move the pointer backwards to include all the fields
+   a.getAge()  // a casting of Student --> Animal occurres (we move the pointer backwards to include all the fields
                // of the inherited class 'Animal'. Note that the pointer is already in 'Person' form
                // so the casting needs to be from 'Person' to 'Animal' form.
 
-   a.age // --- Illegal --- a is a pointer of type Person. It has no field called 'age' and that command will cause
+   a.age  // --- Illegal --- a is a pointer of type Person. It has no field called 'age' and that command will cause
           // a semantic error.
 
 

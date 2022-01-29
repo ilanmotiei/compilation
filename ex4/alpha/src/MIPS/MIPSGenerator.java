@@ -75,8 +75,8 @@ public class MIPSGenerator
 					// we are uploading the value as a field of the instance
 					// stored at the 8'th offset from the frame pointer
 
-					fileWriter.format("\tlw $s0,8($sp)\n");
-					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
+					fileWriter.format("\tlw $s0,8($fp)\n");
+					int field_off = (cls.getFieldIndex(var_name) + 1) * WORD_SIZE;
 					fileWriter.format("\tlw $t%d,%d($s0)\n", idxdst, 
 																field_off);
 				}
@@ -115,8 +115,8 @@ public class MIPSGenerator
 					// we are storing the value as a field of the instance
 					// stored at the 8'th offset from the frame pointer
 
-					fileWriter.format("\tlw $s0,8($sp)\n");
-					int field_off = cls.getFieldIndex(var_name) * WORD_SIZE;
+					fileWriter.format("\tlw $s0,8($fp)\n");
+					int field_off = (cls.getFieldIndex(var_name) + 1) * WORD_SIZE;
 					fileWriter.format("\tsw $t%d,%d($s0)\n", idxsrc, 
 																field_off);
 				}
@@ -293,7 +293,7 @@ public class MIPSGenerator
 	{
 		// RUNNING-TIME CHECKS : ----------------------------------
 
-		beqz(dst, "invalid_ptr_dref_abort"); // checking the array is initialized (i.e. not null)
+		beqz(arr, "invalid_ptr_dref_abort"); // checking the array is initialized (i.e. not null)
 
 		// if (idx < 0) : abort
 		bltz(idx, "index_out_of_range_abort"); 
@@ -315,6 +315,8 @@ public class MIPSGenerator
 	public void array_set(TEMP arr, TEMP idx, TEMP value)
 	{
 		// RUNNING-TIME CHECKS : ------------------------------------------
+
+		beqz(arr, "invalid_ptr_dref_abort"); // checking the array is initialized (i.e. not null)
 
 		// if (idx < 0) : abort
 		bltz(idx, "index_out_of_range_abort"); 
@@ -566,37 +568,16 @@ public class MIPSGenerator
 		// DEFINING THE METHODS :
 		LinkedList<String> methods_names_lst = cls.getMethodsNames();
 
+		TYPE_CLASS method_implementor_cls;
+
 		int curr_off = 0;
 
 		for (String method_name : methods_names_lst)
 		{
-			fileWriter.format("\t.word 0\n");
+			// the first (from top) class at the hierarchy that implements the method
+			method_implementor_cls = cls.getMethodImplementor(method_name);
 
-			TYPE_CLASS method_implementor_cls = cls.getMethodImplementor(method_name);
-	
-			if (method_implementor_cls == null)
-			{
-				// method wasn't defined in any higher class at the hierarchy
-				// leaving for it a place at the vtable for when it'll be defined
-			}
-			else
-			{
-				// method was allready defined at some higher class at the hierarchy
-				
-				// loading its previous definition's address :
-				fileWriter.format(".text\n");
-				fileWriter.format("\tla $s0,vt_%s\n", method_implementor_cls.name);
-				int imp_off = method_implementor_cls.getMethodNumber(method_name) * 4;
-				fileWriter.format("\tlw $s0,%d($s0)\n", imp_off);
-
-				// storing it at the current class' vtable
-				fileWriter.format("\tla $s1,vt_%s\n", cls.name);
-				int curr_cls_off = cls.getMethodNumber(method_name) * 4;
-				fileWriter.format("\tsw $s0,%d($s1)\n", curr_cls_off);
-
-				// changing mode back to data
-				fileWriter.format(".data\n");
-			}
+			fileWriter.format("\t.word %s\n", method_implementor_cls.name + "_" + method_name);
 		}
 
 		// initializing classe's string fields : 
@@ -621,32 +602,13 @@ public class MIPSGenerator
 		fileWriter.format(".text\n");
 	}
 
-	// changes the virtual table of the current class
-	public void add_to_vtable(TYPE_CLASS cls, String method_name)
-	{
-		/*
-
-		cls : the class that this method is being declared/reimplemented.
-		method_name : the name of the method.
-
-		*/
-
-		// finding the address of the vtable of our current class : 
-		fileWriter.format("\tla $s0,vt_%s\n", cls.name);
-
-		// finding the offset at the vtable for the specified method name :
-		int offset = cls.getMethodNumber(method_name) * WORD_SIZE;
-
-		// finding the address of the method :
-		fileWriter.format("\tla $s1,%s\n", cls.name + "_" + method_name);
-
-		// updating the suitable line at the vtable of the class :
-		fileWriter.format("\tsw $s1,%d($s0)\n", offset);
-	}
-
 	public void field_set(TEMP obj, TYPE_CLASS cls, String field_name, TEMP value)
 	{
-		int field_offset = cls.getFieldIndex(field_name) * WORD_SIZE;
+		fileWriter.format("\tbeqz $t%d,invalid_ptr_dref_abort\n", obj.getSerialNumber()); // null pointer check
+
+		// ELSE :
+
+		int field_offset = (cls.getFieldIndex(field_name) + 1) * WORD_SIZE;
 
 		fileWriter.format("\tsw $t%d,%d($t%d)\n", value.getSerialNumber(),
 														field_offset,
@@ -655,9 +617,11 @@ public class MIPSGenerator
 
 	public void field_access(TEMP dst, TEMP obj, TYPE_CLASS cls, String field_name)
 	{
-		int field_offset = cls.getFieldIndex(field_name) * WORD_SIZE;
-
 		fileWriter.format("\tbeqz $t%d,invalid_ptr_dref_abort\n", obj.getSerialNumber()); // null pointer check
+
+		// ELSE :
+
+		int field_offset = (cls.getFieldIndex(field_name) + 1) * WORD_SIZE;
 
 		fileWriter.format("\tlw $t%d,%d($t%d)\n", dst.getSerialNumber(),
 														field_offset,

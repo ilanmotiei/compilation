@@ -214,23 +214,25 @@ public class TYPE_CLASS extends TYPE
 
 		TYPE_CLASS curr_cls = this;
 
-		while (curr_cls != null)
-		{
+		while (curr_cls != null) {
 			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
+			LinkedList<String> curr_cls_methods_names = new LinkedList<>();
 
-			while (curr != null)
-			{
+			while (curr != null) {
 				TYPE_CLASS_FIELD f = curr.head;
 
-				if (f.is_function()){
-					if (! methods_names.contains(f.name))
-					{
+				if (f.is_function()) {
+					if (!methods_names.contains(f.name)) {
 						// add it to the methods names in a reverse order
-						methods_names.addLast(f.name);
+						curr_cls_methods_names.addFirst(f.name);
 					}
 				}
 
 				curr = curr.tail;
+			}
+
+			for (String na : curr_cls_methods_names) {
+				methods_names.addFirst(na);
 			}
 
 			curr_cls = curr_cls.father;
@@ -266,16 +268,22 @@ public class TYPE_CLASS extends TYPE
 		while (curr_cls != null)
 		{
 			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
+			LinkedList<TYPE_CLASS_FIELD> curr_class_fields = new LinkedList<>();
 
 			while (curr != null)
 			{
 				TYPE_CLASS_FIELD f = curr.head;
 
 				if (f.is_var()){
-					class_fields.addFirst(f);
+					curr_class_fields.addFirst(f);
 				}
 
 				curr = curr.tail;
+			}
+
+			for (TYPE_CLASS_FIELD f : curr_class_fields)
+			{
+				class_fields.addFirst(f);
 			}
 
 			curr_cls = curr_cls.father;
@@ -288,30 +296,20 @@ public class TYPE_CLASS extends TYPE
 	// (among all class fields - including inherited ones)
 	public int getFieldIndex(String field_name)
 	{
-		int idx = this.var_field_cnt - 1;
+		int idx = 0;
 
-		TYPE_CLASS curr_cls = this;
+		LinkedList<TYPE_CLASS_FIELD> cls_fields = getClassFields();
 
-		while (curr_cls != null)
+		for (TYPE_CLASS_FIELD f : cls_fields)
 		{
-			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
-
-			while (curr != null)
+			if (f.name.equals(field_name))
 			{
-				TYPE_CLASS_FIELD f = curr.head;
-
-				if (f.name.equals(field_name)){
-					return idx;
-				}
-
-				curr = curr.tail;
-				idx --;
+				return idx;
 			}
-
-			curr_cls = curr_cls.father;
+			idx ++;
 		}
 
-		return -1; // for error if field name wasn't found
+		return -1;
 	}
 
 	// For memory allocation

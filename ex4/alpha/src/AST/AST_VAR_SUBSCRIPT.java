@@ -80,11 +80,11 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		TEMP dst_tmp = TEMP_FACTORY.getInstance().getFreshTEMP();
 
 		TEMP arr_tmp = this.var.IRme();
-		TEMP subscript_tmp = this.subscript.IRme();
+		TEMP idx = this.subscript.IRme();
 
 		IR.getInstance().Add_IRcommand(new IRcommand_ArrayAccess(dst_tmp, 
 																 arr_tmp,
-																 subscript_tmp));
+																 idx));
 
 		return dst_tmp;
 	}

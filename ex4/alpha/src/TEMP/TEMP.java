@@ -34,7 +34,6 @@ public class TEMP
 	
 	public int getSerialNumber()
 	{
-
 		if (color != -1)
 		{
 			return color;

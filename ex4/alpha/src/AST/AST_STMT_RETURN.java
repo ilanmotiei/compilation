@@ -95,7 +95,18 @@ public class AST_STMT_RETURN extends AST_STMT {
 			}
 		}
 
-		this.func_name = func.name;
+		TYPE_CLASS curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
+		if (curr_scope_class == null)
+		{
+			this.func_name = func.name;
+		}
+		else
+		{
+			// we're defining a class method
+			this.func_name = curr_scope_class.name + "_" + func.name;
+		}
+
 
 		// VALID;
 	}

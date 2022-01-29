@@ -14,7 +14,6 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	public AST_EXP exp;
 	public int line;
 
-
 	//  Class Constructor
 	public AST_STMT_ASSIGN(AST_VAR var, AST_EXP exp, int line)
 	{

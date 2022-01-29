@@ -12,6 +12,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	public int line;
 
 	// metadata for code generation
+	TYPE type = null;
 	TYPE_CLASS curr_scope_class = null;
 
 	// Class Constructor
@@ -53,11 +54,17 @@ public class AST_VAR_SIMPLE extends AST_VAR
 
 		// ELSE : 
 
+		// Setting meta data for code generation :
+
 		SYMBOL_TABLE_ENTRY entry = SYMBOL_TABLE.getInstance().find_entry(this.name);
 		this.setCodeGenMetaData(entry);
 
+		this.type = var_type;
+
 		// in case it is a class field:
 		this.curr_scope_class = SYMBOL_TABLE.getInstance().find_curr_scope_class();
+
+		// Returning information to the caller :
 
 		return new BOX(var_type);
 	}
@@ -92,8 +99,17 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		return var_val_tmp;
 	}
 
-	public void set(TEMP value)
+	public void set(TEMP value, TYPE value_type)
 	{
+		TEMP casted_ptr = value;
+
+		if (value_type.is_class())
+		{
+			// we may need to make an up-casting (i.e. moving the pointer backwards)
+			casted_ptr = TEMP_FACTORY.getInstance().getFreshTEMP();
+			IR.getInstance().Add_IRcommand(new IRcommand_Cast(casted_ptr, this.type, value, value_type));
+		}
+
 		IR.getInstance().Add_IRcommand(new IRcommand_Store(this.name,
 														   this.curr_scope_class,
 														   value,

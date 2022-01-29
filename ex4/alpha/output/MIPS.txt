@@ -297,56 +297,17 @@ PrintString:
 global_initializations:
 .data
 vt_Person:
-	.word 0
-.text
-	la $s0,vt_Person
-	lw $s0,0($s0)
-	la $s1,vt_Person
-	sw $s0,0($s1)
-.data
-	.word 0
-.text
-	la $s0,vt_Person
-	lw $s0,4($s0)
-	la $s1,vt_Person
-	sw $s0,4($s1)
-.data
+	.word Person_getAge
+	.word Person_birthday
 non_inherited_fields_initialization_Person:
 .text
-	la $s0,vt_Person
-	la $s1,Person_getAge
-	sw $s1,0($s0)
-	la $s0,vt_Person
-	la $s1,Person_birthday
-	sw $s1,4($s0)
 .data
 vt_Student:
-	.word 0
-.text
-	la $s0,vt_Student
-	lw $s0,0($s0)
-	la $s1,vt_Student
-	sw $s0,0($s1)
-.data
-	.word 0
-.text
-	la $s0,vt_Person
-	lw $s0,0($s0)
-	la $s1,vt_Student
-	sw $s0,4($s1)
-.data
-	.word 0
-.text
-	la $s0,vt_Person
-	lw $s0,4($s0)
-	la $s1,vt_Student
-	sw $s0,8($s1)
-.data
+	.word Person_getAge
+	.word Person_birthday
+	.word Student_getAverage
 non_inherited_fields_initialization_Student:
 .text
-	la $s0,vt_Student
-	la $s1,Student_getAverage
-	sw $s1,0($s0)
 	jr $ra
 monthJuly:
 	subu $sp,$sp,4
@@ -369,10 +330,10 @@ Person_getAge:
 	sw $fp,0($sp)
 	jal __prologue__
 	subu $sp,$sp,0
-	lw $s0,8($sp)
-	lw $t0,4($s0)
+	lw $s0,8($fp)
+	lw $t0,8($s0)
 	move $v0,$t0
-	j epilogue_getAge
+	j epilogue_Person_getAge
 epilogue_Person_getAge:
 	j __epilogue__
 Person_birthday:
@@ -382,16 +343,16 @@ Person_birthday:
 	sw $fp,0($sp)
 	jal __prologue__
 	subu $sp,$sp,0
-	lw $s0,8($sp)
-	lw $t1,4($s0)
+	lw $s0,8($fp)
+	lw $t1,8($s0)
 	li $t0,1
 	add $t0,$t1,$t0
-	lw $s0,8($sp)
-	sw $t0,4($s0)
-	lw $s0,8($sp)
-	lw $t0,4($s0)
+	lw $s0,8($fp)
+	sw $t0,8($s0)
+	lw $s0,8($fp)
+	lw $t0,8($s0)
 	move $v0,$t0
-	j epilogue_birthday
+	j epilogue_Person_birthday
 epilogue_Person_birthday:
 	j __epilogue__
 Student_getAverage:
@@ -419,10 +380,10 @@ Label_10_AssignZero:
 Label_8_end:
 	beqz $t0,Label_0_end
 	lw $t2,-48($fp)
-	lw $s0,8($sp)
-	lw $t1,12($s0)
+	lw $s0,8($fp)
+	lw $t1,16($s0)
 	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
+	beqz $t1,invalid_ptr_dref_abort
 	bltz $t0,index_out_of_range_abort
 	lw $s0,0($t1)
 	bge $t0,$s0,index_out_of_range_abort
@@ -446,7 +407,7 @@ Label_0_end:
 	div $t1,$t0
 	mflo $t0
 	move $v0,$t0
-	j epilogue_getAverage
+	j epilogue_Student_getAverage
 epilogue_Student_getAverage:
 	j __epilogue__
 user_main:
@@ -485,6 +446,7 @@ user_main:
 Label_2_start_label:
 	sub $t0,$t5,$t1
 	beqz $t0,Label_3_end_label
+	beqz $t4,invalid_ptr_dref_abort
 	bltz $t1,index_out_of_range_abort
 	lw $s0,0($t4)
 	bge $t1,$s0,index_out_of_range_abort
@@ -497,7 +459,8 @@ Label_2_start_label:
 	j Label_2_start_label
 Label_3_end_label:
 	lw $t0,-44($fp)
-	sw $t4,12($t0)
+	beqz $t0,invalid_ptr_dref_abort
+	sw $t4,16($t0)
 	li $t5,12
 	move $a0,$t5
 	addu $a0, $a0, 1
@@ -512,6 +475,7 @@ Label_3_end_label:
 Label_4_start_label:
 	sub $t0,$t5,$t1
 	beqz $t0,Label_5_end_label
+	beqz $t4,invalid_ptr_dref_abort
 	bltz $t1,index_out_of_range_abort
 	lw $s0,0($t4)
 	bge $t1,$s0,index_out_of_range_abort
@@ -524,14 +488,16 @@ Label_4_start_label:
 	j Label_4_start_label
 Label_5_end_label:
 	lw $t0,-44($fp)
-	sw $t4,-4($t0)
+	beqz $t0,invalid_ptr_dref_abort
+	sw $t4,12($t0)
 	li $t0,6
 	sw $t0,-48($fp)
 	li $t2,99
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,12($t0)
+	lw $t1,16($t0)
 	lw $t0,-48($fp)
+	beqz $t1,invalid_ptr_dref_abort
 	bltz $t0,index_out_of_range_abort
 	lw $s0,0($t1)
 	bge $t0,$s0,index_out_of_range_abort
@@ -540,6 +506,42 @@ Label_5_end_label:
 	mul $s0,$s0,4
 	add $s0,$s0,$t1
 	sw $t2,0($s0)
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,12($t0)
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t0,8($t0)
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	lw $t0,0($s0)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
+	lw $t0,-44($fp)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	lw $s0,0($t0)
+	lw $s1, 8($s0)
+	jalr $s1
+	move $t0,$v0
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 Label_6_start:
 	lw $t0,-44($fp)
 	subu $sp,$sp,4
@@ -547,7 +549,7 @@ Label_6_start:
 	addu $sp,$sp,4
 	subu $sp,$sp,4
 	lw $s0,0($t0)
-	lw $s1, 0($s0)
+	lw $s1, 8($s0)
 	jalr $s1
 	move $t1,$v0
 	li $t0,90
@@ -563,14 +565,14 @@ Label_11_end:
 	beqz $t0,Label_7_end
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,-4($t0)
+	lw $t1,12($t0)
 	lw $t0,-44($fp)
 	subu $sp,$sp,4
 	sw $t0,0($sp)
 	addu $sp,$sp,4
 	subu $sp,$sp,4
 	lw $s0,0($t0)
-	lw $s1, 8($s0)
+	lw $s1, 4($s0)
 	jalr $s1
 	move $t0,$v0
 	beqz $t1,invalid_ptr_dref_abort
@@ -586,10 +588,11 @@ Label_11_end:
 	add $t2,$t1,$t0
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,-4($t0)
+	lw $t1,12($t0)
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
-	lw $t0,0($t0)
+	lw $t0,8($t0)
+	beqz $t1,invalid_ptr_dref_abort
 	bltz $t0,index_out_of_range_abort
 	lw $s0,0($t1)
 	bge $t0,$s0,index_out_of_range_abort
@@ -599,6 +602,27 @@ Label_11_end:
 	add $s0,$s0,$t1
 	sw $t2,0($s0)
 Label_7_end:
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,12($t0)
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t0,8($t0)
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	lw $t0,0($s0)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 	li $v0,9
 	li $a0,20
 	syscall

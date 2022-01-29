@@ -437,157 +437,252 @@ v131 -> v130;
 v132 [label = "SIMPLE
 VAR
 (moish)"];
-v133 [label = "EXP
-[var.]ID(getAverage) (exps)"];
-v133 -> v132;
-v134 [label = "INT(90)"];
-v135 [label = "BINOP(>)"];
-v135 -> v133;
-v135 -> v134;
-v136 [label = "SIMPLE
-VAR
-(moish)"];
-v137 [label = "FIELD
+v133 [label = "FIELD
 VAR
 ...->lastYearSalaries"];
-v137 -> v136;
-v138 [label = "SIMPLE
+v133 -> v132;
+v134 [label = "SIMPLE
 VAR
 (moish)"];
-v139 [label = "FIELD
+v135 [label = "FIELD
 VAR
 ...->age"];
-v139 -> v138;
-v140 [label = "EXP
+v135 -> v134;
+v136 [label = "EXP
 VAR"];
-v140 -> v139;
-v141 [label = "SUBSCRIPT
+v136 -> v135;
+v137 [label = "SUBSCRIPT
 VAR
 ...[...]"];
-v141 -> v137;
-v141 -> v140;
-v142 [label = "SIMPLE
+v137 -> v133;
+v137 -> v136;
+v138 [label = "EXP
+VAR"];
+v138 -> v137;
+v139 [label = "EXP
+LIST
+"];
+v139 -> v138;
+v140 [label = "ID stmt
+ ID(PrintInt)(expList);
+"];
+v140 -> v139;
+v141 [label = "SIMPLE
 VAR
 (moish)"];
-v143 [label = "FIELD
+v142 [label = "EXP
+[var.]ID(getAverage) (exps)"];
+v142 -> v141;
+v143 [label = "EXP
+LIST
+"];
+v143 -> v142;
+v144 [label = "ID stmt
+ ID(PrintInt)(expList);
+"];
+v144 -> v143;
+v145 [label = "SIMPLE
+VAR
+(moish)"];
+v146 [label = "EXP
+[var.]ID(getAverage) (exps)"];
+v146 -> v145;
+v147 [label = "INT(90)"];
+v148 [label = "BINOP(>)"];
+v148 -> v146;
+v148 -> v147;
+v149 [label = "SIMPLE
+VAR
+(moish)"];
+v150 [label = "FIELD
 VAR
 ...->lastYearSalaries"];
-v143 -> v142;
-v144 [label = "SIMPLE
+v150 -> v149;
+v151 [label = "SIMPLE
 VAR
 (moish)"];
-v145 [label = "EXP
-[var.]ID(birthday) (exps)"];
-v145 -> v144;
-v146 [label = "SUBSCRIPT
+v152 [label = "FIELD
+VAR
+...->age"];
+v152 -> v151;
+v153 [label = "EXP
+VAR"];
+v153 -> v152;
+v154 [label = "SUBSCRIPT
 VAR
 ...[...]"];
-v146 -> v143;
-v146 -> v145;
-v147 [label = "EXP
+v154 -> v150;
+v154 -> v153;
+v155 [label = "SIMPLE
+VAR
+(moish)"];
+v156 [label = "FIELD
+VAR
+...->lastYearSalaries"];
+v156 -> v155;
+v157 [label = "SIMPLE
+VAR
+(moish)"];
+v158 [label = "EXP
+[var.]ID(birthday) (exps)"];
+v158 -> v157;
+v159 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v159 -> v156;
+v159 -> v158;
+v160 [label = "EXP
 VAR"];
-v147 -> v146;
-v148 [label = "INT(1000)"];
-v149 [label = "BINOP(+)"];
-v149 -> v147;
-v149 -> v148;
-v150 [label = "ASSIGN
+v160 -> v159;
+v161 [label = "INT(1000)"];
+v162 [label = "BINOP(+)"];
+v162 -> v160;
+v162 -> v161;
+v163 [label = "ASSIGN
 left := right
 "];
-v150 -> v141;
-v150 -> v149;
-v151 [label = "STMT
-LIST
-"];
-v151 -> v150;
-v152 [label = "IF
- if(cond){body} 
-"];
-v152 -> v135;
-v152 -> v151;
-v153 [label = "ID(Student)"];
-v154 [label = "ID(Student)"];
-v155 [label = "newExp
- NEW type 
-"];
-v155 -> v154;
-v156 [label = "NEWEXP ASSIGN
-type ID(dave) := right
-"];
-v156 -> v153;
-v156 -> v155;
-v157 [label = "VARDEC
- var declaration
-"];
-v157 -> v156;
-v158 [label = "STMT
-LIST
-"];
-v158 -> v157;
-v159 [label = "STMT
-LIST
-"];
-v159 -> v152;
-v159 -> v158;
-v160 [label = "STMT
-LIST
-"];
-v160 -> v131;
-v160 -> v159;
-v161 [label = "STMT
-LIST
-"];
-v161 -> v124;
-v161 -> v160;
-v162 [label = "STMT
-LIST
-"];
-v162 -> v120;
-v162 -> v161;
-v163 [label = "STMT
-LIST
-"];
-v163 -> v114;
+v163 -> v154;
 v163 -> v162;
 v164 [label = "STMT
 LIST
 "];
-v164 -> v108;
 v164 -> v163;
-v165 [label = "FUNCDEC
+v165 [label = "IF
+ if(cond){body} 
+"];
+v165 -> v148;
+v165 -> v164;
+v166 [label = "SIMPLE
+VAR
+(moish)"];
+v167 [label = "FIELD
+VAR
+...->lastYearSalaries"];
+v167 -> v166;
+v168 [label = "SIMPLE
+VAR
+(moish)"];
+v169 [label = "FIELD
+VAR
+...->age"];
+v169 -> v168;
+v170 [label = "EXP
+VAR"];
+v170 -> v169;
+v171 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v171 -> v167;
+v171 -> v170;
+v172 [label = "EXP
+VAR"];
+v172 -> v171;
+v173 [label = "EXP
+LIST
+"];
+v173 -> v172;
+v174 [label = "ID stmt
+ ID(PrintInt)(expList);
+"];
+v174 -> v173;
+v175 [label = "ID(Student)"];
+v176 [label = "ID(Student)"];
+v177 [label = "newExp
+ NEW type 
+"];
+v177 -> v176;
+v178 [label = "NEWEXP ASSIGN
+type ID(dave) := right
+"];
+v178 -> v175;
+v178 -> v177;
+v179 [label = "VARDEC
+ var declaration
+"];
+v179 -> v178;
+v180 [label = "STMT
+LIST
+"];
+v180 -> v179;
+v181 [label = "STMT
+LIST
+"];
+v181 -> v174;
+v181 -> v180;
+v182 [label = "STMT
+LIST
+"];
+v182 -> v165;
+v182 -> v181;
+v183 [label = "STMT
+LIST
+"];
+v183 -> v144;
+v183 -> v182;
+v184 [label = "STMT
+LIST
+"];
+v184 -> v140;
+v184 -> v183;
+v185 [label = "STMT
+LIST
+"];
+v185 -> v131;
+v185 -> v184;
+v186 [label = "STMT
+LIST
+"];
+v186 -> v124;
+v186 -> v185;
+v187 [label = "STMT
+LIST
+"];
+v187 -> v120;
+v187 -> v186;
+v188 [label = "STMT
+LIST
+"];
+v188 -> v114;
+v188 -> v187;
+v189 [label = "STMT
+LIST
+"];
+v189 -> v108;
+v189 -> v188;
+v190 [label = "FUNCDEC
 type ID(main)(arg1,...argn) { body }
 "];
-v165 -> v103;
-v165 -> v164;
-v166 [label = "funcDec
+v190 -> v103;
+v190 -> v189;
+v191 [label = "funcDec
 "];
-v166 -> v165;
-v167 [label = "DEC
+v191 -> v190;
+v192 [label = "DEC
 LIST
 "];
-v167 -> v166;
-v168 [label = "DEC
+v192 -> v191;
+v193 [label = "DEC
 LIST
 "];
-v168 -> v102;
-v168 -> v167;
-v169 [label = "DEC
+v193 -> v102;
+v193 -> v192;
+v194 [label = "DEC
 LIST
 "];
-v169 -> v52;
-v169 -> v168;
-v170 [label = "DEC
+v194 -> v52;
+v194 -> v193;
+v195 [label = "DEC
 LIST
 "];
-v170 -> v14;
-v170 -> v169;
-v171 [label = "DEC
+v195 -> v14;
+v195 -> v194;
+v196 [label = "DEC
 LIST
 "];
-v171 -> v2;
-v171 -> v170;
-v172 [label = "PROGRAM
+v196 -> v2;
+v196 -> v195;
+v197 [label = "PROGRAM
 DECLIST
 "];
-v172 -> v171;
+v197 -> v196;
 }
