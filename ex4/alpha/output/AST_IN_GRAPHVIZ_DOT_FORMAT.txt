@@ -609,99 +609,117 @@ v184 [label = "ID stmt
  ID(PrintString)(expList);
 "];
 v184 -> v183;
-v185 [label = "STMT
-LIST
-"];
-v185 -> v184;
-v186 [label = "STMT
-LIST
-"];
-v186 -> v177;
-v186 -> v185;
-v187 [label = "STMT
-LIST
-"];
-v187 -> v170;
+v185 [label = "-INT(32000)"];
+v186 [label = "INT(5)"];
+v187 [label = "BINOP(*)"];
+v187 -> v185;
 v187 -> v186;
-v188 [label = "STMT
+v188 [label = "EXP
 LIST
 "];
-v188 -> v163;
 v188 -> v187;
-v189 [label = "STMT
-LIST
+v189 [label = "ID stmt
+ ID(PrintInt)(expList);
 "];
-v189 -> v157;
 v189 -> v188;
 v190 [label = "STMT
 LIST
 "];
-v190 -> v152;
 v190 -> v189;
 v191 [label = "STMT
 LIST
 "];
-v191 -> v146;
+v191 -> v184;
 v191 -> v190;
 v192 [label = "STMT
 LIST
 "];
-v192 -> v125;
+v192 -> v177;
 v192 -> v191;
 v193 [label = "STMT
 LIST
 "];
-v193 -> v118;
+v193 -> v170;
 v193 -> v192;
 v194 [label = "STMT
 LIST
 "];
-v194 -> v114;
+v194 -> v163;
 v194 -> v193;
 v195 [label = "STMT
 LIST
 "];
-v195 -> v108;
+v195 -> v157;
 v195 -> v194;
 v196 [label = "STMT
 LIST
 "];
-v196 -> v102;
+v196 -> v152;
 v196 -> v195;
-v197 [label = "FUNCDEC
+v197 [label = "STMT
+LIST
+"];
+v197 -> v146;
+v197 -> v196;
+v198 [label = "STMT
+LIST
+"];
+v198 -> v125;
+v198 -> v197;
+v199 [label = "STMT
+LIST
+"];
+v199 -> v118;
+v199 -> v198;
+v200 [label = "STMT
+LIST
+"];
+v200 -> v114;
+v200 -> v199;
+v201 [label = "STMT
+LIST
+"];
+v201 -> v108;
+v201 -> v200;
+v202 [label = "STMT
+LIST
+"];
+v202 -> v102;
+v202 -> v201;
+v203 [label = "FUNCDEC
 type ID(main)(arg1,...argn) { body }
 "];
-v197 -> v97;
-v197 -> v196;
-v198 [label = "funcDec
-"];
-v198 -> v197;
-v199 [label = "DEC
-LIST
-"];
-v199 -> v198;
-v200 [label = "DEC
-LIST
-"];
-v200 -> v96;
-v200 -> v199;
-v201 [label = "DEC
-LIST
-"];
-v201 -> v93;
-v201 -> v200;
-v202 [label = "DEC
-LIST
-"];
-v202 -> v43;
-v202 -> v201;
-v203 [label = "DEC
-LIST
-"];
-v203 -> v2;
+v203 -> v97;
 v203 -> v202;
-v204 [label = "PROGRAM
-DECLIST
+v204 [label = "funcDec
 "];
 v204 -> v203;
+v205 [label = "DEC
+LIST
+"];
+v205 -> v204;
+v206 [label = "DEC
+LIST
+"];
+v206 -> v96;
+v206 -> v205;
+v207 [label = "DEC
+LIST
+"];
+v207 -> v93;
+v207 -> v206;
+v208 [label = "DEC
+LIST
+"];
+v208 -> v43;
+v208 -> v207;
+v209 [label = "DEC
+LIST
+"];
+v209 -> v2;
+v209 -> v208;
+v210 [label = "PROGRAM
+DECLIST
+"];
+v210 -> v209;
 }

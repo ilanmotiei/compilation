@@ -4,6 +4,7 @@ import IR.*;
 import SYMBOL_TABLE.*;
 import TYPES.*;
 import TEMP.*;
+import java.lang.Math;
 
 public class AST_EXP_BINOP extends AST_EXP
 {
@@ -243,6 +244,8 @@ public class AST_EXP_BINOP extends AST_EXP
 				Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst, t1, t2));
 			}
 		}
+
+		IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
 
 		return dst;
 	}

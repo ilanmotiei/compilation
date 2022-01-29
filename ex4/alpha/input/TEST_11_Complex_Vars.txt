@@ -55,4 +55,6 @@ void main()
 	PrintInt(TAU[0].ID);
 	PrintInt(TAU[0].a1);
     PrintString(TAU[0].a);
+
+    PrintInt(-32000 * 5);
 }

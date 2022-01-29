@@ -294,6 +294,50 @@ PrintString:
 	lw $a0, 0($sp)
 	addu $sp,$sp,4
 	j __epilogue__
+_bind_int_:
+	subu $sp,$sp,4
+	sw $s7,0($sp)
+	subu $sp,$sp,4
+	sw $s6,0($sp)
+	subu $sp,$sp,4
+	sw $s5,0($sp)
+	subu $sp,$sp,4
+	sw $s4,0($sp)
+	subu $sp,$sp,4
+	sw $s3,0($sp)
+	subu $sp,$sp,4
+	sw $s2,0($sp)
+	subu $sp,$sp,4
+	sw $s1,0($sp)
+	subu $sp,$sp,4
+	sw $s0,0($sp)
+	ble $s0,$s1,_bind_int_minimum_
+	bge $s0,$s2,_bind_int_maximum_
+	j _bind_int_end_
+_bind_int_minimum_:
+	move $s0,$s1
+	j _bind_int_end_
+_bind_int_maximum_:
+	move $s0,$s2
+_bind_int_end_:
+	move $v0,$s0
+	lw $s0,0($sp)
+	addu $sp,$sp,4
+	lw $s1,0($sp)
+	addu $sp,$sp,4
+	lw $s2,0($sp)
+	addu $sp,$sp,4
+	lw $s3,0($sp)
+	addu $sp,$sp,4
+	lw $s4,0($sp)
+	addu $sp,$sp,4
+	lw $s5,0($sp)
+	addu $sp,$sp,4
+	lw $s6,0($sp)
+	addu $sp,$sp,4
+	lw $s7,0($sp)
+	addu $sp,$sp,4
+	jr $ra
 global_initializations:
 .data
 vt_Person:
@@ -359,6 +403,11 @@ Label_12_AssignZero:
 	li $t0,0
 	j Label_10_end
 Label_10_end:
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
 	beqz $t0,Label_0_end
 	lw $t2,-48($fp)
 	lw $s0,8($fp)
@@ -374,10 +423,20 @@ Label_10_end:
 	add $s0,$s0,$t1
 	lw $t0,0($s0)
 	add $t0,$t2,$t0
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
 	sw $t0,-48($fp)
 	lw $t1,-44($fp)
 	li $t0,1
 	add $t0,$t1,$t0
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
 	sw $t0,-44($fp)
 	j Label_1_start
 Label_0_end:
@@ -387,6 +446,11 @@ Label_0_end:
 	beqz $t0,division_by_zero_abort
 	div $t1,$t0
 	mflo $t0
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
 	move $v0,$t0
 	j epilogue_Student_getAverage
 epilogue_Student_getAverage:
@@ -519,6 +583,11 @@ Label_15_AssignZero:
 	li $t0,0
 	j Label_13_end
 Label_13_end:
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
 	beqz $t0,Label_7_end
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
@@ -543,6 +612,11 @@ Label_13_end:
 	lw $t1,0($s0)
 	li $t0,1000
 	add $t2,$t1,$t0
+	move $s0,$t2
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t2,$v0
 	lw $t0,-44($fp)
 	beqz $t0,invalid_ptr_dref_abort
 	lw $t1,20($t0)
@@ -689,5 +763,19 @@ Label_9_end_label:
 	subu $sp,$sp,4
 	subu $sp,$sp,4
 	jal PrintString
+	li $t1,-32000
+	li $t0,5
+	mul $t0,$t1,$t0
+	move $s0,$t0
+	li $s1,-32768
+	li $s2,32768
+	jal _bind_int_
+	move $t0,$v0
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 epilogue_user_main:
 	j __epilogue__

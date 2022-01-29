@@ -201,6 +201,18 @@ public class MIPSGenerator
 		fileWriter.format("\tmul $t%d,$t%d,$t%d\n",dstidx,i1,i2);
 	}
 
+	// binds the number at 't' between the range (minimum, maximum)
+	public void bind(TEMP t, int minimum, int maximum)
+	{
+		fileWriter.format("\tmove $s0,$t%d\n", t.getSerialNumber());
+		fileWriter.format("\tli $s1,%d\n", minimum);
+		fileWriter.format("\tli $s2,%d\n", maximum);
+
+		jal("_bind_int_");
+
+		fileWriter.format("\tmove $t%d,$v0\n", t.getSerialNumber());
+	}
+
 	public void str_cmp(TEMP dst, TEMP oprnd1, TEMP oprnd2)
 	{
 		int i1 = oprnd1.getSerialNumber();
@@ -728,6 +740,7 @@ public class MIPSGenerator
 		init_stradd();
 		init_print_int();
 		init_print_string();
+		init_bind_int();
 	}
 
 	public void init_main()
@@ -994,6 +1007,37 @@ public class MIPSGenerator
 		fileWriter.format("\tmove $fp,$s0\n");  // $fp = $s0 = previous_fp
 
 		fileWriter.format("\tjr $ra\n");        // jump to the return_address
+	}
+
+	public void init_bind_int()
+	{
+		// $src = $s0
+		// minimum = $s1
+		// maximum = $s2
+		// $dst = $v0
+
+		label("_bind_int_");
+
+		add_backup_save_registers();
+
+		fileWriter.format("\tble $s0,$s1,_bind_int_minimum_\n");
+		fileWriter.format("\tbge $s0,$s2,_bind_int_maximum_\n");
+
+		// else : it is exactly in the range :
+		jump("_bind_int_end_");
+
+		label("_bind_int_minimum_");
+		fileWriter.format("\tmove $s0,$s1\n");
+		jump("_bind_int_end_");
+
+		label("_bind_int_maximum_");
+		fileWriter.format("\tmove $s0,$s2\n");
+
+		label("_bind_int_end_");
+		fileWriter.format("\tmove $v0,$s0\n");
+		add_restore_save_registers();
+
+		fileWriter.format("\tjr $ra\n");
 	}
 
 

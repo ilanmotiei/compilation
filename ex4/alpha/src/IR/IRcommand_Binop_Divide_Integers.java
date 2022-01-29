@@ -26,9 +26,7 @@ public class IRcommand_Binop_Divide_Integers extends IRcommand
 		this.t1 = t1;
 		this.t2 = t2;
 	}
-	/***************/
-	/* MIPS me !!! */
-	/***************/
+
 	public void MIPSme()
 	{
         // A RUNNING TIME CHECK FOR A DIVISION BY ZERO : 

@@ -1,104 +1,13 @@
 
 1. Add limitations on the operations  *,+,/,- of the L language.
 
-3. Check if class fields initializations work. -------------- DOESN'T WORK FOR INT --------------------
-                                               --------------   CHECK FOR NIL !!!  --------------------
-
-4. Make the method calling be according to the dynamic type of the object.
+-- fixed - check ! ! ! -- Make the method calling be according to the dynamic type of the object -- fixed -- ! ! !
 
 -- IT'S ALREADY DYNAMICALLY BINDING, BECAUSE OVERRIDING HAPPENS.
 
 -- WHAT WE SHOULD REALLY CARE ABOUT IS THE CASTING PROCESS WHEN PASSING AN INSTANCE TO A CLASS METHOD.
 
--- WHEN ALLOCATING MEMORY TO AN INSTANCE OF CLASS, WE NEED TO KNOW ITS DYNAMIC TYPE FOR ALLOCATION,
--- WHEN RECEIVING AN INSTANCE OF SOME INHERITING CLASS TO A POINTER OF SOME INHERITED CLASS WE NEED TO DO A CASTING
-
--- WHEN PASSING INSTANCES OF OBJECTS TO FUNCTIONS WE NEED TO MAKE A CASTING, FOR EXAMPLE:
-
-    if the class hierarchy is Animal --> Person --> Student, and the class Animal has the field 'age' and the method 'getAge()',
-    and we define the following code :
-
-   Person a = new Student; // here a casting Student --> Person occures (we move the pointer backwards to include all
-                           // the fields of the inherited class 'Person').
-
-   a.getAge()  // a casting of Student --> Animal occurres (we move the pointer backwards to include all the fields
-               // of the inherited class 'Animal'. Note that the pointer is already in 'Person' form
-               // so the casting needs to be from 'Person' to 'Animal' form.
-
-   a.age  // --- Illegal --- a is a pointer of type Person. It has no field called 'age' and that command will cause
-          // a semantic error.
+-- IT WASN'T IMPLEMENTED BUT I COULDNT SEE WHY IT IS NEEDED --
 
 8. Make more checks. Check also on nova.
 9. Submit.
-
-
-///
-
-
-
-	/* Adds a new field to the class */
-	public void appendField(TYPE_CLASS_FIELD newField)
-	{
-
-		if (this.data_members == null)
-		{
-			this.data_members = new TYPE_CLASS_FIELD_LIST(newField, null);
-			return;
-		}
-
-		if (newField.is_var())
-		{
-			var_field_cnt ++;
-			this.data_members.Append(newField);
-			return;
-		}
-
-		// else : this newField is a function and we should care about where to put it at the list
-		// 		  for the uniformity of the vtable
-
-		if ((this.father != null) && (this.father.data_members != null))
-		{
-			// find where this field should be located at the data_members list
-
-			for (TYPE_CLASS_FIELD f : this.father.data_members)
-			{
-				int func_loc = 0;
-
-				if (f.name.equals(newField.name))
-				{
-					break;
-				}
-
-				if (f.is_function())
-				{
-					func_loc ++;
-				}
-			}
-
-			// locate the new field at that location (with respect only to functions) also in this class data members list
-
-			TYPE_CLASS_FIELD_LIST curr = this.data_members;
-			int cnt = 0;
-
-			while (cnt < func_loc)
-			{
-				TYPE_CLASS_FIELD f = curr.head;
-
-				if (f.is_function()) {
-					cnt ++;
-				}
-
-				curr = curr.tail;
-			}
-
-			if (curr.tail != null)
-			{
-				TYPE_CLASS_FIELD_LIST after_curr
-			}
-		}
-		else {
-			// just append that field as the last. the order doesn't matter if no father class
-			// forces uniformity with respect to his vtable
-			this.data_members.Append(newField);
-		}
-	}
