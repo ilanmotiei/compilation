@@ -1,2 +1,2 @@
 Loaded: /usr/local/Cellar/spim/9.1.23/share/exceptions.s
-RUNFAST
+5 4 5 8 

@@ -24,5 +24,9 @@ void main()
 	PrintInt(4);
 	g.g           := new Son;
 	PrintInt(5);
-	WisePeople wp := new Grandfather[180]; wp[250] := g;
+	WisePeople wp := new Grandfather[180];
+
+	wp[49] := new Son;
+
+    PrintInt(wp[49].WALK);
 }

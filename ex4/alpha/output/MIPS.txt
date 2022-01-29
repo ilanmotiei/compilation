@@ -389,12 +389,19 @@ user_main:
 	subu $sp,$sp,4
 	sw $fp,0($sp)
 	jal __prologue__
+	subu $sp,$sp,8
+	li $t0,5
 	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 	li $v0,9
-	li $a0,12
+	li $a0,16
 	syscall
 	move $t0,$v0
-	la $s0,vt_Grandfather
+	la $s0,vt_Father
 	sw $s0,0($t0)
 	li $s0,8
 	sw $s0,4($t0)
@@ -408,29 +415,130 @@ user_main:
 	sw $s0,8($t0)
 	la $s1,Grandfather_RUN_const_field
 	jal _strcpy_
+	li $s0,0
+	sw $s0,12($t0)
 	sw $t0,-44($fp)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,8($t0)
-.data
-	const_str_0: .asciiz "FAST"
-.text
-	la $t0,const_str_0
-	move $s0,$t1
-	move $s1,$t0
-	jal _stradd_
-	move $t1,$v0
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	sw $t1,8($t0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t0,8($t0)
+	li $t0,4
 	subu $sp,$sp,4
 	sw $t0,0($sp)
 	addu $sp,$sp,4
 	subu $sp,$sp,4
 	subu $sp,$sp,4
-	jal PrintString
+	jal PrintInt
+	li $v0,9
+	li $a0,24
+	syscall
+	move $t1,$v0
+	la $s0,vt_Son
+	sw $s0,0($t1)
+	li $s0,8
+	sw $s0,4($t1)
+	la $s0,Grandfather_RUN_const_field
+	jal _strsize_
+	move $a0,$v0
+	add $a0,$a0,1
+	li $v0,9
+	syscall
+	move $s0,$v0
+	sw $s0,8($t1)
+	la $s1,Grandfather_RUN_const_field
+	jal _strcpy_
+	li $s0,0
+	sw $s0,12($t1)
+	li $s0,0
+	sw $s0,16($t1)
+	li $s0,0
+	sw $s0,20($t1)
+	lw $t0,-44($fp)
+	beqz $t0,invalid_ptr_dref_abort
+	sw $t1,12($t0)
+	li $t0,5
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
+	li $t5,180
+	move $a0,$t5
+	addu $a0, $a0, 1
+	mul $a0,$a0,4
+	li $v0,9
+	syscall
+	move $t4,$v0
+	sw $t5,0($t4)
+	li $t3,0
+	li $t2,1
+	li $t1,0
+Label_0_start_label:
+	sub $t0,$t5,$t1
+	beqz $t0,Label_1_end_label
+	beqz $t4,invalid_ptr_dref_abort
+	bltz $t1,index_out_of_range_abort
+	lw $s0,0($t4)
+	bge $t1,$s0,index_out_of_range_abort
+	move $s0,$t1
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t4
+	sw $t3,0($s0)
+	add $t1,$t1,$t2
+	j Label_0_start_label
+Label_1_end_label:
+	sw $t4,-48($fp)
+	li $v0,9
+	li $a0,24
+	syscall
+	move $t2,$v0
+	la $s0,vt_Son
+	sw $s0,0($t2)
+	li $s0,8
+	sw $s0,4($t2)
+	la $s0,Grandfather_RUN_const_field
+	jal _strsize_
+	move $a0,$v0
+	add $a0,$a0,1
+	li $v0,9
+	syscall
+	move $s0,$v0
+	sw $s0,8($t2)
+	la $s1,Grandfather_RUN_const_field
+	jal _strcpy_
+	li $s0,0
+	sw $s0,12($t2)
+	li $s0,0
+	sw $s0,16($t2)
+	li $s0,0
+	sw $s0,20($t2)
+	lw $t1,-48($fp)
+	li $t0,49
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	sw $t2,0($s0)
+	lw $t1,-48($fp)
+	li $t0,49
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	lw $t0,0($s0)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t0,4($t0)
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 epilogue_user_main:
 	j __epilogue__
