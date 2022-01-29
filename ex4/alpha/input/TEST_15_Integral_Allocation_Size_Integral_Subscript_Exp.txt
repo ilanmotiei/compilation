@@ -29,4 +29,6 @@ void main()
 	wp[49] := new Son;
 
     PrintInt(wp[49].WALK);
+
+    PrintInt(wp[49].RUN = "RUN");
 }

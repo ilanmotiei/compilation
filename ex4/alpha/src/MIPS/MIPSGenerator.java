@@ -225,7 +225,7 @@ public class MIPSGenerator
 		jal("_strcmp_");
 
 		// result is stored at the register $v0. moving it to the 'dst' register
-		fileWriter.format("\tmove $t%d,$v0", dst_idx);
+		fileWriter.format("\tmove $t%d,$v0\n", dst_idx);
 	}
 
 	public void str_add(TEMP dst, TEMP oprnd1, TEMP oprnd2)

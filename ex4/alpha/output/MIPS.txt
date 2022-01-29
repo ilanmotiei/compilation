@@ -540,5 +540,32 @@ Label_1_end_label:
 	subu $sp,$sp,4
 	subu $sp,$sp,4
 	jal PrintInt
+	lw $t1,-48($fp)
+	li $t0,49
+	beqz $t1,invalid_ptr_dref_abort
+	bltz $t0,index_out_of_range_abort
+	lw $s0,0($t1)
+	bge $t0,$s0,index_out_of_range_abort
+	move $s0,$t0
+	add $s0,$s0,1
+	mul $s0,$s0,4
+	add $s0,$s0,$t1
+	lw $t0,0($s0)
+	beqz $t0,invalid_ptr_dref_abort
+	lw $t1,8($t0)
+.data
+	const_str_0: .asciiz "RUN"
+.text
+	la $t0,const_str_0
+	move $s0,$t1
+	move $s1,$t0
+	jal _strcmp_
+	move $t0,$v0
+	subu $sp,$sp,4
+	sw $t0,0($sp)
+	addu $sp,$sp,4
+	subu $sp,$sp,4
+	subu $sp,$sp,4
+	jal PrintInt
 epilogue_user_main:
 	j __epilogue__

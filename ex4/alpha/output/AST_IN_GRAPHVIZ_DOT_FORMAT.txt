@@ -223,79 +223,112 @@ v70 [label = "ID stmt
  ID(PrintInt)(expList);
 "];
 v70 -> v69;
-v71 [label = "STMT
-LIST
-"];
-v71 -> v70;
-v72 [label = "STMT
-LIST
-"];
-v72 -> v63;
-v72 -> v71;
-v73 [label = "STMT
-LIST
-"];
-v73 -> v57;
+v71 [label = "SIMPLE
+VAR
+(wp)"];
+v72 [label = "INT(49)"];
+v73 [label = "SUBSCRIPT
+VAR
+...[...]"];
+v73 -> v71;
 v73 -> v72;
-v74 [label = "STMT
-LIST
-"];
-v74 -> v51;
+v74 [label = "FIELD
+VAR
+...->RUN"];
 v74 -> v73;
-v75 [label = "STMT
-LIST
-"];
-v75 -> v48;
+v75 [label = "EXP
+VAR"];
 v75 -> v74;
-v76 [label = "STMT
-LIST
-"];
-v76 -> v43;
-v76 -> v75;
-v77 [label = "STMT
-LIST
-"];
-v77 -> v40;
+v76 [label = "STRING( ' 'RUN) ' "];
+v77 [label = "BINOP(=)"];
+v77 -> v75;
 v77 -> v76;
-v78 [label = "STMT
+v78 [label = "EXP
 LIST
 "];
-v78 -> v35;
 v78 -> v77;
-v79 [label = "FUNCDEC
-type ID(main)(arg1,...argn) { body }
+v79 [label = "ID stmt
+ ID(PrintInt)(expList);
 "];
-v79 -> v32;
 v79 -> v78;
-v80 [label = "funcDec
+v80 [label = "STMT
+LIST
 "];
 v80 -> v79;
-v81 [label = "DEC
+v81 [label = "STMT
 LIST
 "];
+v81 -> v70;
 v81 -> v80;
-v82 [label = "DEC
+v82 [label = "STMT
 LIST
 "];
-v82 -> v31;
+v82 -> v63;
 v82 -> v81;
-v83 [label = "DEC
+v83 [label = "STMT
 LIST
 "];
-v83 -> v28;
+v83 -> v57;
 v83 -> v82;
-v84 [label = "DEC
+v84 [label = "STMT
 LIST
 "];
-v84 -> v18;
+v84 -> v51;
 v84 -> v83;
-v85 [label = "DEC
+v85 [label = "STMT
 LIST
 "];
-v85 -> v11;
+v85 -> v48;
 v85 -> v84;
-v86 [label = "PROGRAM
+v86 [label = "STMT
+LIST
+"];
+v86 -> v43;
+v86 -> v85;
+v87 [label = "STMT
+LIST
+"];
+v87 -> v40;
+v87 -> v86;
+v88 [label = "STMT
+LIST
+"];
+v88 -> v35;
+v88 -> v87;
+v89 [label = "FUNCDEC
+type ID(main)(arg1,...argn) { body }
+"];
+v89 -> v32;
+v89 -> v88;
+v90 [label = "funcDec
+"];
+v90 -> v89;
+v91 [label = "DEC
+LIST
+"];
+v91 -> v90;
+v92 [label = "DEC
+LIST
+"];
+v92 -> v31;
+v92 -> v91;
+v93 [label = "DEC
+LIST
+"];
+v93 -> v28;
+v93 -> v92;
+v94 [label = "DEC
+LIST
+"];
+v94 -> v18;
+v94 -> v93;
+v95 [label = "DEC
+LIST
+"];
+v95 -> v11;
+v95 -> v94;
+v96 [label = "PROGRAM
 DECLIST
 "];
-v86 -> v85;
+v96 -> v95;
 }
