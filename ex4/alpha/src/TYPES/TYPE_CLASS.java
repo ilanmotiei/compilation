@@ -1,4 +1,6 @@
 package TYPES;
+import MIPS.MIPSGenerator;
+
 import java.util.*;
 
 public class TYPE_CLASS extends TYPE
@@ -137,7 +139,6 @@ public class TYPE_CLASS extends TYPE
 		return null;
 	}
 
-
 	/* Adds a new field to the class */
 	public void appendField(TYPE_CLASS_FIELD newField)
 	{
@@ -155,7 +156,6 @@ public class TYPE_CLASS extends TYPE
 			this.data_members.Append(newField);
 		}
 	}
-
 
 	/* Checks if the given function shadows currently defined field of the class */
 	public boolean function_shadows(TYPE_FUNCTION func)
@@ -210,32 +210,32 @@ public class TYPE_CLASS extends TYPE
 
 	public LinkedList<String> getMethodsNames()
 	{
-		LinkedList<String> methods_names = new LinkedList<>();
-
+		LinkedList<TYPE_CLASS> classes_at_hierarchy = new LinkedList<>();
 		TYPE_CLASS curr_cls = this;
 
-		while (curr_cls != null) {
-			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
-			LinkedList<String> curr_cls_methods_names = new LinkedList<>();
+		while (curr_cls != null)
+		{
+			classes_at_hierarchy.addFirst(curr_cls);
+			curr_cls = curr_cls.father;
+		}
 
-			while (curr != null) {
-				TYPE_CLASS_FIELD f = curr.head;
+		LinkedList<String> methods_names = new LinkedList<>();
 
-				if (f.is_function()) {
-					if (!methods_names.contains(f.name)) {
-						// add it to the methods names in a reverse order
-						curr_cls_methods_names.addFirst(f.name);
+		for (TYPE_CLASS cls : classes_at_hierarchy)
+		{
+			if (cls.data_members != null)
+			{
+				for (TYPE_CLASS_FIELD f : cls.data_members)
+				{
+					if (f.is_function())
+					{
+						if (! methods_names.contains(f.name))
+						{
+							methods_names.add(f.name);
+						}
 					}
 				}
-
-				curr = curr.tail;
 			}
-
-			for (String na : curr_cls_methods_names) {
-				methods_names.addFirst(na);
-			}
-
-			curr_cls = curr_cls.father;
 		}
 
 		return methods_names;
@@ -261,35 +261,31 @@ public class TYPE_CLASS extends TYPE
 	// get class fields (without methods), including those inherited.
 	public LinkedList<TYPE_CLASS_FIELD> getClassFields()
 	{
-		LinkedList<TYPE_CLASS_FIELD> class_fields = new LinkedList<>();
-
+		LinkedList<TYPE_CLASS> classes_at_hierarchy = new LinkedList<>();
 		TYPE_CLASS curr_cls = this;
 
-		while (curr_cls != null)
-		{
-			TYPE_CLASS_FIELD_LIST curr = curr_cls.data_members;
-			LinkedList<TYPE_CLASS_FIELD> curr_class_fields = new LinkedList<>();
-
-			while (curr != null)
-			{
-				TYPE_CLASS_FIELD f = curr.head;
-
-				if (f.is_var()){
-					curr_class_fields.addFirst(f);
-				}
-
-				curr = curr.tail;
-			}
-
-			for (TYPE_CLASS_FIELD f : curr_class_fields)
-			{
-				class_fields.addFirst(f);
-			}
-
+		while (curr_cls != null) {
+			classes_at_hierarchy.addFirst(curr_cls);
 			curr_cls = curr_cls.father;
 		}
 
-		return class_fields;
+		LinkedList<TYPE_CLASS_FIELD> fields = new LinkedList<>();
+
+		for (TYPE_CLASS cls : classes_at_hierarchy)
+		{
+			if (cls.data_members != null)
+			{
+				for (TYPE_CLASS_FIELD f : cls.data_members)
+				{
+					if (f.is_var())
+					{
+						fields.add(f);
+					}
+				}
+			}
+		}
+
+		return fields;
 	}
 
 	// get class given field name's index 

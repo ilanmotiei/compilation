@@ -39,7 +39,7 @@ class Student extends Person
 		}
 	}
 
-	int getAge()  { return 10000; }
+	int getAge()  { return 1000; }
 }
 
 void main()
