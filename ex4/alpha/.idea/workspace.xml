@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="20a112be-60c9-4bcc-9999-853977e6f085" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_ARRAYTYPEDEF.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_CFIELD.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_CFIELD_FUNDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_CFIELD_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_CFIELD_VARDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_CLASSDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_DEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_DEC_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_BINOP$Operator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_BINOP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_FUNCCALL.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_INT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_NIL.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_PARENEXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_STRING.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_EXP_VAR.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_FUNCDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_GRAPHVIZ.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_NEWEXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_Node_Serial_Number.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_PROGRAM.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_ASSIGN.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_ASSIGN_NEWEXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_FUNCCALL.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_IF.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_RETURN.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_VARDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_STMT_WHILE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_TYPE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_TYPE_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VAR.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VARDEC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VARDEC_EXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VARDEC_NEWEXP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VAR_FIELD.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VAR_SIMPLE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/AST/AST_VAR_SUBSCRIPT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IR.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommandConstInt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommandList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Allocate.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Binop_Add_Integers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Binop_EQ_Integers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Binop_LT_Integers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Binop_Mul_Integers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Jump_If_Eq_To_Zero.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Jump_Label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Load.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_PrintInt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/IR/IRcommand_Store.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TEMP/TEMP.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/BOX.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_CLASS.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_CLASS_FIELD.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_CLASS_FIELD_LIST$TYPE_CLASS_FIELD_ITER.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_CLASS_FIELD_LIST.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_FUNCTION.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_LIST$TYPE_LIST_ITER.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../out/production/ex4/TYPES/TYPE_LIST.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="24JvMKSDxJdfkzYFtuMkQqgUnBW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="20a112be-60c9-4bcc-9999-853977e6f085" name="Changes" comment="" />
+      <created>1643361455549</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1643361455549</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
