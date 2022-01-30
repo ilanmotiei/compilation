@@ -57,4 +57,7 @@ void main()
     PrintString(TAU[0].a);
 
     PrintInt(-32000 * 5);
+
+    PrintInt(3*2/6);
+    PrintInt(6/6*3);
 }

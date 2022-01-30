@@ -12,10 +12,6 @@ int IsPrime(int p)
 
         while (j<p)
         {
-            // PrintString(a);
-            // PrintInt(i);
-            // PrintString(b);
-            // PrintInt(j);
             if (i*j = p)
             {
                  return 0;

@@ -160,12 +160,9 @@ non terminal AST_VAR var;
 /***********************/
 precedence nonassoc ASSIGN;
 precedence left EQ;
-precedence left LT;
-precedence left GT;
-precedence left PLUS;
-precedence left MINUS;
-precedence left TIMES;
-precedence left DIVIDE;
+precedence left GT, LT;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
 precedence nonassoc LBRACK;
 precedence nonassoc LPAREN;
 precedence left DOT;
