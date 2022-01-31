@@ -370,57 +370,50 @@ _bind_int_end_:
 	jr $ra
 global_initializations:
 .data
-vt_Person:
-	.word Person_getAge
-	.word Person_birthday
-	.word Person_PrintSalaries
-non_inherited_fields_initialization_Person:
+	global_i: .word 0
+.text
+	li $t0,1
+	sw $t0,global_i
+.data
+	global_j: .word 0
 .text
 .data
-vt_Student:
-	.word Person_getAge
-	.word Person_birthday
-	.word Person_PrintSalaries
-	.word Student_getAverage
-non_inherited_fields_initialization_Student:
+	global_p: .word 0
+.text
+	li $t0,1
+	sw $t0,global_p
+.data
+	global_start: .word 0
+.text
+.data
+	global_end: .word 0
+.text
+.data
+	global_isPrime: .word 0
+.text
+.data
+	global_copyp: .word 0
+.text
+.data
+	global_copyisPrime: .word 0
 .text
 	jr $ra
-monthJuly:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,4
-	li $t0,7
-	sw $t0,-44($fp)
-	lw $t0,-44($fp)
-	move $v0,$t0
-	j epilogue_monthJuly
-epilogue_monthJuly:
-	j __epilogue__
-Person_getAge:
+user_main:
 	subu $sp,$sp,4
 	sw $ra,0($sp)
 	subu $sp,$sp,4
 	sw $fp,0($sp)
 	jal __prologue__
 	subu $sp,$sp,0
-	lw $s0,8($fp)
-	lw $t0,8($s0)
-	move $v0,$t0
-	j epilogue_Person_getAge
-epilogue_Person_getAge:
-	j __epilogue__
-Person_birthday:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,0
-	lw $s0,8($fp)
-	lw $t1,8($s0)
+	li $t0,2
+	sw $t0,global_p
+	li $t0,2
+	sw $t0,global_start
+	li $t0,100
+	sw $t0,global_end
+Label_1_start:
+	lw $t2,global_p
+	lw $t1,global_end
 	li $t0,1
 	add $t0,$t1,$t0
 	move $s0,$t0
@@ -428,28 +421,8 @@ Person_birthday:
 	li $s2,32767
 	jal _bind_int_
 	move $t0,$v0
-	lw $s0,8($fp)
-	sw $t0,8($s0)
-	lw $s0,8($fp)
-	lw $t0,8($s0)
-	move $v0,$t0
-	j epilogue_Person_birthday
-epilogue_Person_birthday:
-	j __epilogue__
-Person_PrintSalaries:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,4
-	li $t0,0
-	sw $t0,-44($fp)
-Label_1_start:
-	lw $t1,-44($fp)
-	li $t0,13
-	blt $t1,$t0,Label_11_AssignOne
-	bge $t1,$t0,Label_12_AssignZero
+	blt $t2,$t0,Label_11_AssignOne
+	bge $t2,$t0,Label_12_AssignZero
 Label_11_AssignOne:
 	li $t0,1
 	j Label_10_end
@@ -458,51 +431,15 @@ Label_12_AssignZero:
 	j Label_10_end
 Label_10_end:
 	beqz $t0,Label_0_end
-	lw $s0,8($fp)
-	lw $t1,12($s0)
-	lw $t0,-44($fp)
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	lw $t1,-44($fp)
+	li $t0,2
+	sw $t0,global_i
+	li $t0,2
+	sw $t0,global_j
 	li $t0,1
-	add $t0,$t1,$t0
-	move $s0,$t0
-	li $s1,-32768
-	li $s2,32767
-	jal _bind_int_
-	move $t0,$v0
-	sw $t0,-44($fp)
-	j Label_1_start
-Label_0_end:
-epilogue_Person_PrintSalaries:
-	j __epilogue__
-Student_getAverage:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,8
-	li $t0,0
-	sw $t0,-44($fp)
-	li $t0,0
-	sw $t0,-48($fp)
+	sw $t0,global_isPrime
 Label_3_start:
-	lw $t1,-44($fp)
-	li $t0,10
+	lw $t1,global_i
+	lw $t0,global_p
 	blt $t1,$t0,Label_14_AssignOne
 	bge $t1,$t0,Label_15_AssignZero
 Label_14_AssignOne:
@@ -513,487 +450,13 @@ Label_15_AssignZero:
 	j Label_13_end
 Label_13_end:
 	beqz $t0,Label_2_end
-	lw $t2,-48($fp)
-	lw $s0,8($fp)
-	lw $t1,16($s0)
-	lw $t0,-44($fp)
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
-	add $t0,$t2,$t0
-	move $s0,$t0
-	li $s1,-32768
-	li $s2,32767
-	jal _bind_int_
-	move $t0,$v0
-	sw $t0,-48($fp)
-	lw $t1,-44($fp)
-	li $t0,1
-	add $t0,$t1,$t0
-	move $s0,$t0
-	li $s1,-32768
-	li $s2,32767
-	jal _bind_int_
-	move $t0,$v0
-	sw $t0,-44($fp)
-	j Label_3_start
-Label_2_end:
-	lw $t1,-48($fp)
-	li $t0,10
-	beqz $t0,division_by_zero_abort
-	beqz $t0,division_by_zero_abort
-	div $t1,$t0
-	mflo $t0
-	move $s0,$t0
-	li $s1,-32768
-	li $s2,32767
-	jal _bind_int_
-	move $t0,$v0
-	move $v0,$t0
-	j epilogue_Student_getAverage
-epilogue_Student_getAverage:
-	j __epilogue__
-user_main:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,44
-	li $v0,9
-	li $a0,20
-	syscall
-	move $t0,$v0
-	la $s0,vt_Student
-	sw $s0,0($t0)
-	li $s0,0
-	sw $s0,4($t0)
-	li $s0,10
-	sw $s0,8($t0)
-	li $s0,0
-	sw $s0,12($t0)
-	li $s0,0
-	sw $s0,16($t0)
-	sw $t0,-44($fp)
-	lw $t6,-44($fp)
-	li $t5,10
-	move $a0,$t5
-	addu $a0, $a0, 1
-	mul $a0,$a0,4
-	li $v0,9
-	syscall
-	move $t4,$v0
-	sw $t5,0($t4)
-	li $t3,0
-	li $t2,1
-	li $t1,0
-Label_4_start_label:
-	sub $t0,$t5,$t1
-	beqz $t0,Label_5_end_label
-	beqz $t4,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t4)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t4
-	sw $t3,0($s0)
-	add $t1,$t1,$t2
-	j Label_4_start_label
-Label_5_end_label:
-	beqz $t6,invalid_ptr_dref_abort
-	sw $t4,16($t6)
-	lw $t6,-44($fp)
-	li $t5,13
-	move $a0,$t5
-	addu $a0, $a0, 1
-	mul $a0,$a0,4
-	li $v0,9
-	syscall
-	move $t4,$v0
-	sw $t5,0($t4)
-	li $t3,0
-	li $t2,1
-	li $t1,0
-Label_6_start_label:
-	sub $t0,$t5,$t1
-	beqz $t0,Label_7_end_label
-	beqz $t4,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t4)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t4
-	sw $t3,0($s0)
-	add $t1,$t1,$t2
-	j Label_6_start_label
-Label_7_end_label:
-	beqz $t6,invalid_ptr_dref_abort
-	sw $t4,12($t6)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,0
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,1
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,2
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,3
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,4
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,5
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,6
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,7
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,8
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,9
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,10
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,11
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,12($t0)
-	li $t1,12
-	li $t0,7400
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	li $t0,0
-	sw $t0,-48($fp)
-	li $t0,1
-	sw $t0,-52($fp)
 	li $t0,2
-	sw $t0,-56($fp)
-	li $t0,3
-	sw $t0,-60($fp)
-	li $t0,4
-	sw $t0,-64($fp)
-	li $t0,5
-	sw $t0,-68($fp)
-	li $t0,6
-	sw $t0,-72($fp)
-	li $t0,7
-	sw $t0,-76($fp)
-	li $t0,8
-	sw $t0,-80($fp)
-	li $t0,9
-	sw $t0,-84($fp)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-48($fp)
-	li $t0,96
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-52($fp)
-	li $t0,100
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-56($fp)
-	li $t0,95
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-60($fp)
-	li $t0,81
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-64($fp)
-	li $t0,95
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-68($fp)
-	li $t0,95
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-72($fp)
-	li $t0,100
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-76($fp)
-	li $t0,100
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-80($fp)
-	li $t0,74
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,16($t0)
-	lw $t1,-84($fp)
-	li $t0,99
-	beqz $t2,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t2)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t2
-	sw $t0,0($s0)
-Label_8_start:
-	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	lw $s0,0($t0)
-	lw $s1, 12($s0)
-	jalr $s1
-	move $t1,$v0
-	li $t0,60
-	blt $t0,$t1,Label_17_AssignOne
-	bge $t0,$t1,Label_18_AssignZero
+	sw $t0,global_j
+Label_5_start:
+	lw $t1,global_j
+	lw $t0,global_p
+	blt $t1,$t0,Label_17_AssignOne
+	bge $t1,$t0,Label_18_AssignZero
 Label_17_AssignOne:
 	li $t0,1
 	j Label_16_end
@@ -1001,205 +464,83 @@ Label_18_AssignZero:
 	li $t0,0
 	j Label_16_end
 Label_16_end:
-	beqz $t0,Label_9_end
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t0,8($t0)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-.data
-	const_str_0: .asciiz "A"
-.text
-	la $t0,const_str_0
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t3,12($t0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,8($t0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,12($t0)
-	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	lw $s0,0($t0)
-	lw $s1, 4($s0)
-	jalr $s1
-	move $t0,$v0
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t1,0($s0)
-	li $t0,1000
+	beqz $t0,Label_4_end
+	lw $t0,global_p
+	sw $t0,global_copyp
+Label_7_start:
+	lw $t1,global_i
+	lw $t0,global_j
+	mul $t1,$t1,$t0
+	move $s0,$t1
+	li $s1,-32768
+	li $s2,32767
+	jal _bind_int_
+	move $t1,$v0
+	lw $t0,global_copyp
+	beq $t1,$t0,Label_20_AssignOne
+	bne $t1,$t0,Label_21_AssignZero
+Label_20_AssignOne:
+	li $t0,1
+	j Label_19_end
+Label_21_AssignZero:
+	li $t0,0
+	j Label_19_end
+Label_19_end:
+	beqz $t0,Label_6_end
+	li $t0,0
+	sw $t0,global_isPrime
+	li $t0,0
+	sw $t0,global_copyp
+	j Label_7_start
+Label_6_end:
+	lw $t1,global_j
+	li $t0,1
 	add $t0,$t1,$t0
 	move $s0,$t0
 	li $s1,-32768
 	li $s2,32767
 	jal _bind_int_
 	move $t0,$v0
-	beqz $t3,invalid_ptr_dref_abort
-	bltz $t2,index_out_of_range_abort
-	lw $s0,0($t3)
-	bge $t2,$s0,index_out_of_range_abort
-	move $s0,$t2
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t3
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	lw $s0,0($t0)
-	lw $s1, 8($s0)
-	jalr $s1
-.data
-	const_str_1: .asciiz "A"
-.text
-	la $t0,const_str_1
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t0,8($t0)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-.data
-	const_str_2: .asciiz "A"
-.text
-	la $t0,const_str_2
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t3,12($t0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t2,8($t0)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,12($t0)
-	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	lw $s0,0($t0)
-	lw $s1, 4($s0)
-	jalr $s1
-	move $t0,$v0
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t1,0($s0)
-	li $t0,1000
+	sw $t0,global_j
+	j Label_5_start
+Label_4_end:
+	lw $t1,global_i
+	li $t0,1
 	add $t0,$t1,$t0
 	move $s0,$t0
 	li $s1,-32768
 	li $s2,32767
 	jal _bind_int_
 	move $t0,$v0
-	beqz $t3,invalid_ptr_dref_abort
-	bltz $t2,index_out_of_range_abort
-	lw $s0,0($t3)
-	bge $t2,$s0,index_out_of_range_abort
-	move $s0,$t2
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t3
-	sw $t0,0($s0)
-	lw $t0,-44($fp)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	lw $s0,0($t0)
-	lw $s1, 8($s0)
-	jalr $s1
-.data
-	const_str_3: .asciiz "A"
-.text
-	la $t0,const_str_3
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintString
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,12($t0)
-	li $t0,10
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
+	sw $t0,global_i
+	j Label_3_start
+Label_2_end:
+	lw $t0,global_isPrime
+	sw $t0,global_copyisPrime
+Label_9_start:
+	lw $t0,global_copyisPrime
+	beqz $t0,Label_8_end
+	lw $t0,global_p
 	subu $sp,$sp,4
 	sw $t0,0($sp)
 	addu $sp,$sp,4
 	subu $sp,$sp,4
 	subu $sp,$sp,4
 	jal PrintInt
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,12($t0)
-	li $t0,11
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
+	li $t0,0
+	sw $t0,global_copyisPrime
+	j Label_9_start
+Label_8_end:
+	lw $t1,global_p
+	li $t0,1
+	add $t0,$t1,$t0
 	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-Label_9_end:
+	li $s1,-32768
+	li $s2,32767
+	jal _bind_int_
+	move $t0,$v0
+	sw $t0,global_p
+	j Label_1_start
+Label_0_end:
 epilogue_user_main:
 	j __epilogue__

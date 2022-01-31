@@ -221,6 +221,18 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 	public void IRme()
 	{
+		boolean is_global_var = (! this.isLocalVar) && (! this.isClassField); // WILL ALLWAYS BE FALSE
+		// THIS DECLERATION is not a global variable cause global variable can only be nil, int, string,
+		// and instances of those type aren't declerad with 'null'
+
+
+		if ((newExp == null) && is_global_var)
+		{
+			IR.getInstance().change_to_global_mode();
+			IR.getInstance().Add_IRcommand(new IRcommand_Init_Global_Var(this.name));
+			IR.getInstance().change_to_local_mode();
+		}
+
 		if (newExp != null)
 		{
 			TEMP initial_value = newExp.IRme();

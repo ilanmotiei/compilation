@@ -1,6 +1,6 @@
-int i;
+int i := 1;
 int j;
-int p;
+int p := 1;
 int start;
 int end;
 int isPrime;
