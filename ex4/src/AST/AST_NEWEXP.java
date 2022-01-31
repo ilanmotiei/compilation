@@ -5,7 +5,7 @@ import TEMP.*;
 import TYPES.*;
 import IR.*;
 
-public class AST_NEWEXP extends AST_Node {
+public class AST_NEWEXP extends AST_EXP {
 	public AST_TYPE type;
 	public AST_EXP exp;
 	public int line;

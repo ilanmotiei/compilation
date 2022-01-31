@@ -100,9 +100,10 @@ public class AST_VAR_FIELD extends AST_VAR
 		return dst_tmp;
 	}
 
-	public void set(TEMP value, TYPE value_type)
+	public void set(AST_EXP value_exp, TYPE value_type)
 	{
 		TEMP src = var.IRme();
+		TEMP value = value_exp.IRme();
 
 		IR.getInstance().Add_IRcommand(new IRcommand_FieldSet(src, this.cls, this.fieldName, value));
 	}

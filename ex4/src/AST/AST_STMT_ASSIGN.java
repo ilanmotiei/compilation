@@ -73,8 +73,6 @@ public class AST_STMT_ASSIGN extends AST_STMT
 
 	public void IRme()
 	{
-		TEMP exp_tmp = exp.IRme();
-
-		var.set(exp_tmp, exp_type);  // assigns the variable the value stored at exp_tmp
+		var.set(exp, exp_type);  // assigns the variable the value stored at exp_tmp
 	}
 }

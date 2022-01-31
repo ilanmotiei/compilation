@@ -14,6 +14,14 @@ class Person
 
 	int getAge()  { return age;               }
 	int birthday(){ age := age+1; return age; }
+	void PrintSalaries() {
+	    int i := 0;
+
+	    while (i < 13){
+	        PrintInt(lastYearSalaries[i]);
+	        i := i + 1;
+	    }
+	}
 }
 
 class Student extends Person
@@ -76,11 +84,25 @@ void main()
 
 	if (moish.getAverage() > 60)
 	{
-		// mysterious raise pattern ... 
+		// mysterious raise pattern ...
+		PrintInt(moish.age);
+		PrintString("A");
+
 		moish.lastYearSalaries[moish.age] :=
 		moish.lastYearSalaries[moish.birthday()] + 1000;
+
+        moish.PrintSalaries();
+        PrintString("A");
+        PrintInt(moish.age);
+        PrintString("A");
+
 		moish.lastYearSalaries[moish.age] :=
 		moish.lastYearSalaries[moish.birthday()] + 1000;
+
+		moish.PrintSalaries();
+
+		PrintString("A");
+
 		PrintInt(moish.lastYearSalaries[10]);
 		PrintInt(moish.lastYearSalaries[11]);
 	}

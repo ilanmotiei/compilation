@@ -94,10 +94,11 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		return dst_tmp;
 	}
 
-	public void set(TEMP value, TYPE value_type)
+	public void set(AST_EXP value_exp, TYPE value_type)
 	{
 		TEMP arr_tmp = this.var.IRme();  // loads the variable from the memory
 		TEMP idx = this.subscript.IRme();  // loads the index from the memory
+		TEMP value = value_exp.IRme();
 
 		IR.getInstance().Add_IRcommand(new IRcommand_ArraySet(arr_tmp, idx, value));
 	}

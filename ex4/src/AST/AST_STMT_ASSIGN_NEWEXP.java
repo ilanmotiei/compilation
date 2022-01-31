@@ -96,8 +96,6 @@ public class AST_STMT_ASSIGN_NEWEXP extends AST_STMT
 
 	public void IRme()
 	{
-		TEMP exp_tmp = this.newExp.IRme();
-
-		this.var.set(exp_tmp, exp_type);  // assigns the variable the value stored at exp_tmp
+		this.var.set(newExp, exp_type);  // assigns the variable the value stored at exp_tmp
 	}
 }

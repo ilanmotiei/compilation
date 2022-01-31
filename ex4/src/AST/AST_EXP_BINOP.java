@@ -181,7 +181,7 @@ public class AST_EXP_BINOP extends AST_EXP
 
 
 		int max = ((int) Math.pow(2, 15)) - 1;
-		int min = -((int) Math.pow(2, 15)) + 1;
+		int min = -((int) Math.pow(2, 15));
 
 		if (OP == 0) {
 			if (this.is_between_strings) {

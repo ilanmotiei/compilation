@@ -99,8 +99,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		return var_val_tmp;
 	}
 
-	public void set(TEMP value, TYPE value_type)
+	public void set(AST_EXP value_exp, TYPE value_type)
 	{
+		TEMP value = value_exp.IRme();
+
 		IR.getInstance().Add_IRcommand(new IRcommand_Store(this.name,
 														   this.curr_scope_class,
 														   value,
