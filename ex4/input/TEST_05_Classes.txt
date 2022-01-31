@@ -5,6 +5,7 @@ int monthJuly()
 	int july := 7;
 	return july;
 }
+
 class Person
 {
 	int ID;
@@ -23,6 +24,8 @@ class Person
 	    }
 	}
 }
+
+Person a := new Person;
 
 class Student extends Person
 {
@@ -102,6 +105,10 @@ void main()
 		moish.PrintSalaries();
 
 		PrintString("A");
+
+		PrintString("AA");
+		PrintInt(a.age);
+		PrintString("AA");
 
 		PrintInt(moish.lastYearSalaries[10]);
 		PrintInt(moish.lastYearSalaries[11]);

@@ -221,10 +221,7 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 	public void IRme()
 	{
-		boolean is_global_var = (! this.isLocalVar) && (! this.isClassField); // WILL ALLWAYS BE FALSE
-		// THIS DECLERATION is not a global variable cause global variable can only be nil, int, string,
-		// and instances of those type aren't declerad with 'null'
-
+		boolean is_global_var = (! this.isLocalVar) && (! this.isClassField);
 
 		if ((newExp == null) && is_global_var)
 		{
@@ -235,17 +232,41 @@ public class AST_VARDEC_NEWEXP extends AST_VARDEC {
 
 		if (newExp != null)
 		{
-			TEMP initial_value = newExp.IRme();
+			if (is_global_var)
+			{
+				// it is a global variable declaration and we need to initialize for it a label
+				IR.getInstance().change_to_global_mode();
 
-			IR.
-			getInstance().
-			Add_IRcommand(new IRcommand_Store(name,
-											  this._cls_, // if its null then isClassField is False and no error occures
-											  initial_value,
-											  this.isLocalVar,
-											  this.isArg,
-											  this.isClassField,
-											  this.offset));
+				IR.getInstance().Add_IRcommand(new IRcommand_Init_Global_Var(this.name));
+
+				TEMP initial_value = newExp.IRme();
+
+				IR.
+						getInstance().
+						Add_IRcommand(new IRcommand_Store(name,
+								this._cls_,
+								initial_value,
+								this.isLocalVar,
+								this.isArg,
+								this.isClassField,
+								this.offset));
+
+				IR.getInstance().change_to_local_mode();
+			}
+			else
+			{
+				TEMP initial_value = newExp.IRme();
+
+				IR.
+						getInstance().
+						Add_IRcommand(new IRcommand_Store(name,
+								this._cls_, // if its null then isClassField is False and no error occures
+								initial_value,
+								this.isLocalVar,
+								this.isArg,
+								this.isClassField,
+								this.offset));
+			}
 		}
 	}
 }
