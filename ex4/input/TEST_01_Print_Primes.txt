@@ -2,14 +2,10 @@ int IsPrime(int p)
 {
     int i := 2;
     int j := 2;
-
-    string a := "i";
-    string b := "j";
     
     while (i<p)
     {
-        j := 2;
-
+		j := 2;
         while (j<p)
         {
             if (i*j = p)
@@ -18,29 +14,26 @@ int IsPrime(int p)
             }
             j := j+1;
         }
-
         i := i+1;
     }
-
     return 1;
 }
 
 void PrintPrimes(int start, int end)
 {
     int p := start;
-
-    while (p < end + 1)
+    
+    while (p < end+1)
     {
         if (IsPrime(p))
         {
             PrintInt(p);
         }
-
         p := p + 1;
     }
 }
 
 void main()
 {
-    PrintPrimes(2, 100);
+    PrintPrimes(2,100);
 }

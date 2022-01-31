@@ -63,6 +63,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 			throw new Exception("SEMANTIC ERROR : " + this.line + " : " + cls_name);
 		}
 
+		String func_name = func.name;
+
 		// ELSE
 
 		if (exp != null)
@@ -99,7 +101,12 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 		if (curr_scope_class == null)
 		{
-			this.func_name = func.name;
+			if (func_name.equals("main"))
+			{
+				func_name = "user_" + func_name;
+			}
+
+			this.func_name = func_name;
 		}
 		else
 		{
@@ -113,8 +120,18 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 	public void IRme()
 	{
-		TEMP rv = this.exp.IRme();
+		if (this.exp != null)
+		{
+			TEMP rv = this.exp.IRme();
 
-		IR.getInstance().Add_IRcommand(new IRcommand_Return(rv, func_name));
+			IR.getInstance().Add_IRcommand(new IRcommand_Return(rv, func_name));
+		}
+		else
+		{
+			// we'll just return to the caller
+			IR.getInstance().Add_IRcommand(new IRcommand_Return(null, func_name));
+		}
+
+
 	}
 }

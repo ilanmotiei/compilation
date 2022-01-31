@@ -178,31 +178,33 @@ public class AST_EXP_BINOP extends AST_EXP
 				
 		if (left  != null) t1 = left.IRme();
 		if (right != null) t2 = right.IRme();
-		
-		if (OP == 0)
-		{
-			if (this.is_between_strings)
-			{
+
+
+		int max = ((int) Math.pow(2, 15)) - 1;
+		int min = -((int) Math.pow(2, 15)) + 1;
+
+		if (OP == 0) {
+			if (this.is_between_strings) {
 				IR.
-				getInstance().
-				Add_IRcommand(new IRcommand_Binop_Add_Strings(dst,t1,t2));
-			}
-			else{
+						getInstance().
+						Add_IRcommand(new IRcommand_Binop_Add_Strings(dst, t1, t2));
+			} else {
 				// The addition is between integers.
 				IR.
-				getInstance().
-				Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+						getInstance().
+						Add_IRcommand(new IRcommand_Binop_Add_Integers(dst, t1, t2));
 
-				IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
+				IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, min, max));
 			}
 		}
+
 		if (OP == 1)
 		{
 			IR.
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Sub_Integers(dst,t1,t2));
 
-			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, min, max));
 		}
 		if (OP == 2)
 		{
@@ -210,7 +212,7 @@ public class AST_EXP_BINOP extends AST_EXP
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
 
-			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, min, max));
 		}
 		if (OP == 3)
 		{
@@ -218,7 +220,7 @@ public class AST_EXP_BINOP extends AST_EXP
 			getInstance().
 			Add_IRcommand(new IRcommand_Binop_Divide_Integers(dst,t1,t2));
 
-			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, -((int) Math.pow(2, 15)), (int) Math.pow(2, 15)));
+			IR.getInstance().Add_IRcommand(new IRcommand_Bind(dst, min, max));
 		}
 		if (OP == 4)
 		{

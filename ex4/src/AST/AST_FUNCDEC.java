@@ -72,6 +72,7 @@ public class AST_FUNCDEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginScope(null);
 		
 		TYPE_LIST args_types = null;
+
 		if (this.typeList != null)
 		{
 			args_types = this.typeList.SemantMe(); 
@@ -110,7 +111,7 @@ public class AST_FUNCDEC extends AST_Node {
 		SYMBOL_TABLE.getInstance().beginScope(func_type); // -------------------------
 		
 		// Add the function also to the scope of its body (for supporting recursion)
-		SYMBOL_TABLE.getInstance().enter(this.name, func_type, false, false, false);
+		SYMBOL_TABLE.getInstance().enter(func_type.name, func_type, false, false, false);
 		
 		// Adds the new arg names and their types to the new scope recursively
 		if (this.typeList != null)
@@ -122,7 +123,7 @@ public class AST_FUNCDEC extends AST_Node {
 		this.body.SemantMe();
 
 		this.max_local_var_offset = SYMBOL_TABLE.getInstance().endScope();
-		// ------------------------------------
+		// -----------------------------------
 
 		return new BOX(func_type, func_type.name);
 	}

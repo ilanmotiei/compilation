@@ -724,7 +724,7 @@ public class MIPSGenerator
 		/******************************************************/
 		fileWriter.print(".data\n");
 		fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
-		fileWriter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+		fileWriter.print("string_illegal_div_by_0: .asciiz \"Division By Zero\"\n");
 		fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 		
 		fileWriter.print(".text\n");

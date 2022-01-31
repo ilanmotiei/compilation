@@ -31,7 +31,10 @@ public class IRcommand_Return extends IRcommand
 	
 	public void MIPSme()
 	{
-        MIPSGenerator.getInstance().set_rv(rv);
+        if (this.rv != null)
+        {
+            MIPSGenerator.getInstance().set_rv(rv);
+        }
 
         MIPSGenerator.getInstance().jump("epilogue_" + func_fullname);
     }
@@ -40,7 +43,11 @@ public class IRcommand_Return extends IRcommand
     public LinkedList<TEMP> getUsedTemps()
     {
         LinkedList<TEMP> res = new LinkedList<TEMP>();
-        res.add(rv);
+
+        if (this.rv != null)
+        {
+            res.add(rv);
+        }
 
         return res;
     }

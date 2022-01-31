@@ -14,9 +14,9 @@ void main()
 
 	Mat A := new IntArray[3];
 
-	A[0] := new int[3];
-	A[1] := new int[3];
-	A[2] := new int[3];
+	A[0] := row0;
+	A[1] := row1;
+	A[2] := row2;
 
 	A[0][0]:=0;A[0][1]:=1;A[0][2]:=2;
 	A[1][0]:=3;A[1][1]:=4;A[1][2]:=5;
