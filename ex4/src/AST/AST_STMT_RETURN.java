@@ -111,7 +111,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 		else
 		{
 			// we're defining a class method
-			this.func_name = curr_scope_class.name + "_" + func.name;
+			this.func_name = curr_scope_class.name + "_" + func_name;
 		}
 
 
