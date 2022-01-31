@@ -2,570 +2,135 @@
 string_access_violation: .asciiz "Access Violation"
 string_illegal_div_by_0: .asciiz "Illegal Division By Zero"
 string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
-.text
+.data
+	global_i: .word 721
+.data
+	global_j: .word 721
+.data
+	global_p: .word 721
+.data
+	global_start: .word 721
+.data
+	global_end: .word 721
+.data
+	global_isPrime: .word 721
+.data
+	global_copyp: .word 721
+.data
+	global_copyisPrime: .word 721
 .text
 main:
-	jal global_initializations
-	jal user_main
-exit:
+	li Temp_0,2
+	sw Temp_0,global_p
+	li Temp_1,2
+	sw Temp_1,global_start
+	li Temp_2,100
+	sw Temp_2,global_end
+Label_1_start:
+	lw Temp_4,global_p
+	lw Temp_6,global_end
+	li Temp_7,1
+	add Temp_5,Temp_6,Temp_7
+	blt Temp_4,Temp_5,Label_11_AssignOne
+	bge Temp_4,Temp_5,Label_12_AssignZero
+Label_11_AssignOne:
+	li Temp_3,1
+	j Label_10_end
+Label_12_AssignZero:
+	li Temp_3,0
+	j Label_10_end
+Label_10_end:
+	beq Temp_3,$zero,Label_0_end
+	li Temp_8,2
+	sw Temp_8,global_i
+	li Temp_9,2
+	sw Temp_9,global_j
+	li Temp_10,1
+	sw Temp_10,global_isPrime
+Label_3_start:
+	lw Temp_12,global_i
+	lw Temp_13,global_p
+	blt Temp_12,Temp_13,Label_14_AssignOne
+	bge Temp_12,Temp_13,Label_15_AssignZero
+Label_14_AssignOne:
+	li Temp_11,1
+	j Label_13_end
+Label_15_AssignZero:
+	li Temp_11,0
+	j Label_13_end
+Label_13_end:
+	beq Temp_11,$zero,Label_2_end
+	li Temp_14,2
+	sw Temp_14,global_j
+Label_5_start:
+	lw Temp_16,global_j
+	lw Temp_17,global_p
+	blt Temp_16,Temp_17,Label_17_AssignOne
+	bge Temp_16,Temp_17,Label_18_AssignZero
+Label_17_AssignOne:
+	li Temp_15,1
+	j Label_16_end
+Label_18_AssignZero:
+	li Temp_15,0
+	j Label_16_end
+Label_16_end:
+	beq Temp_15,$zero,Label_4_end
+	lw Temp_18,global_p
+	sw Temp_18,global_copyp
+Label_7_start:
+	lw Temp_21,global_i
+	lw Temp_22,global_j
+	mul Temp_20,Temp_21,Temp_22
+	lw Temp_23,global_copyp
+	beq Temp_20,Temp_23,Label_20_AssignOne
+	bne Temp_20,Temp_23,Label_21_AssignZero
+Label_20_AssignOne:
+	li Temp_19,1
+	j Label_19_end
+Label_21_AssignZero:
+	li Temp_19,0
+	j Label_19_end
+Label_19_end:
+	beq Temp_19,$zero,Label_6_end
+	li Temp_24,0
+	sw Temp_24,global_isPrime
+	li Temp_25,0
+	sw Temp_25,global_copyp
+	j Label_7_start
+Label_6_end:
+	lw Temp_27,global_j
+	li Temp_28,1
+	add Temp_26,Temp_27,Temp_28
+	sw Temp_26,global_j
+	j Label_5_start
+Label_4_end:
+	lw Temp_30,global_i
+	li Temp_31,1
+	add Temp_29,Temp_30,Temp_31
+	sw Temp_29,global_i
+	j Label_3_start
+Label_2_end:
+	lw Temp_32,global_isPrime
+	sw Temp_32,global_copyisPrime
+Label_9_start:
+	lw Temp_33,global_copyisPrime
+	beq Temp_33,$zero,Label_8_end
+	lw Temp_34,global_p
+	move $a0,Temp_34
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	li Temp_35,0
+	sw Temp_35,global_copyisPrime
+	j Label_9_start
+Label_8_end:
+	lw Temp_37,global_p
+	li Temp_38,1
+	add Temp_36,Temp_37,Temp_38
+	sw Temp_36,global_p
+	j Label_1_start
+Label_0_end:
 	li $v0,10
 	syscall
-__prologue__:
-	move $fp,$sp
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	subu $sp,$sp,4
-	sw $t1,0($sp)
-	subu $sp,$sp,4
-	sw $t2,0($sp)
-	subu $sp,$sp,4
-	sw $t3,0($sp)
-	subu $sp,$sp,4
-	sw $t4,0($sp)
-	subu $sp,$sp,4
-	sw $t5,0($sp)
-	subu $sp,$sp,4
-	sw $t6,0($sp)
-	subu $sp,$sp,4
-	sw $t7,0($sp)
-	subu $sp,$sp,4
-	sw $t8,0($sp)
-	subu $sp,$sp,4
-	sw $t9,0($sp)
-	jr $ra
-__epilogue__:
-	subu $fp,$fp,4
-	lw $t0,0($fp)
-	subu $fp,$fp,4
-	lw $t1,0($fp)
-	subu $fp,$fp,4
-	lw $t2,0($fp)
-	subu $fp,$fp,4
-	lw $t3,0($fp)
-	subu $fp,$fp,4
-	lw $t4,0($fp)
-	subu $fp,$fp,4
-	lw $t5,0($fp)
-	subu $fp,$fp,4
-	lw $t6,0($fp)
-	subu $fp,$fp,4
-	lw $t7,0($fp)
-	subu $fp,$fp,4
-	lw $t8,0($fp)
-	subu $fp,$fp,4
-	lw $t9,0($fp)
-	addu $fp,$fp,40
-	lw $s0,0($fp)
-	lw $ra,4($fp)
-	addu $sp,$fp,8
-	move $fp,$s0
-	jr $ra
-index_out_of_range_abort:
-	la $a0,string_access_violation
-	li $v0,4
-	syscall
-	j exit
-division_by_zero_abort:
-	la $a0,string_illegal_div_by_0
-	li $v0,4
-	syscall
-	j exit
-invalid_ptr_dref_abort:
-	la $a0,string_invalid_ptr_dref
-	li $v0,4
-	syscall
-	j exit
-_strcmp_:
-	subu $sp,$sp,4
-	sw $s7,0($sp)
-	subu $sp,$sp,4
-	sw $s6,0($sp)
-	subu $sp,$sp,4
-	sw $s5,0($sp)
-	subu $sp,$sp,4
-	sw $s4,0($sp)
-	subu $sp,$sp,4
-	sw $s3,0($sp)
-	subu $sp,$sp,4
-	sw $s2,0($sp)
-	subu $sp,$sp,4
-	sw $s1,0($sp)
-	subu $sp,$sp,4
-	sw $s0,0($sp)
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	li $v0,1
-_strcmp_loop_:
-	lb $s2,0($s0)
-	lb $s3,0($s1)
-	bne $s2,$s3,_strcmp_noteq_
-	beq $s2,0,_strcmp_end_
-	addu $s0,$s0,1
-	addu $s1,$s1,1
-	j _strcmp_loop_
-_strcmp_noteq_:
-	li $v0,0
-_strcmp_end_:
-	lw $ra,0($sp)
-	addu $sp,$sp,4
-	lw $s0,0($sp)
-	addu $sp,$sp,4
-	lw $s1,0($sp)
-	addu $sp,$sp,4
-	lw $s2,0($sp)
-	addu $sp,$sp,4
-	lw $s3,0($sp)
-	addu $sp,$sp,4
-	lw $s4,0($sp)
-	addu $sp,$sp,4
-	lw $s5,0($sp)
-	addu $sp,$sp,4
-	lw $s6,0($sp)
-	addu $sp,$sp,4
-	lw $s7,0($sp)
-	addu $sp,$sp,4
-	jr $ra
-_strsize_:
-	subu $sp,$sp,4
-	sw $s7,0($sp)
-	subu $sp,$sp,4
-	sw $s6,0($sp)
-	subu $sp,$sp,4
-	sw $s5,0($sp)
-	subu $sp,$sp,4
-	sw $s4,0($sp)
-	subu $sp,$sp,4
-	sw $s3,0($sp)
-	subu $sp,$sp,4
-	sw $s2,0($sp)
-	subu $sp,$sp,4
-	sw $s1,0($sp)
-	subu $sp,$sp,4
-	sw $s0,0($sp)
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	li $v0,0
-_strsize_loop_:
-	lb $s2,0($s0)
-	beqz $s2,_strsize_end_
-	addu $s0,$s0,1
-	add $v0,$v0,1
-	j _strsize_loop_
-_strsize_end_:
-	lw $ra,0($sp)
-	addu $sp,$sp,4
-	lw $s0,0($sp)
-	addu $sp,$sp,4
-	lw $s1,0($sp)
-	addu $sp,$sp,4
-	lw $s2,0($sp)
-	addu $sp,$sp,4
-	lw $s3,0($sp)
-	addu $sp,$sp,4
-	lw $s4,0($sp)
-	addu $sp,$sp,4
-	lw $s5,0($sp)
-	addu $sp,$sp,4
-	lw $s6,0($sp)
-	addu $sp,$sp,4
-	lw $s7,0($sp)
-	addu $sp,$sp,4
-	jr $ra
-_strcpy_:
-	subu $sp,$sp,4
-	sw $s7,0($sp)
-	subu $sp,$sp,4
-	sw $s6,0($sp)
-	subu $sp,$sp,4
-	sw $s5,0($sp)
-	subu $sp,$sp,4
-	sw $s4,0($sp)
-	subu $sp,$sp,4
-	sw $s3,0($sp)
-	subu $sp,$sp,4
-	sw $s2,0($sp)
-	subu $sp,$sp,4
-	sw $s1,0($sp)
-	subu $sp,$sp,4
-	sw $s0,0($sp)
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-_strcpy_loop_:
-	lb $s2,0($s1)
-	beqz $s2,_strcpy_end_
-	sb $s2,0($s0)
-	addu $s0,$s0,1
-	addu $s1,$s1,1
-	j _strcpy_loop_
-_strcpy_end_:
-	lb $s2,0($s0)
-	lw $ra,0($sp)
-	addu $sp,$sp,4
-	lw $s0,0($sp)
-	addu $sp,$sp,4
-	lw $s1,0($sp)
-	addu $sp,$sp,4
-	lw $s2,0($sp)
-	addu $sp,$sp,4
-	lw $s3,0($sp)
-	addu $sp,$sp,4
-	lw $s4,0($sp)
-	addu $sp,$sp,4
-	lw $s5,0($sp)
-	addu $sp,$sp,4
-	lw $s6,0($sp)
-	addu $sp,$sp,4
-	lw $s7,0($sp)
-	addu $sp,$sp,4
-	jr $ra
-_stradd_:
-	subu $sp,$sp,4
-	sw $s7,0($sp)
-	subu $sp,$sp,4
-	sw $s6,0($sp)
-	subu $sp,$sp,4
-	sw $s5,0($sp)
-	subu $sp,$sp,4
-	sw $s4,0($sp)
-	subu $sp,$sp,4
-	sw $s3,0($sp)
-	subu $sp,$sp,4
-	sw $s2,0($sp)
-	subu $sp,$sp,4
-	sw $s1,0($sp)
-	subu $sp,$sp,4
-	sw $s0,0($sp)
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	move $s5,$s0
-	move $s6,$s1
-	move $s0,$s0
-	jal _strsize_
-	move $s2, $v0
-	move $s0,$s1
-	jal _strsize_
-	addu $s2,$s2,$v0
-	move $a0,$s2
-	addu $a0,$a0,1
-	li $v0,9
-	syscall
-	move $s3,$v0
-	move $s0,$s5
-	move $s1,$s6
-_stradd_loop_1_:
-	lb $s2,0($s0)
-	beqz $s2,_stradd_loop_2_
-	sb $s2,0($s3)
-	addu $s3,$s3,1
-	addu $s0,$s0,1
-	j _stradd_loop_1_
-_stradd_loop_2_:
-	lb $s2,0($s1)
-	beqz $s2,_stradd_end_
-	sb $s2,0($s3)
-	addu $s3,$s3,1
-	addu $s1,$s1,1
-	j _stradd_loop_2_
-_stradd_end_:
-	sb $s2,0($s3)
-	lw $ra,0($sp)
-	addu $sp,$sp,4
-	lw $s0,0($sp)
-	addu $sp,$sp,4
-	lw $s1,0($sp)
-	addu $sp,$sp,4
-	lw $s2,0($sp)
-	addu $sp,$sp,4
-	lw $s3,0($sp)
-	addu $sp,$sp,4
-	lw $s4,0($sp)
-	addu $sp,$sp,4
-	lw $s5,0($sp)
-	addu $sp,$sp,4
-	lw $s6,0($sp)
-	addu $sp,$sp,4
-	lw $s7,0($sp)
-	addu $sp,$sp,4
-	jr $ra
-PrintInt:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,0
-	subu $sp,$sp,4
-	sw $a0,0($sp)
-	lw $a0, 12($fp)
-	li $v0, 1
-	syscall
-	li $a0, 32
-	li $v0, 11
-	syscall
-	lw $a0, 0($sp)
-	addu $sp,$sp,4
-	j __epilogue__
-PrintString:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,0
-	subu $sp,$sp,4
-	sw $a0,0($sp)
-	lw $a0, 12($fp)
-	li $v0, 4
-	syscall
-	lw $a0, 0($sp)
-	addu $sp,$sp,4
-	j __epilogue__
-_bind_int_:
-	subu $sp,$sp,4
-	sw $s7,0($sp)
-	subu $sp,$sp,4
-	sw $s6,0($sp)
-	subu $sp,$sp,4
-	sw $s5,0($sp)
-	subu $sp,$sp,4
-	sw $s4,0($sp)
-	subu $sp,$sp,4
-	sw $s3,0($sp)
-	subu $sp,$sp,4
-	sw $s2,0($sp)
-	subu $sp,$sp,4
-	sw $s1,0($sp)
-	subu $sp,$sp,4
-	sw $s0,0($sp)
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	ble $s0,$s1,_bind_int_minimum_
-	bge $s0,$s2,_bind_int_maximum_
-	j _bind_int_end_
-_bind_int_minimum_:
-	move $s0,$s1
-	j _bind_int_end_
-_bind_int_maximum_:
-	move $s0,$s2
-_bind_int_end_:
-	move $v0,$s0
-	lw $ra,0($sp)
-	addu $sp,$sp,4
-	lw $s0,0($sp)
-	addu $sp,$sp,4
-	lw $s1,0($sp)
-	addu $sp,$sp,4
-	lw $s2,0($sp)
-	addu $sp,$sp,4
-	lw $s3,0($sp)
-	addu $sp,$sp,4
-	lw $s4,0($sp)
-	addu $sp,$sp,4
-	lw $s5,0($sp)
-	addu $sp,$sp,4
-	lw $s6,0($sp)
-	addu $sp,$sp,4
-	lw $s7,0($sp)
-	addu $sp,$sp,4
-	jr $ra
-global_initializations:
-.data
-vt_Grandfather:
-non_inherited_fields_initialization_Grandfather:
-Grandfather_RUN_const_field: .asciiz "RUN"
-.text
-.data
-vt_Father:
-non_inherited_fields_initialization_Father:
-.text
-.data
-vt_Son:
-non_inherited_fields_initialization_Son:
-.text
-	jr $ra
-user_main:
-	subu $sp,$sp,4
-	sw $ra,0($sp)
-	subu $sp,$sp,4
-	sw $fp,0($sp)
-	jal __prologue__
-	subu $sp,$sp,8
-	li $t0,5
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	li $v0,9
-	li $a0,16
-	syscall
-	move $t0,$v0
-	la $s0,vt_Father
-	sw $s0,0($t0)
-	li $s0,8
-	sw $s0,4($t0)
-	la $s0,Grandfather_RUN_const_field
-	jal _strsize_
-	move $a0,$v0
-	add $a0,$a0,1
-	li $v0,9
-	syscall
-	move $s0,$v0
-	sw $s0,8($t0)
-	la $s1,Grandfather_RUN_const_field
-	jal _strcpy_
-	li $s0,0
-	sw $s0,12($t0)
-	sw $t0,-44($fp)
-	li $t0,4
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	li $v0,9
-	li $a0,24
-	syscall
-	move $t1,$v0
-	la $s0,vt_Son
-	sw $s0,0($t1)
-	li $s0,8
-	sw $s0,4($t1)
-	la $s0,Grandfather_RUN_const_field
-	jal _strsize_
-	move $a0,$v0
-	add $a0,$a0,1
-	li $v0,9
-	syscall
-	move $s0,$v0
-	sw $s0,8($t1)
-	la $s1,Grandfather_RUN_const_field
-	jal _strcpy_
-	li $s0,0
-	sw $s0,12($t1)
-	li $s0,0
-	sw $s0,16($t1)
-	li $s0,0
-	sw $s0,20($t1)
-	lw $t0,-44($fp)
-	beqz $t0,invalid_ptr_dref_abort
-	sw $t1,12($t0)
-	li $t0,5
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	li $t5,180
-	move $a0,$t5
-	addu $a0, $a0, 1
-	mul $a0,$a0,4
-	li $v0,9
-	syscall
-	move $t4,$v0
-	sw $t5,0($t4)
-	li $t3,0
-	li $t2,1
-	li $t1,0
-Label_0_start_label:
-	sub $t0,$t5,$t1
-	beqz $t0,Label_1_end_label
-	beqz $t4,invalid_ptr_dref_abort
-	bltz $t1,index_out_of_range_abort
-	lw $s0,0($t4)
-	bge $t1,$s0,index_out_of_range_abort
-	move $s0,$t1
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t4
-	sw $t3,0($s0)
-	add $t1,$t1,$t2
-	j Label_0_start_label
-Label_1_end_label:
-	sw $t4,-48($fp)
-	li $v0,9
-	li $a0,24
-	syscall
-	move $t2,$v0
-	la $s0,vt_Son
-	sw $s0,0($t2)
-	li $s0,8
-	sw $s0,4($t2)
-	la $s0,Grandfather_RUN_const_field
-	jal _strsize_
-	move $a0,$v0
-	add $a0,$a0,1
-	li $v0,9
-	syscall
-	move $s0,$v0
-	sw $s0,8($t2)
-	la $s1,Grandfather_RUN_const_field
-	jal _strcpy_
-	li $s0,0
-	sw $s0,12($t2)
-	li $s0,0
-	sw $s0,16($t2)
-	li $s0,0
-	sw $s0,20($t2)
-	lw $t1,-48($fp)
-	li $t0,49
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	sw $t2,0($s0)
-	lw $t1,-48($fp)
-	li $t0,49
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t0,4($t0)
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-	lw $t1,-48($fp)
-	li $t0,49
-	beqz $t1,invalid_ptr_dref_abort
-	bltz $t0,index_out_of_range_abort
-	lw $s0,0($t1)
-	bge $t0,$s0,index_out_of_range_abort
-	move $s0,$t0
-	add $s0,$s0,1
-	mul $s0,$s0,4
-	add $s0,$s0,$t1
-	lw $t0,0($s0)
-	beqz $t0,invalid_ptr_dref_abort
-	lw $t1,8($t0)
-.data
-	const_str_0: .asciiz "RUN"
-.text
-	la $t0,const_str_0
-	move $s0,$t1
-	move $s1,$t0
-	jal _strcmp_
-	move $t0,$v0
-	subu $sp,$sp,4
-	sw $t0,0($sp)
-	addu $sp,$sp,4
-	subu $sp,$sp,4
-	subu $sp,$sp,4
-	jal PrintInt
-epilogue_user_main:
-	j __epilogue__
